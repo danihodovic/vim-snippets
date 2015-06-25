@@ -1,7 +1,16 @@
-snippet .attr ".attr"
-.attr("${1}", "${2}")
+snippet attr ".attr"
+  .attr("${1}", "${2}")
 endsnippet
 
-snippet .style ".style"
-.style("${1}", "${2}")
+snippet style ".style"
+  .style("${1}", "${2}")
+endsnippet
+
+
+snippet selectAll() "selectAll()"
+${1:obj}.selectAll("${2:class}")
+endsnippet
+
+snippet select() "select()"
+${1:obj}.select("${2:class}")
 endsnippet
