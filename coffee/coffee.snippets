@@ -5,11 +5,17 @@ snippet class "class"
 
 endsnippet
 
-snippet class "class with constructor"
+snippet classconstr "class with constructor"
 	class ${1:name}
 
 		constructor: (${2:args}) ->
 			${3}
+
+endsnippet
+
+snippet constr "constructor"
+  constructor: (${1}: args) ->
+    ${2:# body...}
 
 endsnippet
 
