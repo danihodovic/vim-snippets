@@ -1,0 +1,29 @@
+snippet class "class"
+	class ${1:name}
+
+		${2}
+
+endsnippet
+
+snippet class "class with constructor"
+	class ${1:name}
+
+		constructor: (${2:args}) ->
+			${3}
+
+endsnippet
+
+snippet switch "switch"
+	switch ${1:object}
+		when ${2:value}
+			${0:# body...}
+		when ${3:value}
+			${0:# body...}
+		when ${4:value}
+			${0:# body...}
+
+endsnippet
+
+snippet console "console.log"
+  console.log("${1}", ${1})
+endsnippet
