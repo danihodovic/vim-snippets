@@ -1,19 +1,23 @@
-snippet attr ".attr"
-.attr("${1}", "${2}")
+snippet attr "attr" w
+attr("${1}", "${2}")
 endsnippet
 
-snippet style ".style"
-.style("${1}", "${2}")
+snippet style "style" w
+style("${1}", "${2}")
 endsnippet
 
-snippet selectAll() "selectAll()"
-${1:obj}.selectAll("${2:class}")
+snippet selectAll() "selectAll()" w
+selectAll("${1:class}")
 endsnippet
 
-snippet select() "select()"
-${1:obj}.select("${2:class}")
+snippet select() "select()" w
+select("${1:class}")
 endsnippet
 
-snippet enter "enter.append('class')"
-.enter().append(${1:class})
+snippet enter "enter.append('elem')" w
+enter().append(${1:elem})
+endsnippet
+
+snippet append "('elem')" w
+append(${1:elem})
 endsnippet
