@@ -1,3 +1,7 @@
+# -----------------------------------------------------
+# Class creation
+# -----------------------------------------------------
+
 snippet class "class"
 class ${1:name}
 
@@ -16,6 +20,30 @@ constructor: (${1}: args) ->
   ${2:# body...}
 endsnippet
 
+
+# -----------------------------------------------------
+# Collections
+# -----------------------------------------------------
+snippet slice "slice()" w
+slice()
+endsnippet
+
+snippet map "map(action)" w
+map((${1:arg}) -> ${2:action})
+endsnippet
+
+snippet filter "filter(predicate)" w
+filter((${1:arg}) -> ${2:predicate})
+endsnippet
+
+snippet reduce "reduce(calc)" w
+reduce((${1:arg1}, ${2:arg2}) -> ${3:body})
+endsnippet
+
+# -----------------------------------------------------
+# Control flow 
+# -----------------------------------------------------
+
 snippet switch "switch"
 switch ${1:object}
   when ${2:value}
@@ -26,6 +54,9 @@ switch ${1:object}
     ${0:# body...}
 endsnippet
 
+# -----------------------------------------------------
+# Other 
+# -----------------------------------------------------
 snippet log "console.log"
 console.log("${1}", $1)
 endsnippet

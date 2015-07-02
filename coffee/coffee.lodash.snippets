@@ -2,11 +2,7 @@
 # Objects
 # -----------------------------------------------------
 
-snippet _.keys "_.keys(obj)"
-_.keys(${1:arg})
-endsnippet
-
-snippet _.values "_.values(obj)"
+snippet values "_.values(obj)"
 _.values(${1:arg})
 endsnippet
 
@@ -23,49 +19,37 @@ endsnippet
 # Chainable
 # -----------------------------------------------------
 
-snippet .value "_.value() (chain)" w
-.value()
+snippet value "_.value() (chain value)" w
+value()
 endsnippet
 
 # -----------------------------------------------------
 # Collections
+# Do not add methods that already exist on native arrays
+# Use coffee.snippets for that
 # -----------------------------------------------------
-
-snippet map "map(action)" w
-map((${1:arg}) -> ${2:action}) 
-endsnippet
-
-snippet filter "filter(predicate)" w
-filter((${1:arg}) -> ${2:predicate}) 
-endsnippet
-
-snippet partition "partition(predicate)" w
-partition((${1:arg}) -> ${2:predicate}) 
+snippet partition" "partition(predicate)" w
+partition((${1:arg}) -> ${2:predicate})
 endsnippet
 
 snippet find "find(predicate)" w
-find((${1:arg}) -> ${2:predicate}) 
+find((${1:arg}) -> ${2:predicate})
 endsnippet
 
 snippet includes "includes(predicate)" w
-includes((${1:arg}) -> ${2:predicate}) 
+includes((${1:arg}) -> ${2:predicate})
 endsnippet
-
-snippet reduce "reduce(calc)" w
-reduce((${1:arg1}, ${2:arg2}) -> ${3:body}) 
-endsnippet
-
 # -----------------------------------------------------
 # Strings
 # -----------------------------------------------------
 snippet _.capitalize "_.capitalize(str)"
-_.capitalize.(${1:str}) 
+_.capitalize.(${1:str})
 endsnippet
 
 snippet _.endswith "_.endsWith(str, str)"
-_.endsWith(${1:str}, ${2:str}) 
+_.endsWith(${1:str}, ${2:str})
 endsnippet
 
 snippet _.startswith "_.startsWith(str, str)"
-_.startsWith(${1:str}, ${2:str}) 
+_.startsWith(${1:str}, ${2:str})
 endsnippet
