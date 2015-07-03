@@ -2,15 +2,15 @@
 # Objects
 # -----------------------------------------------------
 
-snippet values "_.values(obj)"
+snippet values "_.values(obj) | Lodash"
 _.values(${1:arg})
 endsnippet
 
-snippet clone "_.clone(obj) (shallow)"
+snippet clone "_.clone(obj) (shallow) | Lodash"
 _.clone(${1:arg})
 endsnippet
 
-snippet clonedeep "_.cloneDeep(obj) (deep)"
+snippet clonedeep "_.cloneDeep(obj) (deep) | Lodash"
 _.cloneDeep(${1:arg})
 endsnippet
 
@@ -19,7 +19,7 @@ endsnippet
 # Chainable
 # -----------------------------------------------------
 
-snippet value "_.value() (chain value)" w
+snippet value "value() | Lodash" w
 value()
 endsnippet
 
@@ -28,28 +28,28 @@ endsnippet
 # Do not add methods that already exist on native arrays
 # Use coffee.snippets for that
 # -----------------------------------------------------
-snippet partition" "partition(predicate)" w
+snippet partition "partition(cb) | Lodash" w
 partition((${1:arg}) -> ${2:predicate})
 endsnippet
 
-snippet find "find(predicate)" w
+snippet find "find(cb)" w
 find((${1:arg}) -> ${2:predicate})
 endsnippet
 
-snippet includes "includes(predicate)" w
+snippet includes "includes(cb)" w
 includes((${1:arg}) -> ${2:predicate})
 endsnippet
 # -----------------------------------------------------
 # Strings
 # -----------------------------------------------------
-snippet _.capitalize "_.capitalize(str)"
+snippet _.capitalize "_.capitalize(str) | Lodash"
 _.capitalize.(${1:str})
 endsnippet
 
-snippet _.endswith "_.endsWith(str, str)"
+snippet _.endswith "_.endsWith(str, str) | Lodash"
 _.endsWith(${1:str}, ${2:str})
 endsnippet
 
-snippet _.startswith "_.startsWith(str, str)"
+snippet _.startswith "_.startsWith(str, str) | Lodash"
 _.startsWith(${1:str}, ${2:str})
 endsnippet

@@ -1,8 +1,8 @@
-snippet attr "attr" w
+snippet attr "attr()" w
 attr("${1}", "${2}")
 endsnippet
 
-snippet style "style" w
+snippet style "style()" w
 style("${1}", "${2}")
 endsnippet
 
@@ -14,10 +14,18 @@ snippet select() "select()" w
 select("${1:class}")
 endsnippet
 
-snippet enter "enter.append('elem')" w
-enter().append(${1:elem})
+snippet enter "enter.append('el')" w
+enter().append(${1:el})
 endsnippet
 
-snippet append "('elem')" w
-append(${1:elem})
+snippet append "append('el')" w
+append("${1:el}")
+
+snippet marginconvention "d3 margin convention"
+(${1}).append("svg")
+  .attr("width", "${2}" + px)
+  .attr("height", "${3}" + px)
+  .append("g")
+  .attr("width", $2 - ${4})
+  .attr("height", $3 - ${5})
 endsnippet
