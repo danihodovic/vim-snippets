@@ -9,14 +9,17 @@ snippet values "values(obj) | Lodash" w
 values(${1:arg})
 endsnippet
 
-snippet clone "clone(obj) (shallow) | Lodash" w
+snippet clone "clone(obj), shallow | Lodash" w
 clone(${1:arg})
 endsnippet
 
-snippet cloneDeep "cloneDeep(obj) (deep) | Lodash" w
+snippet cloneDeep "cloneDeep(obj), deep | Lodash" w
 cloneDeep(${1:arg})
 endsnippet
 
+snippet isEqual "isEqual(obj1, obj2), deep compare | Lodash" w
+isEqual(${1:arg}, ${2:arg})
+endsnippet
 
 # -----------------------------------------------------
 # Chainable
@@ -30,6 +33,7 @@ endsnippet
 # Collections
 # Do not add methods that already exist on native arrays
 # Use coffee.snippets for that
+# Usually these methods prefix with a `_.` but can be chained using _(arg)
 # -----------------------------------------------------
 snippet partition "partition(cb) | Lodash" w
 partition((${1:arg}) -> ${2:predicate})
@@ -39,8 +43,35 @@ snippet find "find(cb)" w
 find((${1:arg}) -> ${2:predicate})
 endsnippet
 
-snippet includes "includes(cb)" w
-includes((${1:arg}) -> ${2:predicate})
+snippet includes "includes(elem/prop/str) find a prop given a obj/arr/str | Lodash" w
+includes(${1:obj}, ${2:prop})
+endsnippet
+
+# -----------------------------------------------------
+# Types
+# -----------------------------------------------------
+snippet isPlainObject "isPlainObject(arg), plain object no prototype | Lodash" w
+isPlainObject(${1:arg})
+endsnippet
+
+snippet isArray "isArray(arg) | Lodash" w
+isArray(${1:arg})
+endsnippet
+
+snippet isFunction "isFunction(arg) | Lodash" w
+isFunction(${1:arg})
+endsnippet
+
+snippet isString "isString(arg) | Lodash" w
+isString(${1:arg})
+endsnippet
+
+snippet isNumber "isNumber(arg) | Lodash" w
+isNumber(${1:arg})
+endsnippet
+
+snippet isDate "isDate(arg) | Lodash" w
+isDate(${1:arg})
 endsnippet
 # -----------------------------------------------------
 # Strings

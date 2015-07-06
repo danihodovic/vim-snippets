@@ -41,7 +41,7 @@ reduce((${1:arg1}, ${2:arg2}) -> ${3:body})
 endsnippet
 
 # -----------------------------------------------------
-# Control flow 
+# Control flow
 # -----------------------------------------------------
 
 snippet switch "switch"
@@ -55,8 +55,12 @@ switch ${1:object}
 endsnippet
 
 # -----------------------------------------------------
-# Other 
+# Other
 # -----------------------------------------------------
-snippet log "console.log"
+snippet log "console.log('arg', arg)"
 console.log("${1}", $1)
+endsnippet
+
+snippet logmsg "console.log(arg)"
+console.log("${1}")
 endsnippet
