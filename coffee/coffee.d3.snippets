@@ -6,16 +6,24 @@ snippet style "style()" w
 style("${1}", "${2}")
 endsnippet
 
-snippet selectAll() "selectAll()" w
+snippet data "data(arg)" w
+data(${1})
+endsnippet
+
+snippet datum "data(arg)" w
+datum(${1})
+endsnippet
+
+snippet selectAll() "selectAll('selector')" w
 selectAll("${1:class}")
 endsnippet
 
-snippet select() "select()" w
+snippet select() "select('selector')" w
 select("${1:class}")
 endsnippet
 
 snippet enter "enter.append('el')" w
-enter().append(${1:el})
+enter().append("${1:el}")
 endsnippet
 
 snippet append "append('el')" w
