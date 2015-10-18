@@ -1,19 +1,35 @@
-snippet fn "anonymous function"
+snippet let "let name = val"
+let ${1:name} = ${2:_}
+endsnippet
+
+snippet var "var name = val"
+var ${1:name} = ${2:_}
+endsnippet
+
+snippet null "null"
+null
+endsnippet
+
+snippet undefined "undefined"
+undefined
+endsnippet
+
+snippet afn "anonymous function"
 function(${1:}) {
   ${2:}
 }
 endsnippet
 
-snippet fun "named function"
+snippet function "named function"
 function ${1:name}(${2:}) {
   ${3:}
 }
 endsnippet
 
 snippet log "console.log(str, str)"
-console.log("${1:args}", $1)
+console.log("${1}", $1)
 endsnippet
 
-snippet logmsg "console.log(str)"
-console.log("${1:msg}")
+snippet console.log "console.log(str)"
+console.log(${1})
 endsnippet
