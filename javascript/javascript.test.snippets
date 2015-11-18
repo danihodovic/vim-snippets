@@ -1,0 +1,27 @@
+snippet describe(msg,function(){}) "describe(msg, function() {})"
+describe('${1}', function (${2}) {
+  ${3}
+})
+endsnippet
+
+snippet it(msg,function(){}) "it(msg, function() {})"
+it('${1}', function (${2}) {
+  ${3}
+})
+endsnippet
+
+snippet assert() "assert()"
+assert(${1})
+endsnippet
+
+snippet before() "before()"
+before(function (${1:}) {
+  ${2:}
+})
+endsnippet
+
+snippet beforeEach() "beforeEach()"
+beforeEach(function (${1:}) {
+  ${2:}
+})
+endsnippet
