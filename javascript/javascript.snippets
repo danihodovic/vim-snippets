@@ -1,9 +1,9 @@
 snippet let "let name = val"
-let ${1:_} = ${2:_}
+let ${1:_} = ${2:_};
 endsnippet
 
 snippet var "var name = val"
-var ${1:_} = ${2:_}
+var ${1:_} = ${2:_};
 endsnippet
 
 snippet null "null"
@@ -27,15 +27,19 @@ function ${1:}(${2:}) {
 endsnippet
 
 snippet console.log('var',var) "console.log(str, str)"
-console.log('${1}', $1)
+console.log('${1}', $1);
 endsnippet
 
 snippet console.log(var) "console.log(str)"
-console.log(${1})
+console.log(${1});
 endsnippet
 
 snippet console.trace(err) "console.trace(err)"
-console.trace(${1})
+console.trace(${1});
+endsnippet
+
+snippet console.log('--------') "console.log(----------)"
+console.log('----------');
 endsnippet
 
 snippet JSON.stringify() "Pretty JSON stringify"
@@ -43,5 +47,5 @@ JSON.stringify(${1}, null, 2)
 endsnippet
 
 snippet console.log('msg',JSON.stringify()) "console.log pretty JSON"
-console.log('${1}', JSON.stringify($1, null, 2))
+console.log('${1}', JSON.stringify($1, null, 2));
 endsnippet
