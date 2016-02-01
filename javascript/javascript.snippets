@@ -49,3 +49,7 @@ endsnippet
 snippet console.log('msg',JSON.stringify()) "console.log pretty JSON"
 console.log('${1}', JSON.stringify($1, null, 2));
 endsnippet
+
+snippet JSON.parse(JSON.stringify()) "Deep clone JSON object"
+JSON.parse(JSON.stringify(${1}))
+endsnippet
