@@ -6,12 +6,14 @@ snippet var "var name = val"
 var ${1:_} = ${2:_};
 endsnippet
 
-snippet null "null"
-null
+snippet const "const c = val"
+const ${1:} = ${2:};
 endsnippet
 
-snippet undefined "undefined"
-undefined
+snippet if "if () {}"
+if (${1:}) {
+  ${2:}
+}
 endsnippet
 
 snippet afn "anonymous function"
