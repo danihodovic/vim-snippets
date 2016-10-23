@@ -1,0 +1,68 @@
+snippet aws_vpc "aws_vpc"
+resource "aws_vpc" "${1:}" {
+  cidr_block = "${2:10.0.0.0/16}"
+  enable_dns_hostnames = "${3:true}"
+}
+endsnippet
+
+snippet aws_internet_gateway "aws_internet_gateway"
+resource "aws_internet_gateway" "${1:}" {
+  vpc_id = "${aws_vpc.${2:name}.id}"
+}
+endsnippet
+
+snippet aws_route "aws_route"
+resource "aws_route" "${1:}" {
+  route_table_id         = "${aws_vpc.${2:name}.main_route_table_id}"
+  destination_cidr_block = "${3:0.0.0.0/0}"
+  gateway_id             = "${aws_internet_gateway.${4:name}.id}}"
+}
+endsnippet
+
+snippet aws_subnet "aws_subnet"
+resource "aws_subnet" "${1:}" {
+  vpc_id                  = "${aws_vpc.${2:name}.id}"
+  cidr_block              = "${3:10.0.1.0/24}"
+  map_public_ip_on_launch = ${4:true}
+}
+endsnippet
+
+snippet aws_security_group "aws_security_group"
+resource "aws_security_group" "${1:}" {
+  name        = "${2:name}"
+  vpc_id      = "${aws_vpc.${2:name}.id}"
+  description = "Used in the terraform"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+endsnippet
+
+snippet aws_instance "aws_instance"
+resource "aws_instance" "${1:}" {
+  ami                    = "${2:${lookup(var.aws_amis, var.aws_region)}}"
+  instance_type          = "${3:t2.micro}"
+  vpc_security_group_ids = ["${aws_security_group.${4:name}.id}"]
+  subnet_id              = "${aws_subnet.${5:name}.id}"
+  key_name               = "${aws_key_pair.${6:name}.id}"
+
+  connection {
+    user = "ubuntu"
+  }
+
+  provisioner "remote-exec" {
+    script = "./provision.sh"
+  }
+}
+endsnippet
