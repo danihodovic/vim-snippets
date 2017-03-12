@@ -53,7 +53,7 @@ console.log('${1}', JSON.stringify($1, null, 2));
 endsnippet
 
 snippet console.dir('msg',msg)
-console.dir('${1}', $1, {showHidden: true, depth: null});
+console.dir($1, {showHidden: true, colors: true});
 endsnippet
 
 snippet JSON.parse(JSON.stringify()) "Deep clone JSON object"
