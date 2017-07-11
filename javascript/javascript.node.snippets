@@ -1,3 +1,9 @@
 snippet require "require('')"
 require('${1}');
 endsnippet
+
+snippet main "if (require.main === module)"
+if (require.main === module) {
+  ${1}
+}
+endsnippet
