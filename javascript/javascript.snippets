@@ -2,6 +2,17 @@ snippet const "const c = val"
 const ${1:} = ${2:};
 endsnippet
 
+snippet switch "switch (expression) {}"
+switch(${1:expression}) {
+  case ${2:value}:
+    // code block
+    break;
+  case ${3:value}:
+    // code block
+    break;
+}
+endsnippet
+
 snippet if "if () {}"
 if (${1:}) {
   ${2:}
