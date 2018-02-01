@@ -7,3 +7,10 @@ endsnippet
 snippet println "log.Println()"
 log.Println("${1:}", $1)
 endsnippet
+
+snippet panic "if err != nil { panic }"
+if err != nil {
+    panic(err)
+}
+
+endsnippet
