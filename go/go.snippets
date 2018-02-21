@@ -14,3 +14,17 @@ if err != nil {
 }
 
 endsnippet
+
+snippet funcCheckErr "func checkErr(err) {}"
+func checkErr(err error) {
+    if err != nil {
+        panic(err)
+    }
+}
+
+endsnippet
+
+snippet checkErr "checkErr(err)"
+checkErr(err)
+
+endsnippet
