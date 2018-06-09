@@ -1,0 +1,79 @@
+snippet file "file:"
+- name: Create
+  file:
+    path: /some/path
+    state: file|directory|absent
+    mode: 0400
+endsnippet
+
+snippet copy "copy:"
+- name: Copy
+  copy:
+    src: /path/to/src
+    dest: /path/to/dest
+    mode: 0400
+endsnippet
+
+snippet template "template:"
+- name: Create
+  template:
+    src: /path/to/src
+    dest: /path/to/dest
+    mode: 0400
+endsnippet
+
+snippet shell "shell:"
+- name: Do something
+  shell: somescript.sh >> somelog.txt
+  args:
+    chdir: /opt/foo
+    creates: /usr/bin/bar
+endsnippet
+
+snippet uri "uri:"
+- name: Health check
+  uri:
+    url: http://localhost:3000
+    status_code: 200
+    body_format: json
+    body:
+      var1: value1
+  register: health_check
+  retries: 10
+  delay: 1
+  until: health_check.status == 200
+endsnippet
+
+snippet docker_image "docker_image:"
+- name: Pull image
+  docker_image:
+    name: some_repo/some_image:latest
+    force: true
+endsnippet
+
+snippet lineinfile "lineinefile:"
+- name: Replace something
+  lineinfile:
+    path: /some/path
+    regexp: 'some regexp'
+    line: 'some replacement'
+endsnippet
+
+snippet get_url "get_url:"
+- name: Download something
+  get_url:
+    url: http://example.com/package.tar
+    dest: /tmp
+endsnippet
+
+snippet apt "apt:"
+- name: Install some apt
+  apt:
+    name: package
+endsnippet
+
+snippet pip "pip:"
+- name: Install some pip
+  pip:
+    name: package
+endsnippet
