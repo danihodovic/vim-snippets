@@ -1,0 +1,16 @@
+snippet eslintconfig "eslintconfig file"
+module.exports = {
+  extends: ['eslint:recommended', 'airbnb-base'],
+  parserOptions: {
+    ecmaVersion: 2017,
+  },
+  rules: {
+    'no-console': 'off',
+    'semi': ['error', 'always'],
+  }
+};
+endsnippet
+
+snippet eslintdisable "eslint-disable-next-line"
+// eslint-disable-next-line no-use-before-define
+endsnippet
