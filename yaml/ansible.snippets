@@ -47,6 +47,26 @@ docker_image:
   force: true
 endsnippet
 
+snippet docker_container "docker_container:"
+docker_container:
+  name: nginx
+  image: nginx
+  state: started
+  restart: '{{ nginx_conf.changed }}'
+  detach: false
+  cleanup: true
+  working_dir: /app
+  networks:
+    - name: '{{ docker_network_name }}'
+  env:
+    NODE_ENV: production
+  ports:
+    - '81:9875'
+  volumes:
+    - '{{ selfservice_directory }}/nginx.conf:/etc/nginx/nginx.conf'
+    - '{{ selfservice_directory }}/selfservice/frontend/dist:/data'
+endsnippet
+
 snippet lineinfile "lineinefile:"
 lineinfile:
   path: /some/path
@@ -76,4 +96,10 @@ git:
   dest: /opt/foosball
   depth: 1
   force: no
+endsnippet
+
+snippet unarchive "unarchive:"
+unarchive:
+  src: foo.tgz
+  dest: /var/lib/foo
 endsnippet
