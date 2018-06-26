@@ -3,6 +3,9 @@ file:
   path: /some/path
   state: file|directory|absent
   mode: 0400
+  recurse: true
+  owner: grafana
+  group: grafana
 endsnippet
 
 snippet copy "copy:"
@@ -35,10 +38,10 @@ uri:
   body:
     var1: value1
   timeout: 5
-register: health_check
+register: health_check_grafana
 retries: 10
 delay: 1
-until: health_check.status == 200
+until: health_check_grafana.status == 200
 endsnippet
 
 snippet docker_image "docker_image:"
@@ -49,10 +52,9 @@ endsnippet
 
 snippet docker_container "docker_container:"
 docker_container:
-  name: nginx
   image: nginx
+  name: nginx
   state: started
-  restart: '{{ nginx_conf.changed }}'
   detach: false
   cleanup: true
   working_dir: /app
@@ -65,6 +67,11 @@ docker_container:
   volumes:
     - '{{ selfservice_directory }}/nginx.conf:/etc/nginx/nginx.conf'
     - '{{ selfservice_directory }}/selfservice/frontend/dist:/data'
+endsnippet
+
+snippet docker_network "docker_network:"
+docker_network:
+  name: network_name
 endsnippet
 
 snippet lineinfile "lineinefile:"
