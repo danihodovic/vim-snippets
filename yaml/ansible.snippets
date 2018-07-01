@@ -139,6 +139,14 @@ snippet health_check_container "shell: curl"
   until: 'parity_health_check.stdout | from_json | json_query("result") == true'
 endsnippet
 
+snippet systemd "systemd:"
+systemd:
+  name: crond
+  state: started|stopped|restarted|reloaded
+  enabled: true
+  daemon_reload: yes
+endsnippet
+
 snippet ansible_ip "ansible_default_ipv4.address"
 '{{ ansible_default_ipv4.address }}'
 endsnippet
