@@ -85,6 +85,9 @@ snippet get_url "get_url:"
 get_url:
   url: http://example.com/package.tar
   dest: /tmp
+  owner: '{{ ansible_user_id }}'
+  group: '{{ ansible_user_id }}'
+  mode: 0400
 endsnippet
 
 snippet apt "apt:"
@@ -106,6 +109,7 @@ git:
   dest: /opt/foosball
   depth: 1
   force: no
+  version: HEAD
 endsnippet
 
 snippet unarchive "unarchive:"
