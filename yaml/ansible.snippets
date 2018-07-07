@@ -2,24 +2,28 @@ snippet file "file:"
 file:
   path: /some/path
   state: file|directory|absent
-  mode: 0400
+  mode: 0770
   recurse: true
-  owner: grafana
-  group: grafana
+  owner: root
+  group: developers
 endsnippet
 
 snippet copy "copy:"
 copy:
   src: /path/to/src
   dest: /path/to/dest
-  mode: 0400
+  mode: 0660
+  owner: root
+  group: developers
 endsnippet
 
 snippet template "template:"
 template:
   src: /path/to/src
   dest: /path/to/dest
-  mode: 0400
+  mode: 0660
+  owner: me
+  group: developers
 endsnippet
 
 snippet shell "shell:"
@@ -85,9 +89,9 @@ snippet get_url "get_url:"
 get_url:
   url: http://example.com/package.tar
   dest: /tmp
-  owner: '{{ ansible_user_id }}'
-  group: '{{ ansible_user_id }}'
-  mode: 0400
+  owner: root
+  group: developers
+  mode: 0440
 endsnippet
 
 snippet apt "apt:"
