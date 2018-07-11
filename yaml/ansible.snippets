@@ -82,6 +82,13 @@ docker_container:
     - '{{ selfservice_directory }}/selfservice/frontend/dist:/data'
 endsnippet
 
+snippet docker_service "docker_service:"
+- name: Start container
+  notify: health_check_grafana
+  docker_service:
+    project_src: '{{ grafana_dir }}'
+endsnippet
+
 snippet docker_network "docker_network:"
 docker_network:
   name: network_name
