@@ -1,11 +1,18 @@
 snippet file "file:"
 file:
-  path: /some/path
   state: file|directory|absent
+  path: /some/path
   mode: 0770
   recurse: true
   owner: root
   group: developers
+endsnippet
+
+snippet "link" "file:"
+file:
+  state: link
+  src: /actual/path
+  dest: /link/path
 endsnippet
 
 snippet copy "copy:"
@@ -128,7 +135,7 @@ git:
   repo: 'https://foosball.example.org/path/to/repo.git'
   dest: /opt/foosball
   depth: 1
-  force: no
+  force: false
   version: HEAD
 endsnippet
 
