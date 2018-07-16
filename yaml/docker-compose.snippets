@@ -1,0 +1,23 @@
+snippet docker-compose2.4 "docker-compose file 2.4"
+---
+version: '2.4'
+services:
+  ambnode:
+    image: 'nginx'
+    container_name: 'nginx'
+    ports:
+      - '80:80'
+    environment:
+      ENV: production
+    networks:
+      - somenetwork
+    restart: on-failure
+    healthcheck:
+      test: 'curl -f -s -i http://localhost/health || exit 1'
+      timeout: 3s
+      start_period: 5s
+
+networks:
+  somenetwork:
+    external: true
+endsnippet
