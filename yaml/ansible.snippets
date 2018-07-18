@@ -73,7 +73,7 @@ snippet docker_container "docker_container:"
 docker_container:
   image: nginx
   name: nginx
-  state: started
+  state: started|stopped|present|absent
   restart_policy: on-failure
   detach: false
   cleanup: true
@@ -172,6 +172,35 @@ systemd:
   state: started|stopped|restarted|reloaded
   enabled: true
   daemon_reload: yes
+endsnippet
+
+snippet import_role "import_role:"
+import_role:
+  name: myrole
+  tasks_from: tasks.yml
+  vars_from: vars.yml
+  defaults_from: defaults.yml
+endsnippet
+
+snippet hostvars[inventory_hostname] "current host vars"
+{{ hostvars[inventory_hostname].my_var }}
+endsnippet
+
+snippet for_host_in_group "loop over hostvars in group"
+{% for host in hostvars.groups.mongo -%}
+  {
+    _id: {{ loop.index }},
+    host: '{{ hostvars[host].aws_private_ip }}',
+
+    {% if hostvars[host].is_primary %}
+    priority: 2,
+    {% endif %}
+  },
+{% endfor %}
+endsnippet
+
+snippet hostname "inventory_hostname"
+inventory_hostname
 endsnippet
 
 snippet ansible_ip "ansible_default_ipv4.address"
