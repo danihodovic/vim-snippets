@@ -19,6 +19,7 @@ snippet copy "copy:"
 copy:
   src: /path/to/src
   dest: /path/to/dest
+  remote_src: false
   mode: 0660
   owner: root
   group: developers
@@ -180,6 +181,9 @@ import_role:
   tasks_from: tasks.yml
   vars_from: vars.yml
   defaults_from: defaults.yml
+vars:
+  my_var: my_value
+tags: my_tag
 endsnippet
 
 snippet hostvars[inventory_hostname] "current host vars"
@@ -213,4 +217,20 @@ endsnippet
 
 snippet ansible_home "ansible_env.HOME"
 '{{ ansible_env.HOME }}'
+endsnippet
+
+snippet lookup_file "lookup('file', 'myfile.txt')"
+lookup('file', 'path/to/file.txt')
+endsnippet
+
+snippet lookup_pipe "lookup('pipe', 'date')"
+lookup('pipe','date')
+endsnippet
+
+snippet default "default('default_value')"
+"{{ my_variable | default('default_value') }}"
+endsnippet
+
+snippet dirname "{{ inventory_dir | dirname }}"
+{{ inventory_dir | dirname }}
 endsnippet
