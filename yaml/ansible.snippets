@@ -228,9 +228,14 @@ lookup('pipe','date')
 endsnippet
 
 snippet default "default('default_value')"
-"{{ my_variable | default('default_value') }}"
+'{{ my_variable | default("default_value") }}'
 endsnippet
 
 snippet dirname "{{ inventory_dir | dirname }}"
 {{ inventory_dir | dirname }}
+endsnippet
+
+snippet ipify_facts "ipify public IP"
+ipify_facts:
+{{ ipify_public_ip }}
 endsnippet
