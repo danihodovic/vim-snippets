@@ -17,7 +17,7 @@ endsnippet
 
 snippet copy "copy:"
 copy:
-  src: /path/to/src
+  src|content: /path/to/src
   dest: /path/to/dest
   remote_src: false
   mode: 0660
@@ -91,10 +91,9 @@ docker_container:
 endsnippet
 
 snippet docker_service "docker_service:"
-- name: Start container
-  notify: health_check_grafana
-  docker_service:
-    project_src: '{{ grafana_dir }}'
+notify: health_check_grafana
+docker_service:
+  project_src: '{{ grafana_dir }}'
 endsnippet
 
 snippet docker_network "docker_network:"
@@ -116,6 +115,7 @@ get_url:
   owner: root
   group: developers
   mode: 0440
+  force: true
 endsnippet
 
 snippet apt "apt:"
@@ -209,6 +209,10 @@ endsnippet
 
 snippet ansible_ip "ansible_default_ipv4.address"
 '{{ ansible_default_ipv4.address }}'
+endsnippet
+
+snippet play_hosts "play_hosts"
+play_hosts
 endsnippet
 
 snippet ansible_user "ansible_user_id"
