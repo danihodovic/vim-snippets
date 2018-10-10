@@ -1,6 +1,6 @@
 snippet file "file:"
 file:
-  state: file|directory|absent
+  state: directory|absent|file
   path: /some/path
   mode: 0770
   recurse: true
@@ -75,7 +75,7 @@ docker_container:
   image: nginx
   name: nginx
   state: started|stopped|present|absent
-  restart_policy: on-failure
+  restart_policy: unless-stopped
   detach: false
   cleanup: true
   working_dir: /app
@@ -114,7 +114,7 @@ get_url:
   dest: /tmp
   owner: root
   group: developers
-  mode: 0440
+  mode: 0660
   force: true
 endsnippet
 
@@ -187,7 +187,7 @@ tags: my_tag
 endsnippet
 
 snippet hostvars[inventory_hostname] "current host vars"
-{{ hostvars[inventory_hostname].my_var }}
+hostvars[inventory_hostname].my_var
 endsnippet
 
 snippet for_host_in_group "loop over hostvars in group"
@@ -220,7 +220,7 @@ snippet ansible_user "ansible_user_id"
 endsnippet
 
 snippet ansible_home "ansible_env.HOME"
-'{{ ansible_env.HOME }}'
+ansible_env.HOME
 endsnippet
 
 snippet lookup_file "lookup('file', 'myfile.txt')"
@@ -232,14 +232,37 @@ lookup('pipe','date')
 endsnippet
 
 snippet default "default('default_value')"
-'{{ my_variable | default("default_value") }}'
+my_variable | default("default_value")
 endsnippet
 
 snippet dirname "{{ inventory_dir | dirname }}"
-{{ inventory_dir | dirname }}
+inventory_dir | dirname
 endsnippet
 
 snippet ipify_facts "ipify public IP"
 ipify_facts:
-{{ ipify_public_ip }}
+
+'{{ ipify_public_ip }}'
+endsnippet
+
+snippet ansible_processor_vcpus "ansible_processor_vcpus"
+ansible_processor_vcpus
+endsnippet
+
+snippet playbook "playbook skeleton"
+---
+- name: Playbook
+  hosts: all
+  gather_facts: false
+  vars:
+    ansible_become: true
+
+  pre_tasks:
+    - raw: test -e /usr/bin/python || (apt -y update && apt install -y python)
+    - setup:
+
+  tasks:
+    - include_role:
+        name: users
+      tags: users
 endsnippet

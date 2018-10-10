@@ -11,7 +11,7 @@ services:
       ENV: production
     networks:
       - somenetwork
-    restart: on-failure
+    restart: unless-stopped
     healthcheck:
       test: 'curl -f -s -i http://localhost/health || exit 1'
       timeout: 3s
