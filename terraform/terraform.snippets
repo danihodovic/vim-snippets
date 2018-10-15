@@ -1,0 +1,7 @@
+snippet lifecycle "lifecycle {}"
+lifecycle = {
+  create_before_destroy = true
+  prevent_destroy = true
+  ignore_changes = ["ami", "private_ip", "root_block_device", "ebs_block_device"]
+}
+endsnippet
