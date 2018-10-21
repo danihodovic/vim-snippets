@@ -52,10 +52,10 @@ endsnippet
 snippet aws_instance "aws_instance"
 resource "aws_instance" "${1:}" {
   subnet_id              = "${var.subnet_id}"
-  ami                    = "${2:${var.subnet_id}}"
-  instance_type          = "${3:t2.micro}"
+  ami                    = "${data.aws_ami.common.id}"
+  instance_type          = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.${4:name}.id}"]
-  key_name               = "${aws_key_pair.${6:name}.id}"
+  key_name               = "${aws_key_pair.root_key.key_name}"
 }
 endsnippet
 
@@ -63,5 +63,31 @@ snippet aws_eip "aws_eip"
 resource "aws_eip" "web" {
   instance = "${aws_instance.web.id}"
   vpc      = true
+}
+endsnippet
+
+snippet "aws_route53_record" "aws_route53_record"
+resource "aws_route53_record" "www" {
+  zone_id = "${aws_route53_zone.primary.zone_id}"
+  name    = "example.com"
+  ttl     = "5"
+
+  # Chose one of the records below
+
+  # Normal A record
+  type    = "A"
+  records = ["${aws_eip.instance.public_ip}"]
+
+  # CNAME records
+  type    = "CNAME"
+  records = ["live.example.com"]
+
+  # Alias record
+  type    = "A"
+  alias {
+    name                   = "${aws_elb.main.dns_name}"
+    zone_id                = "${aws_elb.main.zone_id}"
+    evaluate_target_health = true
+  }
 }
 endsnippet

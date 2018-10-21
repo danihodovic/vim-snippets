@@ -5,3 +5,9 @@ lifecycle = {
   ignore_changes = ["ami", "private_ip", "root_block_device", "ebs_block_device"]
 }
 endsnippet
+
+snippet output "output {}"
+output "name_servers" {
+  value = "${aws_route53_zone.main.name_servers}"
+}
+endsnippet
