@@ -96,6 +96,49 @@ docker_service:
   project_src: '{{ grafana_dir }}'
 endsnippet
 
+snippet docker_service_inline "docker_service:"
+notify: health_check_grafana
+docker_service:
+  project_name: my_services
+  definition:
+    version: '2'
+
+    services:
+      postgresdata:
+        image: postgres:9.5
+        command: /bin/true
+
+      postgres:
+        image: postgres:9.5
+        restart: unless-stopped
+        env_file:
+          - ../postgres.env
+        volumes_from:
+          - postgresdata
+
+      web:
+        image: huginn/huginn-single-process
+        restart: always
+        ports:
+          - "3000:3000"
+        env_file:
+          - ../postgres.env
+          - ../secrets.env
+        depends_on:
+          - postgres
+
+      threaded:
+        image: huginn/huginn-single-process
+        command: /scripts/init bin/threaded.rb
+        restart: always
+        env_file:
+          - ../postgres.env
+          - ../secrets.env
+        depends_on:
+          - postgres
+          - web
+endsnippet
+
 snippet docker_network "docker_network:"
 docker_network:
   name: network_name
@@ -265,4 +308,28 @@ snippet playbook "playbook skeleton"
     - include_role:
         name: users
       tags: users
+endsnippet
+
+snippet user "user:"
+user:
+  name: johnd
+  uid: 1040
+  groups: admin
+  append: false
+endsnippet
+
+snippet inventory "inventory example"
+all:
+  hosts:
+    mail.example.com:
+  children:
+    webservers:
+      hosts:
+        foo.example.com:
+        bar.example.com:
+    dbservers:
+      hosts:
+        one.example.com:
+        two.example.com:
+        three.example.com:
 endsnippet
