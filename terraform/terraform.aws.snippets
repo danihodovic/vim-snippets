@@ -66,7 +66,18 @@ resource "aws_eip" "web" {
 }
 endsnippet
 
-snippet "aws_route53_record" "aws_route53_record"
+snippet aws_route53_zone "aws_route53_zone"
+resource "aws_route53_zone" "main" {
+  name = "example.com"
+  vpc_id = "${var.vpc_id}"
+
+  tags {
+    environment = "${var.environment}"
+  }
+}
+endsnippet
+
+snippet aws_route53_record "aws_route53_record"
 resource "aws_route53_record" "www" {
   zone_id = "${aws_route53_zone.primary.zone_id}"
   name    = "example.com"
@@ -84,10 +95,20 @@ resource "aws_route53_record" "www" {
 
   # Alias record
   type    = "A"
+
   alias {
     name                   = "${aws_elb.main.dns_name}"
     zone_id                = "${aws_elb.main.zone_id}"
     evaluate_target_health = true
   }
+}
+endsnippet
+
+snippet aws_volume_attachment "aws_volume_attachment"
+resource "aws_volume_attachment" "ebs_att" {
+  device_name  = "/dev/sdf"
+  volume_id    = "${aws_ebs_volume.example.id}"
+  instance_id  = "${aws_instance.web.id}"
+  force_detach = true
 }
 endsnippet
