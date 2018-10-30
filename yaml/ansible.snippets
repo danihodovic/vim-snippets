@@ -47,6 +47,7 @@ shell: somescript.sh >> somelog.txt
 args:
   chdir: /opt/foo
   creates: /usr/bin/bar
+  stdin: password
 endsnippet
 
 snippet uri "uri:"
@@ -332,4 +333,12 @@ all:
         one.example.com:
         two.example.com:
         three.example.com:
+endsnippet
+
+snippet vars_prompt "inventory example"
+vars_prompt:
+  - name: some_var
+    prompt: Some var?
+    private: no
+    default: 1.0
 endsnippet
