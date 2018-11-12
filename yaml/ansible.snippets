@@ -339,6 +339,10 @@ snippet vars_prompt "inventory example"
 vars_prompt:
   - name: some_var
     prompt: Some var?
-    private: no
+    private: false
     default: 1.0
+endsnippet
+
+snippet regex_search "regex_search(regexp, "\1")"
+'{{ some_output.stdout | regex_search(regexp, "\1") | first }}'
 endsnippet
