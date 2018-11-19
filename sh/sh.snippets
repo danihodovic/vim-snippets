@@ -17,3 +17,7 @@ case ${1} in
     ;;
 esac
 endsnippet
+
+snippet dir "get the script current directory"
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+endsnippet
