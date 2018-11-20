@@ -343,6 +343,6 @@ vars_prompt:
     default: 1.0
 endsnippet
 
-snippet regex_search "regex_search(regexp, "\1")"
+snippet regex_search "regex_search(regexp, '\1')"
 '{{ some_output.stdout | regex_search(regexp, "\1") | first }}'
 endsnippet
