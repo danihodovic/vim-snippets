@@ -1,0 +1,15 @@
+snippet cloudflare_zone "cloudflare_zone"
+resource "cloudflare_zone" "example" {
+  zone = "example.com"
+}
+endsnippet
+
+snippet cloudflare_record "cloudflare_record"
+resource "cloudflare_record" "foobar" {
+  domain = "${var.cloudflare_zone}"
+  name   = "example.com"
+  value  = "192.168.0.11"
+  type   = "A"
+  ttl    = 3600
+}
+endsnippet
