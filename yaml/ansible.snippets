@@ -346,3 +346,18 @@ endsnippet
 snippet regex_search "regex_search(regexp, '\1')"
 '{{ some_output.stdout | regex_search(regexp, "\1") | first }}'
 endsnippet
+
+snippet filesystem "filesystem:"
+filesystem:
+  fstype: ext4
+  dev: '{{ device }}'
+  resizefs: true # works for ext2, ext3, ext4, ext4dev, lvm, xfs, vfat
+endsnippet
+
+snippet mount "mount:"
+mount:
+  path: /mnt/storage
+  src: '{{ device }}'
+  fstype: ext4
+  state: mounted|unmounted
+endsnippet
