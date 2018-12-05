@@ -1,14 +1,31 @@
 snippet tslint "Tslint base config"
 ---
-defaultSeverity: error
 extends:
   - tslint:recommended
   - tslint-microsoft-contrib
 rules:
-  no-console: false
+  typedef:
+    - true
+    - arrow-parameter
+    - call-signature
+    - member-variable-declaration
+    - parameter
+    - property-declaration
+  chai-vague-errors: false
+  insecure-random: false
   missing-jsdoc: false
-  possible-timing-attack: false
+  newline-before-return: false
+  newline-per-chained-call: false
+  no-any: false
+  no-console: false
   no-constant-condition: false
   no-increment-decrement: false
-  await-promise: [true, Bluebird]
+  no-null-keyword: false
+  no-relative-imports: false
+  no-reserved-keywords: false
+  no-suspicious-comment: false
+  no-unsafe-any: false
+  ordered-imports: false
+  possible-timing-attack: false
+  strict-boolean-expressions: false
 endsnippet

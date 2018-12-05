@@ -1,13 +1,16 @@
 snippet tsconfig "Typescript base config"
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "es2015",
+    "moduleResolution": "node",
     "noEmit": true,
     "alwaysStrict": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": [
+    "node_modules/**/*"
+  ]
 }
 endsnippet
 
