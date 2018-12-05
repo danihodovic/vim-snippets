@@ -1,3 +1,11 @@
 snippet console.log('var',var) "console.log(str, str)"
 console.log('${1}', $1);
 endsnippet
+
+snippet console.log('var',JSON.stringify(var,null,2)) "console.log(str, JSON.stringify(var, null, 2))"
+console.log('${1}', JSON.stringify($1, null, 2));
+endsnippet
+
+snippet tslint:disable-next-line "tslint:disable-next-line"
+// tslint:disable-next-line
+endsnippet

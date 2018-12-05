@@ -1,0 +1,14 @@
+snippet tslint "Tslint base config"
+---
+defaultSeverity: error
+extends:
+  - tslint:recommended
+  - tslint-microsoft-contrib
+rules:
+  no-console: false
+  missing-jsdoc: false
+  possible-timing-attack: false
+  no-constant-condition: false
+  no-increment-decrement: false
+  await-promise: [true, Bluebird]
+endsnippet
