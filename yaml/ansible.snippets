@@ -76,7 +76,10 @@ docker_container:
   image: nginx
   name: nginx
   state: started|stopped|present|absent
+  restart: true
   restart_policy: unless-stopped
+  entrypoint: [node]
+  command: [index.js]
   detach: false
   cleanup: true
   working_dir: /app
@@ -192,23 +195,16 @@ unarchive:
   list_files: true
 endsnippet
 
-snippet health_check_container "shell: curl"
-- name: Health check
-  listen: health_check_parity
-  changed_when: false
-  shell: >
-    docker run --rm --net {{ docker_network_name }} byrnedo/alpine-curl
-    --fail
-    --silent
-    -H 'Content-Type: application/json'
-    --data '{
-      "jsonrpc": "2.0", "method": "net_listening", "params": [], "id": 1
-    }'
-    http://parity:8545
-  register: parity_health_check
-  retries: 10
-  delay: 1
-  until: 'parity_health_check.stdout | from_json | json_query("result") == true'
+snippet health_check_httpie "shell: httpie"
+listen: health_check_samson_travis_integrator
+changed_when: false
+shell: >
+  docker run --rm --net {{ docker_network_name }} clue/httpie
+  http http://samson-travis-integrator/health
+register: health_check_samson_travis_integrator
+retries: 3
+delay: 1
+until: health_check_samson_travis_integrator is success
 endsnippet
 
 snippet systemd "systemd:"
