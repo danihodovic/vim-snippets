@@ -1,18 +1,25 @@
 snippet file "file:"
 file:
+  # files and directories
   state: directory|absent|file
   path: /some/path
-  mode: 0770
-  recurse: true
-  owner: root
-  group: developers
-endsnippet
+  recurse: true # only valid for directories
 
-snippet "link" "file:"
-file:
+  # symlinks
   state: link
   src: /actual/path
   dest: /link/path
+
+  # force the creation of the symlinks in two cases: the source file does not
+  # exist (but will appear later); the destination exists and is a file (so, we
+  # need to unlink the "path" file and create symlink to the "src" file in place
+  # of it).
+  force: true
+
+  # general options
+  mode: 0770
+  owner: root
+  group: developers
 endsnippet
 
 snippet copy "copy:"
@@ -279,6 +286,18 @@ snippet dirname "{{ inventory_dir | dirname }}"
 inventory_dir | dirname
 endsnippet
 
+snippet role_path "{{ role_path }}"
+{{ role_path }}
+endsnippet
+
+snippet playbook_dir "{{ playbook_dir }}"
+{{ playbook_dir }}
+endsnippet
+
+snippet inventory_dir "{{ inventory_dir }}"
+{{ inventory_dir }}
+endsnippet
+
 snippet ipify_facts "ipify public IP"
 ipify_facts:
 
@@ -305,6 +324,14 @@ snippet playbook "playbook skeleton"
     - include_role:
         name: users
       tags: users
+endsnippet
+
+snippet group "group:"
+group:
+  name: somegroup
+  gid: 1001
+  state: present
+  system: true
 endsnippet
 
 snippet user "user:"
