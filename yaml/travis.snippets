@@ -1,0 +1,47 @@
+snippet travis "Travis CI config example"
+---
+# yamllint disable rule:line-length
+language: node_js
+node_js:
+  - 8
+  - 10
+
+# Global build conditional
+if: branch = master
+# Conditional examples
+# type = push
+# type != cron
+# type IN (api, cron)
+# branch = production
+# tag IS present
+# tag =~ ^v1
+# sender !~ bot$
+# env(FOO) = bar
+# type = push AND NOT (branch = production OR tag IS present)
+
+jobs:
+  include:
+    - name: First stage
+      before_install:
+      install:
+      before_script:
+      script:
+        - npm run-script lint
+      after_success:
+      after_failure:
+      after_script:
+      before_deploy:
+      deploy:
+      after_deploy:
+
+    - name: Second stage
+      if: branch = master
+      script:
+
+notifications:
+  email:
+    recipients:
+      - dropbox+travis@ricostacruz.com
+    on_success: <always|never|change>  # default: change
+    on_failure: <always|never|change>  # default: always
+endsnippet
