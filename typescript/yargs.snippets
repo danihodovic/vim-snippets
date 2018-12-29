@@ -1,0 +1,27 @@
+snippet yargs-single-command "yargs single command"
+import * as yargs from 'yargs';
+
+const argv = yargs.option('f', {
+  alias: 'file',
+  type: 'string', // boolean, number, array, count
+  describe: 'x marks the spot',
+  demandOption: false,
+  default: '/etc/passwd'
+})
+.argv;
+endsnippet
+
+snippet yargs-multi-command "yargs multiple commands"
+import * as yargs from 'yargs';
+
+yargs
+  .command('get', 'make a get HTTP request', {
+    url: {
+      alias: 'u',
+      default: 'http://yargs.js.org/'
+    }
+  },
+  (argv) => makeRequest(argv))
+  .help()
+  .argv
+endsnippet
