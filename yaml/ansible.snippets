@@ -418,3 +418,19 @@ add_host:
     - group1
     - group2
 endsnippet
+
+snippet fail "fail:"
+- fail:
+    msg: |
+      There are no default tasks for role.
+      Specify tasks using `tasks_from`.
+endsnippet
+
+snippet assert "assert:"
+- name: please use 'msg' when ansible version is smaller than 2.7
+  assert:
+    that:
+      - "my_param <= 100"
+      - "my_param >= 0"
+    msg: "'my_param' must be between 0 and 100"
+endsnippet
