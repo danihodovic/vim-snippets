@@ -91,6 +91,8 @@ docker_container:
   detach: false
   cleanup: true
   working_dir: /app
+  memory: '{{ ansible_memory_mb.real.total * 0.1 }}m'
+  cpu_shares: '{{ (1024 * 0.1) | int }}'
   networks:
     - name: '{{ docker_network_name }}'
   env:
