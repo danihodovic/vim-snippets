@@ -1,0 +1,14 @@
+snippet s3_sync "sync files to s3"
+s3_sync:
+  bucket: tedder
+  file_root: roles/s3/files
+  mime_map:
+    .yml: application/text
+    .json: application/text
+  key_prefix: config_files/web
+  file_change_strategy: checksum|date_size|force
+  permission: public-read
+  cache_control: "public, max-age=31536000"
+  include: "*"
+  exclude: "*.txt,.*"
+endsnippet
