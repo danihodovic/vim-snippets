@@ -445,6 +445,14 @@ snippet type_debug "debug an ansible type"
 debug: msg='{{ chain_json | type_debug }}'
 endsnippet
 
-snippet meta_flush_handlers "meta: flush handlers"
+snippet meta_flush_handlers "meta: flush_handlers"
 meta: flush_handlers
+endsnippet
+
+snippet end_play "meta: end_play"
+meta: end_play
+endsnippet
+
+snippet random_uuid "generate a ranom uuid"
+{{ 99999999 | random | to_uuid }}
 endsnippet
