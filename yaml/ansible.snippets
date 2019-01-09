@@ -456,3 +456,44 @@ endsnippet
 snippet random_uuid "generate a ranom uuid"
 {{ 99999999 | random | to_uuid }}
 endsnippet
+
+snippet logrotate "example of logrotation"
+# Debug logrotation
+#     logrotate -d -f /etc/logrotate.conf
+# To force logrotation to run:
+#     logrotate -f /etc/logrotate.conf
+# To create random large files test files (e.g 60mb) use:
+#     base64 /dev/urandom | head -c 60000000 >> /var/log/docker_system_prune.log`
+# Check crontab logs using
+#     tail -f /var/log/syslog
+- name: Add log rotation for the docker system prune logs
+  tags: cron
+  copy:
+    content: |
+      {{ docker_system_prune_log }} {
+        size 10M
+        rotate 5
+        copytruncate
+        missingok
+      }
+    dest: /etc/logrotate.d/docker_system_prune
+
+- name: Add a cronjob for log rotating the prune logs
+  tags: cron
+  cron:
+    name: logrotate_prune_log
+    # hour: 0
+    minute: '*'
+    job: /usr/sbin/logrotate /etc/logrotate.conf
+endsnippet
+
+snippet cron "Ansible cronjobs"
+# To see how to setup example cron: https://crontab.guru/
+# The crontab is stored in the user cron /var/spool/cron/crontabs/root
+tags: cron
+cron:
+  name: logrotate_prune_log
+  hour: 0
+  minute: '*'
+  job: /usr/sbin/logrotate /etc/logrotate.conf
+endsnippet
