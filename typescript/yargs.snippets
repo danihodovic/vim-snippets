@@ -8,6 +8,7 @@ const argv = yargs.option('f', {
   demandOption: false,
   default: '/etc/passwd'
 })
+.strict()
 .argv;
 endsnippet
 
@@ -22,6 +23,8 @@ yargs
     }
   },
   (argv) => makeRequest(argv))
+  .demandCommand()
+  .strict()
   .help()
   .argv
 endsnippet
