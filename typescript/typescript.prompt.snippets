@@ -1,0 +1,40 @@
+snippet prompts "example use of the prompt library"
+import * as prompts from 'prompts';
+
+const { username, password } = await prompts([
+  {
+    type: 'text',
+    name: 'username',
+    message: 'username'
+  },
+  {
+    type: 'password',
+    name: 'password',
+    message: 'password'
+  },
+  {
+    type: 'confirm',
+    name: 'confirm',
+    message: 'confrm',
+    initial: false
+  },
+  {
+    type: 'number',
+    name: 'age',
+    message: 'age',
+    initial: 25,
+    style: 'default', //password, invisible, emoji
+    min: 18,
+    max: 100,
+  },
+  {
+    type: 'select',
+    name: 'color',
+    message: 'color',
+    choices: [
+      { title: 'red', value: '#ff0000' },
+      { title: 'Green', value: '#00ff00', disabled: true },
+    ]
+  }
+]);
+endsnippet
