@@ -67,10 +67,12 @@ uri:
   body:
     var1: value1
   timeout: 5
+  return_content: true
 register: health_check_grafana
 retries: 10
 delay: 1
 until: health_check_grafana.status == 200
+failed_when: "'AWESOME' not in health_check_grafana.content"
 endsnippet
 
 snippet docker_image "docker_image:"
