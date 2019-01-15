@@ -176,10 +176,20 @@ get_url:
   mode: 0660
   force: true
 endsnippet
+# apt_codename
 
 snippet apt "apt:"
 apt:
   name: package
+
+# deb from the internet
+apt:
+  deb: https://example.com/python-ppq_0.1-1_all.deb
+
+# upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
 endsnippet
 
 snippet apt_repository "apt_repository:"
@@ -277,8 +287,8 @@ snippet play_hosts "play_hosts"
 play_hosts
 endsnippet
 
-snippet ansible_user "ansible_user_id"
-'{{ ansible_user_id }}'
+snippet ansible_user "ansible_env.USER"
+'{{ ansible_env.USER }}'
 endsnippet
 
 snippet ansible_home "ansible_env.HOME"
@@ -354,6 +364,9 @@ user:
   name: johnd
   uid: 1040
   groups: admin
+  # if append is false the user will only be adedd to the mentioned groups
+  # if append is true the user will additionally be added to the mentioned
+  # groups
   append: false
   shell: /bin/zsh
 endsnippet
