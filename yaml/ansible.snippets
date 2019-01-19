@@ -227,6 +227,15 @@ unarchive:
   list_files: true
 endsnippet
 
+snippet archive "archive:"
+archive:
+  path: /path/to/foo
+  dest: /path/to/foo.tgz
+  format: zip # gz | bz2 - gz is default
+  exclude_path:
+    - /path/to/foo/zar*
+endsnippet
+
 snippet health_check_httpie "shell: httpie"
 listen: health_check_samson_travis_integrator
 changed_when: false

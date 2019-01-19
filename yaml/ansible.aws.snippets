@@ -12,3 +12,27 @@ s3_sync:
   include: "*"
   exclude: "*.txt,.*"
 endsnippet
+
+snippet s3 "s3:"
+# GET operation
+aws_s3:
+  mode: get
+  bucket: mybucket
+  object: /my/desired/key.txt
+  dest: /usr/local/myfile.txt
+  overwrite: different
+
+# PUT operation
+s3:
+  bucket: mybucket
+  object: /my/desired/key.txt
+  src: /usr/local/myfile.txt
+  mode: put
+  overwrite: different
+  headers: 'x-amz-grant-full-control=emailAddress=owner@example.com'
+
+# LIST operation
+s3:
+  bucket: mybucket
+  mode: list
+endsnippet
