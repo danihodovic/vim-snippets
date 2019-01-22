@@ -13,7 +13,7 @@ s3_sync:
   exclude: "*.txt,.*"
 endsnippet
 
-snippet s3 "s3:"
+snippet aws_s3 "aws_s3:"
 # GET operation
 aws_s3:
   mode: get
@@ -23,7 +23,7 @@ aws_s3:
   overwrite: different
 
 # PUT operation
-s3:
+aws_s3:
   bucket: mybucket
   object: /my/desired/key.txt
   src: /usr/local/myfile.txt
@@ -32,7 +32,8 @@ s3:
   headers: 'x-amz-grant-full-control=emailAddress=owner@example.com'
 
 # LIST operation
-s3:
+aws_s3:
   bucket: mybucket
   mode: list
+  prefix: foo # Limits the response to keys that begin with the specified prefix
 endsnippet

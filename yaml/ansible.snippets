@@ -22,6 +22,20 @@ file:
   group: developers
 endsnippet
 
+snippet stat "stat:"
+stat:
+  path: /tmp/parity.tgz
+  get_checksum: true
+  checksum_algorithm: md5
+register: stat_result
+
+# Usage
+# stat_result.stat.checksum
+
+# Usage
+# stat_result.stat.exists
+endsnippet
+
 snippet copy "copy:"
 copy:
   src|content: /path/to/src
@@ -207,7 +221,7 @@ pip:
   name: package
   state: absent|forcereinstall|latest|present
   version: 2.6.0
-  extra_args: --user
+  extra_args: --user --no-cache-dir
 endsnippet
 
 snippet git "git:"
@@ -231,9 +245,15 @@ snippet archive "archive:"
 archive:
   path: /path/to/foo
   dest: /path/to/foo.tgz
-  format: zip # gz | bz2 - gz is default
   exclude_path:
-    - /path/to/foo/zar*
+    - /opt/parity/password.pwds
+    - /opt/parity/network/key'
+    - /opt/parity/keys
+
+  # Dest may also explicitly specify what files to archive
+  dest:
+    - /path/to/foo
+    - /path/wong/foo
 endsnippet
 
 snippet health_check_httpie "shell: httpie"
@@ -346,16 +366,8 @@ snippet playbook "playbook skeleton"
 ---
 - name: Playbook
   hosts: all
-  gather_facts: false
-  vars:
-    ansible_become: true
-
-  pre_tasks:
-    - raw: test -e /usr/bin/python || (apt -y update && apt install -y python)
-    - setup:
-
   tasks:
-    - include_role:
+    - import_role:
         name: users
       tags: users
 endsnippet
@@ -453,12 +465,12 @@ snippet fail "fail:"
 endsnippet
 
 snippet assert "assert:"
-- name: please use 'msg' when ansible version is smaller than 2.7
-  assert:
-    that:
-      - "my_param <= 100"
-      - "my_param >= 0"
-    msg: "'my_param' must be between 0 and 100"
+assert:
+  that:
+    - my_param <= 100
+    - my_param >= 0
+  fail_msg: fail
+  success_msg: success
 endsnippet
 
 snippet ansible_memory_mb "ansible instance memory in MB"
@@ -506,8 +518,8 @@ snippet logrotate "example of logrotation"
   tags: cron
   cron:
     name: logrotate_prune_log
-    # hour: 0
-    minute: '*'
+    hour: 0
+    minute: 0
     job: /usr/sbin/logrotate /etc/logrotate.conf
 endsnippet
 
@@ -518,6 +530,6 @@ tags: cron
 cron:
   name: logrotate_prune_log
   hour: 0
-  minute: '*'
+  minute: 0
   job: /usr/sbin/logrotate /etc/logrotate.conf
 endsnippet
