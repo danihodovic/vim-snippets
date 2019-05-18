@@ -2,9 +2,13 @@ snippet travis "Travis CI config example"
 ---
 # yamllint disable rule:line-length
 language: node_js
+
 node_js:
   - 8
   - 10
+
+services:
+  - docker
 
 # Global build conditional
 if: branch = master

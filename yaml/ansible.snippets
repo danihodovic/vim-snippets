@@ -1,4 +1,4 @@
-snippet file "file:"
+snippet file: "file:"
 file:
   # files and directories
   state: directory|absent|file
@@ -17,6 +17,16 @@ file:
   force: true
 
   # general options
+  mode: 0770
+  owner: root
+  group: developers
+endsnippet
+
+snippet filedir: "filedir:"
+file:
+  state: directory
+  path: /some/path
+  recurse: true # only valid for directories
   mode: 0770
   owner: root
   group: developers
@@ -529,7 +539,14 @@ snippet cron "Ansible cronjobs"
 tags: cron
 cron:
   name: logrotate_prune_log
-  hour: 0
-  minute: 0
-  job: /usr/sbin/logrotate /etc/logrotate.conf
+  job: /usr/sbin/logrotate >> /var/log/logrotate.log 2>&1
+
+  # time in cron format
+  minute: 0-59
+  hour: 0-23
+  day: 1-31 # day of the month
+  weekday: 0-6
+
+  # special times
+  special_time: annually | daily | hourly | monthly | reboot | weekly | yearly
 endsnippet
