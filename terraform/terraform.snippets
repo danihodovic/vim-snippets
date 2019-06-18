@@ -11,3 +11,9 @@ output "name_servers" {
   value = "${aws_route53_zone.main.name_servers}"
 }
 endsnippet
+
+snippet eof "<<EOF"
+myvar = <<EOF
+
+EOF
+endsnippet
