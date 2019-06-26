@@ -21,3 +21,11 @@ endsnippet
 snippet mypy_ignore "type: ignore"
 # type: ignore
 endsnippet
+
+snippet logger "Instatiate a logger"
+import logging
+logger = logging.LoggerAdapter(logging.getLogger(), extra={
+  "app": "jobs",
+  "__name__": __name__,
+})
+endsnippet
