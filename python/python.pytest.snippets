@@ -1,0 +1,37 @@
+snippet pytest_django_db "@pytest.mark.django_db"
+@pytest.mark.django_db
+endsnippet
+
+snippet pytest_mark_parametrize "@pytest.mark.parametrize"
+@pytest.mark.parametrize(
+    "p1,p2",
+    [
+        pytest.param("foo", "bar", id="first_test"),
+        pytest.param("bar", "foo", id="second_test"),
+    ],
+)
+def test_with_parameters(params):
+    pass
+endsnippet
+
+snippet pytest.fixture "@pytest.fixture"
+@pytest.fixture
+def inject():
+    with patch("bots.reddit.praw.Reddit", autospec=False) as Reddit:
+        Reddit.return_value.subreddit.return_value.user_is_banned = False
+        user = RedditUserFactory()
+        responses.add(
+            responses.GET, f"https://www.reddit.com/user/{user.username}", status=200
+        )
+        yield Reddit.return_value
+endsnippet
+
+snippet pytest_raises "with pytest.raises()"
+with pytest.raises(ValueError, match=r".* 123 .*"):
+    myfunc()
+endsnippet
+
+
+snippet fail "@pytest.mark.xfail()"
+@pytest.mark.xfail(sys.version_info >= (3, 6), strict=True, raises=ValueError, reason="python3.6 api changes")
+endsnippet

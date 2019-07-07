@@ -14,8 +14,16 @@ if __name__ == '__main__':
 endsnippet
 
 
-snippet pylint_disable "# pylint: disable="
+snippet pylint_disable_line_too_long "# pylint: disable=line-too-long"
 # pylint: disable=line-too-long
+endsnippet
+
+snippet pylint_disable_redefined_outer_name "# pylint: disable=redefined-outer-name"
+# pylint: disable=redefined-outer-name
+endsnippet
+
+snippet pylint_disable_unused_argument "# pylint: disable=unused-argument"
+# pylint: disable=unused-argument
 endsnippet
 
 snippet mypy_ignore "type: ignore"
@@ -28,4 +36,15 @@ logger = logging.LoggerAdapter(logging.getLogger(), extra={
   "app": "jobs",
   "__name__": __name__,
 })
+endsnippet
+
+snippet call "assert a chained call was made"
+expected_call = (
+    call(some_var="value")
+    .method(foo="bar")
+    .other_method().new()
+)
+assert mock.mock_calls == expected_call.call_list()
+# alternatively
+assert expected_call in mock.mock_calls
 endsnippet
