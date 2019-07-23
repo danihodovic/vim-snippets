@@ -205,6 +205,7 @@ endsnippet
 snippet apt "apt:"
 apt:
   name: package
+  update_cache: true
 
 # deb from the internet
 apt:
@@ -214,6 +215,7 @@ apt:
   apt:
     name: "*"
     state: latest
+    update_cache: true
 endsnippet
 
 snippet apt_repository "apt_repository:"
