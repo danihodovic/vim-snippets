@@ -16,3 +16,38 @@ class Migration(migrations.Migration):
         migrations.RunPython(forwards),
     ]
 endsnippet
+
+snippet management_command "django management command"
+import logging
+
+from django.core.management.base import BaseCommand
+
+logger = logging.LoggerAdapter(
+    logging.getLogger(), extra={
+        "app": "myapp",
+        "file": __file__,
+    }
+)
+
+class Command(BaseCommand):
+    help = "Command does shit"
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--id",
+            type=int,
+            default=1,
+            help="id to use"
+        )
+
+        parser.add_argument(
+            "type",
+            help="type of action",
+            type=str,
+            default="confirmation",
+            choices=["confirmation", "subscription"],
+        )
+
+    def handle(self, *args, **_kwargs):
+        logger.info("Running command")
+endsnippet
