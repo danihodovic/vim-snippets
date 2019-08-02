@@ -48,6 +48,13 @@ class Command(BaseCommand):
             choices=["confirmation", "subscription"],
         )
 
+        parser.add_argument(
+            "--watch",
+            help="watch files",
+            action="store_true",
+            default=False,
+        )
+
     def handle(self, *args, **_kwargs):
         logger.info("Running command")
 endsnippet
