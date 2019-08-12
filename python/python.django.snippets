@@ -44,7 +44,7 @@ class Command(BaseCommand):
             "type",
             help="type of action",
             type=str,
-            default="confirmation",
+            required=True | default="confirmation",
             choices=["confirmation", "subscription"],
         )
 
