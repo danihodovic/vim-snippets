@@ -58,3 +58,47 @@ class Command(BaseCommand):
     def handle(self, *args, **_kwargs):
         logger.info("Running command")
 endsnippet
+
+snippet field "Django model field"
+text = models.TextField(
+    primary_key=False,
+    unique=False,
+    unique_for_date=False,
+    unique_for_month=False,
+    unique_for_year=False,
+    max_length=8000,
+    default=""
+    null=False,
+    blank=False,
+    default="",
+    editable=True,
+    help_text="Please use the following format: <strong>YYYY-MM-DD</strong>.",
+    validators=[validate_even],
+)
+
+BinaryField           # A field to store raw binary data. It can be assigned bytes, bytearray, or memoryview.
+BooleanField          # A true/false field.
+CharField             # A string field, for small- to large-sized strings.
+DateField             # A date, represented in Python by a datetime.date instance.
+DateTimeField         # A date and time, represented in Python by a datetime.datetime instance.
+DecimalField          # A fixed-precision decimal number, represented in Python by a Decimal instance.
+DurationField         # A field for storing periods of time - modeled in Python by timedelta
+EmailField            # A CharField that checks that the value is a valid email address using EmailValidator.
+FileField             # A file-upload field.
+FloatField            # A floating-point number represented in Python by a float instance.
+ImageField            # Inherits all attributes and methods from FileField, but also validates that the uploaded object is a valid image.
+IntegerField          # An integer. Values from -2147483648 to 2147483647 are safe in all databases supported by Django.
+GenericIPAddressField # An IPv4 or IPv6 address, in string format (e.g. 192.0.2.30 or 2a02:42fe::4).
+PositiveIntegerField  # Like an IntegerField, but must be either positive or zero (0). Values from 0 to 2147483647 are safe in all databases supported by Django.
+TextField             # A large text field. The default form widget for this field is a Textarea.
+URLField              # A CharField for a URL, validated by URLValidator.
+UUIDField             # A field for storing universally unique identifiers.
+
+
+def validate_even(value):
+    if value % 2 != 0:
+        raise ValidationError(
+            _('%(value)s is not an even number'),
+            params={'value': value},
+        )
+endsnippet
