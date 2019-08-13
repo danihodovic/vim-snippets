@@ -102,3 +102,12 @@ def validate_even(value):
             params={'value': value},
         )
 endsnippet
+
+snippet CreateView "class MyView(CreateView)"
+from django.views.generic.edit import CreateView
+
+class AuthorCreate(CreateView):
+    model = Author
+    fields = ["name"]
+    # template_name = "myapp/custom_template.html"
+endsnippet
