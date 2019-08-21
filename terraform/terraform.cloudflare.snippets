@@ -1,15 +1,25 @@
-snippet cloudflare_zone "cloudflare_zone"
+snippet cloudflare_zone "resource cloudflare_zone main"
 resource "cloudflare_zone" "example" {
   zone = "example.com"
 }
 endsnippet
 
-snippet cloudflare_record "cloudflare_record"
-resource "cloudflare_record" "foobar" {
+snippet cloudflare_record "resource cloudflare_record www"
+resource "cloudflare_record" "main" {
   domain  = "${var.cloudflare_zone}"
   name    = "example.com"
   value   = "192.168.0.11"
   type    = "A"
   proxied = true
+}
+endsnippet
+
+snippet "cloudflare_load_balancer" "resource cloudflare_load_balancer main"
+resource "cloudflare_load_balancer" "main" {
+  zone             = "${var.domain}"
+  name             = "lb.${var.domain}"
+  fallback_pool_id = "${cloudflare_load_balancer_pool.main.id}"
+  default_pool_ids = ["${cloudflare_load_balancer_pool.main.id}"]
+  proxied          = true
 }
 endsnippet

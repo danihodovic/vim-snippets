@@ -1,0 +1,32 @@
+snippet digitalocean_droplet "resource digitalocean_droplet web"
+resource "digitalocean_droplet" "web" {
+  image              = "docker-18-04"
+  name               = "web-1"
+  # nyc1 nyc2 nyc3
+  # ams2 ams3
+  # sfo1 sfo2
+  # sgp1
+  # lon1
+  # fra1
+  region             = "nyc2"
+  size               = "s-1vcpu-1gb"
+  private_networking = true
+  user_data          = "${file("./cloud_init.yml")}"
+
+  lifecycle {
+    ignore_changes = ["user_data"]
+  }
+
+}
+endsnippet
+
+snippet digitalocean_database_cluster "resource digitalocean_database_cluster db"
+resource "digitalocean_database_cluster" "example" {
+  name       = "db"
+  engine     = "pg"
+  version    = "11"
+  size       = "db-s-1vcpu-1gb"
+  region     = "nyc1"
+  node_count = 1
+}
+endsnippet

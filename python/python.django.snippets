@@ -131,3 +131,8 @@ class BookForm(forms.ModelForm):
         model = Book
         fields = ['name', 'authors']
 endsnippet
+
+snippet reverse "from django.urls import reverse"
+from django.urls import reverse
+reverse("my-view", args=[3], kwargs={"pk": 10})
+endsnippet
