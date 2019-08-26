@@ -6,6 +6,22 @@ lifecycle = {
 }
 endsnippet
 
+snippet variable "variable my_var {}"
+variable "my_var" {
+  # string
+  # number
+  # bool
+  # list(string)
+  # set(string)
+  # map(string)
+  # object({ name=string, age=number })
+  # tuple(string, number)
+
+  type    = string
+  default = ["us-west-1a"]
+}
+endsnippet
+
 snippet output "output {}"
 output "name_servers" {
   value = "${aws_route53_zone.main.name_servers}"

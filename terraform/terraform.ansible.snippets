@@ -1,0 +1,10 @@
+snippet ansible_host "resource ansible_host"
+resource "ansible_host" "web" {
+  count = "${length(digitalocean_droplet.web)}"
+  inventory_hostname = "web_${count.index}"
+  groups = ["role_web"]
+  vars = {
+    ansible_host = "${digitalocean_droplet.web[count.index].ipv4_address}"
+  }
+}
+endsnippet
