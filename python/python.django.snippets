@@ -145,9 +145,52 @@ class ContactForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
+        self.disable_csrf = True
         self.helper.form_show_labels = False
+        self.helper.form_class = "myform"
+        self.helper.form_method = "GET"
+        self.helper.form_action = reverse('url_name', args=[event.id])
         self.fields["email"].widget.attrs["placeholder"] = "Email"
         self.fields["message"].widget.attrs["placeholder"] = "Message"
         self.fields["message"].widget.attrs["rows"] = 3
         self.helper.add_input(Submit("submit", "Submit", css_class="btn btn-info"))
+endsnippet
+
+snippet formview "class MyFormView(FormView)"
+from django.views.generic.edit import FormView
+
+class ContactView(FormView):
+    template_name = 'myapp/contact.html'
+    form_class = ContactForm
+
+    def get_success_url(self):
+        return providers.registry.by_id("exist", self.request).get_login_url(
+            self.request
+        )
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send_email()
+        return super().form_valid(form)
+endsnippet
+
+snippet "templateview" "class HomePageView(TemplateView):"
+from django.views.generic.base import TemplateView
+
+from articles.models import Article
+
+class HomePageView(TemplateView):
+    template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['latest_articles'] = Article.objects.all()[:5]
+        return context
+endsnippet
+
+snippet json_dumps_django "json.dumps(list(qs), cls=DjangoJSONEncoder)"
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+data = json.dumps(list(qs), cls=DjangoJSONEncoder)
 endsnippet

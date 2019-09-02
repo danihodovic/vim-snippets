@@ -1,0 +1,57 @@
+snippet block "{% block b %}"
+{% block css %}
+{{ block.super }}
+{% endblock %}
+endsnippet
+
+snippet crispy_form "{% crispy form form.helper %}"
+<form method="post">
+  {% csrf_token %}
+  {% crispy form form.helper %}
+</form>
+endsnippet
+
+snippet row_column "bootstrap row column system"
+<!-- Make sure to place this in a <div class="container"> -->
+<div class="row">
+  <div class="col-sm">
+    One of three columns
+  </div>
+  <div class="col-sm">
+    One of three columns
+  </div>
+  <div class="col-sm">
+    One of three columns
+  </div>
+</div>
+endsnippet
+
+snippet link_href "<link rel='stylesheet'>"
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+endsnippet
+
+snippet script_src "<script src='https://cdnjs'>"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+endsnippet
+
+snippet script_src_django "<script src='{% static 'js/dashboard.js' %}'></script>"
+<script src="{% static 'js/dashboard.js' %}"></script>
+endsnippet
+
+snippet script_inline "<script type='text/javascript'>"
+<script type="text/javascript">
+const foo = {{ data | safe }};
+</script>
+endsnippet
+
+snippet load "{% load static %}"
+{% load static %}
+endsnippet
+
+snippet static "{% static 'images/favicons/favicon.ico' %}"
+{% static 'js/my_file.js' %}
+endsnippet
+
+snippet include "{% include 'web/element.html' with obj=myobj %}"
+{% include "web/element.html" with obj=myobj %}
+endsnippet
