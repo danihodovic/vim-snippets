@@ -153,6 +153,7 @@ class ContactForm(forms.Form):
         self.fields["email"].widget.attrs["placeholder"] = "Email"
         self.fields["message"].widget.attrs["placeholder"] = "Message"
         self.fields["message"].widget.attrs["rows"] = 3
+        self.fields['to'].initial = "Hello@world.com"
         self.helper.add_input(Submit("submit", "Submit", css_class="btn btn-info"))
 endsnippet
 
@@ -187,6 +188,24 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['latest_articles'] = Article.objects.all()[:5]
         return context
+endsnippet
+
+snippet redirectview "class MyRedirectView(RedirectView):"
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import RedirectView
+
+from articles.models import Article
+
+class ArticleCounterRedirectView(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'article-detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        article = get_object_or_404(Article, pk=kwargs['pk'])
+        article.update_counter()
+        # return "https://foo"
+        return super().get_redirect_url(*args, **kwargs)
 endsnippet
 
 snippet json_dumps_django "json.dumps(list(qs), cls=DjangoJSONEncoder)"
