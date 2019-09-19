@@ -5,10 +5,8 @@ snippet block "{% block b %}"
 endsnippet
 
 snippet crispy_form "{% crispy form form.helper %}"
-<form method="post">
-  {% csrf_token %}
-  {% crispy form form.helper %}
-</form>
+{% load crispy_forms_tags %}
+{% crispy form form.helper %}
 endsnippet
 
 snippet row_column "bootstrap row column system"
@@ -54,4 +52,8 @@ endsnippet
 
 snippet include "{% include 'web/element.html' with obj=myobj %}"
 {% include "web/element.html" with obj=myobj %}
+endsnippet
+
+snippet img_responsive "<img src='...'"
+<img src="{% static "app/images/my_img.png" %}" class="img-fluid" alt="Responsive image">
 endsnippet

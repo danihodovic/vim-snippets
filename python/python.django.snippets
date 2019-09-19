@@ -1,3 +1,8 @@
+snippet reverse "reverse('some-url')"
+from django.urls import reverse
+reverse("my-url", args=[], kwargs={})
+endsnippet
+
 snippet migration "django migration"
 from django.db import migrations
 
@@ -13,7 +18,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(forwards),
+        migrations.RunPython(forwards, lambda a, b: None),
     ]
 endsnippet
 
@@ -103,17 +108,9 @@ def validate_even(value):
         )
 endsnippet
 
-snippet CreateView "class MyView(CreateView)"
-from django.views.generic.edit import CreateView
-
-class AuthorCreate(CreateView):
-    model = Author
-    fields = ["name"]
-    # template_name = "myapp/custom_template.html"
-endsnippet
-
-snippet TemplateView "class MyView(TemplateView)"
+snippet templateview "class MyView(TemplateView)"
 from django.views.generic.base import TemplateView
+
 class HomePageView(TemplateView):
     template_name = "web/home.html"
     http_method_names = ["get", "post"]
@@ -136,7 +133,7 @@ snippet form_crispy "Crispy form with form helper"
 from django import forms
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Div
 
 class ContactForm(forms.Form):
     email = forms.EmailField()
@@ -154,7 +151,16 @@ class ContactForm(forms.Form):
         self.fields["message"].widget.attrs["placeholder"] = "Message"
         self.fields["message"].widget.attrs["rows"] = 3
         self.fields['to'].initial = "Hello@world.com"
-        self.helper.add_input(Submit("submit", "Submit", css_class="btn btn-info"))
+        self.fields['to'].widget.attrs["class"] = "search-bar form-control form-control-lg"
+        self.helper.layout = Layout(
+            Div("email"),
+            Div(
+                "message",
+                "employees",
+                css_class="button-container d-none d-lg-flex",
+            ),
+            Submit("submit", "Submit", css_class="btn btn-dark")
+        )
 endsnippet
 
 snippet formview "class MyFormView(FormView)"
@@ -212,4 +218,180 @@ snippet json_dumps_django "json.dumps(list(qs), cls=DjangoJSONEncoder)"
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 data = json.dumps(list(qs), cls=DjangoJSONEncoder)
+endsnippet
+
+snippet createview "class AuthorCreate(CreateView)"
+from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from crispy_forms.layout import Div, Layout
+from django.utils import timezone
+from myapp.models import Author
+
+class AuthorCreate(LoginRequiredMixin, CreateView):
+    model = Author
+    fields = ['name']
+
+    # template_name = "jobs/jobposting_new.html"
+    # form_class = JobPostingForm
+    # success_url = reverse_lazy("jobs-payment")
+    # initial = {}
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.add_input(Submit('submit', 'Create', css_class='btn-primary'))
+        form.disable_csrf = True
+        form.helper.form_show_labels = False
+        form.helper.form_class = "myform"
+        form.helper.form_method = "GET"
+        form.helper.form_action = reverse('url_name', args=[event.id])
+        form.fields["email"].widget.attrs["placeholder"] = "Email"
+        form.fields["message"].widget.attrs["placeholder"] = "Message"
+        form.fields["message"].widget.attrs["rows"] = 3
+        form.fields['to'].initial = "Hello@world.com"
+        form.fields['to'].widget.attrs["class"] = "search-bar form-control form-control-lg"
+
+        form.helper.layout = Layout(
+            Div("search"),
+            Div(
+                "glassdoor_rating__gte",
+                "funding",
+                "employees",
+                css_class="button-container d-none d-lg-flex",
+            ),
+            Submit("submit", "Submit", css_class="btn btn-info")
+        )
+        return form
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        author = form.save(commit=False)
+        author.date = timezone.now()
+        author.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
+        if not self.success_url:
+            raise ImproperlyConfigured("No URL to redirect to. Provide a success_url.")
+        return str(self.success_url)  # success_url may be lazy
+endsnippet
+
+
+snippet updateview "class AuthorUpdateView(UpdateView)"
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from crispy_forms.layout import Div, Layout
+from django.utils import timezone
+from myapp.models import Author
+
+class AuthorCreate(LoginRequiredMixin, UpdateView):
+    model = Author
+    fields = ['name']
+
+    # template_name = "jobs/jobposting_new.html"
+    # form_class = JobPostingForm
+    # success_url = reverse_lazy("jobs-payment")
+    # initial = {}
+
+    def get_initial(self):
+        base_initial = super().get_initial()
+        base_initial['dataset_request'] = self.object
+        base_initial['company_name'] = self.object.company.name
+        return base_initial
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.helper = FormHelper()
+        form.helper.add_input(Submit('submit', 'Create', css_class='btn-primary'))
+        form.disable_csrf = True
+        form.helper.form_show_labels = False
+        form.helper.form_class = "myform"
+        form.helper.form_method = "GET"
+        form.helper.form_action = reverse('url_name', args=[event.id])
+        form.fields["email"].widget.attrs["placeholder"] = "Email"
+        form.fields["message"].widget.attrs["placeholder"] = "Message"
+        form.fields["message"].widget.attrs["rows"] = 3
+        form.fields['to'].initial = "Hello@world.com"
+        form.fields['to'].widget.attrs["class"] = "search-bar form-control form-control-lg"
+
+        form.helper.layout = Layout(
+            Div("search"),
+            Div(
+                "glassdoor_rating__gte",
+                "funding",
+                "employees",
+                css_class="button-container d-none d-lg-flex",
+            ),
+            Submit("submit", "Submit", css_class="btn btn-info")
+        )
+        return form
+
+    def form_valid(self, form):
+        """If the form is valid, redirect to the supplied URL."""
+        author = form.save(commit=False)
+        author.date = timezone.now()
+        author.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        """If the form is invalid, render the invalid form."""
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        """Return the URL to redirect to after processing a valid form."""
+        if not self.success_url:
+            raise ImproperlyConfigured("No URL to redirect to. Provide a success_url.")
+        return str(self.success_url)  # success_url may be lazy
+endsnippet
+
+snippet detailview "class AppDetailView(DetailView)"
+from django.views.generic.detail import DetailView
+
+class JobsDetailView(DetailView):
+    template_name = "jobs/jobposting_detail.html"
+    queryset = JobPosting.valid_jobs.prefetch_related("company")
+
+    def get_context_data(self, *, _=None, **kwargs):  # pylint: disable=arguments-differ
+        context = super().get_context_data()
+        return context
+endsnippet
+
+snippet login_required "@login_required"
+from django.contrib.auth.decorators import login_required
+
+@login_required
+endsnippet
+
+snippet update_or_create "Person.objects.update_or_create"
+obj, created = Person.objects.update_or_create(
+    first_name='John', last_name='Lennon',
+    defaults={'first_name': 'Bob'},
+)
+endsnippet
+
+snippet listview "class ArticleList(ListView)"
+from django.views.generic.list import ListView
+from articles.models import Article
+
+class ArticleListView(ListView):
+    model = Article
+    # queryset = Article.objects.filter(foo="bar")
+    paginate_by = 100  # if pagination is desired
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+
+    def get_queryset(self):
+        return Article.objects.filter(foo="bar")
 endsnippet
