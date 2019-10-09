@@ -8,8 +8,8 @@ from django.db import migrations
 
 def forwards(apps, schema_editor):
     db_alias = schema_editor.connection.alias
-    JobPosting = apps.get_model("jobs", "JobPosting")
-    qs = JobPosting.objects.using(db_alias)
+    model = apps.get_model("jobs", "JobPosting")
+    qs = model.objects.using(db_alias)
     qs.filter(job_urls=[None]).update(job_urls=[])
 
 class Migration(migrations.Migration):

@@ -1,0 +1,31 @@
+snippet eslintconfig "eslint config yaml"
+---
+# To install these dependencies run
+# npx install-peerdeps --dev eslint-config-airbnb
+# npx install-peerdeps eslint-plugin-prettier@latest --save-dev
+env:
+  browser: true
+  es6: true
+extends: airbnb-base
+plugins:
+  - prettier
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+rules:
+  prettier/prettier: [error, {'singleQuote': true}]
+  arrow-parens: [error, 'as-needed']
+  no-restricted-syntax: [off]
+  comma-dangle: [error, {}]
+  space-before-function-paren: [off]
+
+# Place the below in test/.eslintrc.yml
+---
+env:
+  mocha: true
+rules:
+  func-names: [off]
+endsnippet
