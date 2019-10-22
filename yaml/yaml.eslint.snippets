@@ -20,11 +20,16 @@ parserOptions:
 rules:
   arrow-parens: [error, 'as-needed']
   no-restricted-syntax: [off]
+  quotes: [error, 'single']
 
 # Place the below in test/.eslintrc.yml
 ---
 env:
   mocha: true
+plugins:
+  - mocha
+extends:
+  - plugin:mocha/recommended
 rules:
   func-names: [off]
 endsnippet
