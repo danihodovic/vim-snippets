@@ -57,3 +57,34 @@ endsnippet
 snippet img_responsive "<img src='...'"
 <img src="{% static "app/images/my_img.png" %}" class="img-fluid" alt="Responsive image">
 endsnippet
+
+snippet lorem "{% lorem %}"
+{% lorem 3 p %}
+endsnippet
+
+snippet json_script "{{ value|json_script:'hello-data' }}"
+{{ value|json_script:"myscript-id" }}
+const value = JSON.parse(document.getElementById('hello-data').textContent);
+endsnippet
+
+snippet for "for"
+<ul>
+{% for athlete in athlete_list %}
+    <li>{{ athlete.name }}</li>
+{% endfor %}
+</ul>
+endsnippet
+
+snippet for_empty "for_empty"
+<ul>
+{% for athlete in athlete_list %}
+    <li>{{ athlete.name }}</li>
+{% empty %}
+    <li>Sorry, no athletes in this list.</li>
+{% endfor %}
+</ul>
+endsnippet
+
+snippet pprint "pprint"
+{{ my_value | pprint }}
+endsnippet

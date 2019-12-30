@@ -1,0 +1,31 @@
+snippet serializer_drf "class CommentSerializer(serializers.Serializer)"
+from rest_framework import serializers
+
+class CommentSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    updated = serializers.CharField()
+    created = serializers.DateTimeField()
+
+serializer = CommentSerializer(data=data)
+serializer.is_valid(raise_exception=True)
+endsnippet
+
+snippet apiview "class MyView(APIView)"
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class QuerySetView(APIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = UserSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+endsnippet
