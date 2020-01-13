@@ -50,6 +50,12 @@ snippet static "{% static 'images/favicons/favicon.ico' %}"
 {% static 'js/my_file.js' %}
 endsnippet
 
+snippet with "{% with var=foo %}"
+{% with myvar="value" %}
+{{ myvar }}
+{% endwith %}
+endsnippet
+
 snippet include "{% include 'web/element.html' with obj=myobj %}"
 {% include "web/element.html" with obj=myobj %}
 endsnippet
@@ -87,4 +93,9 @@ endsnippet
 
 snippet pprint "pprint"
 {{ my_value | pprint }}
+endsnippet
+
+snippet debugger_tags ""
+{% load debugger_tags %}
+{{ obj | debugger }}
 endsnippet

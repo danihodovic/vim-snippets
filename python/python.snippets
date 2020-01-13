@@ -60,3 +60,8 @@ assert mock.mock_calls == expected_call.call_list()
 # alternatively
 assert expected_call in mock.mock_calls
 endsnippet
+
+snippet ansible_debug_log ""
+with open("/tmp/ansible-debug.log", "a") as f:
+    f.write("")
+endsnippet

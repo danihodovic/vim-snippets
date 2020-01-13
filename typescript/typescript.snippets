@@ -23,3 +23,52 @@ endsnippet
 snippet tslint:disable-next-line "tslint:disable-next-line"
 // tslint:disable-next-line no-unused-expression
 endsnippet
+
+snippet class_react_component ""
+type MyComponentProps {
+  myVar = string;
+}
+
+export class MyComponent extends React.Component<MyComponentProps> {
+  static contextType = StateContext;
+  state = {
+    stateVal: ''
+  };
+
+  render() {
+    const { propVal } = this.props;
+    const { stateVal } = this.state;
+    return (
+      <div>
+      </div>
+    );
+  }
+}
+endsnippet
+
+snippet setState ""
+this.setState(prevState => {
+  return {
+    checked: !prevState.checked
+  };
+});
+endsnippet
+
+
+snippet props_types ""
+type SomeProps = {
+  audienceGroup: MyType[];
+};
+endsnippet
+
+snippet axios_defaults ""
+import axios from 'axios';
+
+const client = axios.create({
+  baseURL: '/api',
+  paramsSerializer: qs.stringify,
+  headers: {
+    'Token': `${token}`
+  }
+});
+endsnippet

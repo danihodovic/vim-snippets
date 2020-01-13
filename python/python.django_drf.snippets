@@ -14,12 +14,17 @@ snippet apiview "class MyView(APIView)"
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class QuerySetView(APIView):
-    authentication_classes = [authentication.SessionAuthentication]
-    permission_classes = [permissions.IsAdminUser]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, permissions.IsAdminUser]
 
-    def get(self, request, format=None):
+    def get(self, request, path_param, format=None):
+        serializer = QuerySerializer(request.data)
+        serializer.is_valid(raise_exception=True)
+        qs = serializer.validated_data
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
