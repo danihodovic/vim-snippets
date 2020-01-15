@@ -1,3 +1,7 @@
+global !p
+import px.snippets
+endglobal
+
 snippet serializer_drf "class CommentSerializer(serializers.Serializer)"
 from rest_framework import serializers
 
@@ -33,4 +37,28 @@ class QuerySetView(APIView):
         serializer = UserSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+endsnippet
+
+
+snippet modelserializer "serializers.ModelSerializer"
+from rest_framework import serializers
+
+class MySerializer(serializers.ModelSerializer):
+    # Using foreign key field
+    company_name = serializers.CharField(source="company.name")
+    # Using model method
+    source = serializers.CharField(source="get_source_name")
+
+    class Meta:
+        model = MyModel
+        fields = [
+            "id",
+            "source",
+            "company_name",
+        ]
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet serilizer_model "serializers.ModelSerializer"
+modelserializer$1
 endsnippet
