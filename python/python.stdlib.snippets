@@ -1,5 +1,25 @@
 snippet argparse "declare argparse"
+import argparse
+
 parser = argparse.ArgumentParser()
-parser.add_argument('${1:--argname}', type=str, help='helpful text...')
+
+# Positional arguments
+parser.add_argument('positional_argument', type=str, help='helpful text...')
+
+# Optional positonal arguments
+parser.add_argument(
+    'requirements_txt',
+    type=str,
+    help='Path to the requirements.txt file',
+    default='requirements.txt',
+    nargs='?'
+)
+
+# Flag argument
+parser.add_argument('--flag-argument', type=str, help='helpful text...')
+
+# Parse and read args
 args = parser.parse_args()
+print(args.positional_argument)
+print(args.flag_argument)
 endsnippet
