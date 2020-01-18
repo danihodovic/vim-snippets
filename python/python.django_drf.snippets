@@ -2,7 +2,7 @@ global !p
 import px.snippets
 endglobal
 
-snippet serializer_drf "class CommentSerializer(serializers.Serializer)"
+snippet serializer_usage_in_apiview "class CommentSerializer(serializers.Serializer)"
 from rest_framework import serializers
 
 class CommentSerializer(serializers.Serializer):
@@ -10,11 +10,18 @@ class CommentSerializer(serializers.Serializer):
     updated = serializers.CharField()
     created = serializers.DateTimeField()
 
-serializer = CommentSerializer(data=data)
-serializer.is_valid(raise_exception=True)
+class QuerySetView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated, permissions.IsAdminUser]
+
+    def get(self, request, path_param, format=None):
+        serializer = QuerySerializer(request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer = CommentSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 endsnippet
 
-snippet apiview "class MyView(APIView)"
+snippet apiview_example "class MyView(APIView)"
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -51,14 +58,37 @@ class MySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MyModel
-        fields = [
-            "id",
-            "source",
-            "company_name",
-        ]
+        # Serialize specific fields
+        fields = ['album_name', 'artist', 'tracks']
+        # Use all fields
+        fields = '__all__'
+        # Exclude certian fields
+        exclude = ['users']
+
+        # Model fields which have editable=False set, and AutoField fields will
+        # be set to read-only by default
+        read_only_fields = ['account_name']
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
 snippet serilizer_model "serializers.ModelSerializer"
 modelserializer$1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet nested_serializer "serializers.ModelSerializer"
+modelserializer$1
+
+class RelatedSerializer(serializers.ModelSerializer):
+    my_list = MySerializer(many=True)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet serializer_nested "serializers.ModelSerializer"
+nested_serializer$1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet drf_nested_serializer "serializers.ModelSerializer"
+nested_serializer$1
 endsnippet

@@ -1,0 +1,21 @@
+snippet py3 "py3 << EOF"
+py3 <<EOF
+import vim
+import subprocess
+
+# Reading a variable
+print(vim.eval('a_vim_var'))
+print(vim.vars)
+
+# Setting a vim variable
+hello = 'somestring'
+vim.command(f"let another_vim_var = '{hello}')
+
+python_path = subprocess.run("which python", shell=True, capture_output=True).stdout.decode('utf8').strip()
+EOF
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet python_block "py3 << EOF"
+py3$1
+endsnippet
