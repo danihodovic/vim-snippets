@@ -1,0 +1,54 @@
+snippet html_document "html base template" b
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  </body>
+</html>
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet html_template "html base template"
+html_document$1
+endsnippet
+
+snippet a "<a></a>"
+<a href="${$1:https://google.com}">
+  $2
+</a>
+endsnippet
+
+snippet img "<img />"
+img src="/static/smile.gif" alt="Smiley face"/>
+endsnippet
+
+snippet script "<script src='' />"
+endsnippet
+
+snippet img_responsive "<img src='...'"
+<img src="{% static "app/images/my_img.png" %}" class="img-fluid" alt="Responsive image">
+endsnippet
+
+
+snippet link_href "<link rel='stylesheet'>"
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+endsnippet
+
+snippet script_src "<script src='https://cdnjs'>"
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+endsnippet
+
+snippet script_src_django "<script src='{% static 'js/dashboard.js' %}'></script>"
+<script src="{% static 'js/dashboard.js' %}"></script>
+endsnippet
+
+snippet script_inline "<script type='text/javascript'>"
+<script type="text/javascript">
+const foo = {{ data | safe }};
+</script>
+endsnippet

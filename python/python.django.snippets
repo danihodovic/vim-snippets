@@ -395,3 +395,41 @@ class ArticleListView(ListView):
     def get_queryset(self):
         return Article.objects.filter(foo="bar")
 endsnippet
+
+snippet signal_receiver "Signal receiver function"
+# List of common signals
+# django.db.models.signals.pre_save
+# django.db.models.signals.post_save
+# django.core.signals.request_finished
+# allauth.account.signals.user_signed_up(request, user)
+# allauth.account.signals.user_logged_in(request, user)
+# allauth.account.signals.user_logged_out(request, user)
+
+from django.dispatch import receiver
+
+# Listen to signals emitted from any model
+@receiver(request_finished)
+def my_callback(sender, **kwargs):
+    print("Request finished!")
+
+# Listen for signals associated by a specific model
+@receiver(request_finished, sender=MyModel)
+def my_callback(sender, **kwargs):
+    print("Request finished!")
+endsnippet
+
+global !p
+import px.snippets
+
+def to_snake_case(s):
+    return re.sub('(?!^)([A-Z]+)', r'_\1', s).lower()
+endglobal
+
+snippet foreign_key "models.ForeignKey()"
+`!p snip.rv = to_snake_case(t[1])` = models.ForeignKey(${1:MyModel}, on_delete=models.CASCADE)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet models.ForeignKey "models.ForeignKey()"
+foreign_key$1
+endsnippet
