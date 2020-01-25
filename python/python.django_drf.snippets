@@ -1,66 +1,5 @@
 global !p
-import px.snippets
-import ast
-from collections import namedtuple
-
-def bypass_ultisnips_error(func):
-    def wrapper(*args, **kwargs):
-        result = func(*args, **kwargs)
-        snip.buffer._change_tick = int(vim.eval("b:changedtick"))
-        return result
-
-    return wrapper
-
-def normalized_imports(contents):
-    root = ast.parse(contents)
-    for node in ast.iter_child_nodes(root):
-        if isinstance(node, ast.Import):
-            for n in node.names:
-                yield n.name
-        elif isinstance(node, ast.ImportFrom):
-            module_path = node.module
-            for n in node.names:
-                yield ".".join([node.module, n.name])
-
-def normalized_import_line(line):
-    try:
-        return next(normalized_imports(line), None)
-    except SyntaxError:
-        # We may encounter a syntax error because of lines like class Foo:
-        # which are technically incomplete python
-        pass
-
-@bypass_ultisnips_error
-def clean_imports():
-    buffer = vim.current.buffer
-    snip_start_line, _ = snip.snippet_start
-    snip_end_line, _ = snip.snippet_end
-    snippet_contents = "\n".join(snip.buffer[snip_start_line:snip_end_line+1])
-    contents_before_snippet = "\n".join(buffer[0:snip_start_line])
-
-    snippet_imports = set(normalized_imports(snippet_contents))
-    file_imports = set(normalized_imports(contents_before_snippet))
-    missing_imports = snippet_imports.difference(file_imports)
-
-    imports_to_add = []
-    for line in buffer[snip_start_line:snip_end_line]:
-        if normalized_import_line(line) in missing_imports:
-            imports_to_add.append(line)
-
-    # Delete snippet imports
-    i = snip_start_line
-    while i <= snip_end_line:
-        if normalized_import_line(buffer[i]):
-            buffer[i] = None
-            i -= 1
-            snip_end_line -= 1
-        i += 1
-
-    # Add missing imports to top
-    for import_line in imports_to_add:
-        buffer.append(import_line, index=0)
-
-    snip.cursor.preserve()
+from ultisnips_python import *
 endglobal
 
 post_jump "clean_imports()"
@@ -136,16 +75,27 @@ endsnippet
 
 
 post_jump "clean_imports()"
-snippet viewset "Regular ViewSet"
+snippet viewset_generic "Generic Viewset"
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from myapps.serializers import UserSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import authentication
 
-class UserViewSet(viewsets.ViewSet):
-    authentication_classes =
-    permission_classes
+'''
+The GenericViewSet class inherits from GenericAPIView, and provides the default
+set of get_object, get_queryset methods and other generic view base behavior,
+but does not include any actions by default.
+
+In order to use a GenericViewSet class you'll override the class and either
+mixin the required mixin classes, or define the action implementations
+explicitly.
+'''
+class UserViewSet(viewsets.GenericViewSet):
+    serializer_class = MySerializer
+    authentication_classes = [authentication.SessionAuthentication]
+
     def list(self, request):
         queryset = User.objects.all()
         serializer = UserSerializer(queryset, many=True)
@@ -156,7 +106,26 @@ class UserViewSet(viewsets.ViewSet):
         user = get_object_or_404(queryset, pk=pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+    def create(self, request):
+        pass
+
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
 endsnippet
+
+
+post_jump "px.snippets.expand(snip)"
+snippet readonly_modelviewset "viewsets.ReadOnlyModelViewSet"
+modelviewset_readonly$1
+endsnippet
+
 
 post_jump "px.snippets.expand(snip)"
 snippet serilizer_model "serializers.ModelSerializer"

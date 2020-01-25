@@ -1,3 +1,12 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+
+def to_snake_case(s):
+    return re.sub('(?!^)([A-Z]+)', r'_\1', s).lower()
+endglobal
+
+post_jump "clean_imports(snip)"
 snippet reverse "reverse('some-url')"
 from django.urls import reverse
 reverse("my-url", args=[], kwargs={})
@@ -22,6 +31,7 @@ class Migration(migrations.Migration):
     ]
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet management_command "django management command"
 import logging
 
@@ -64,7 +74,9 @@ class Command(BaseCommand):
         logger.info("Running command")
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet field "Django model field"
+from django.db import models
 text = models.TextField(
     primary_key=False,
     unique=False,
@@ -108,6 +120,7 @@ def validate_even(value):
         )
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet templateview "class MyView(TemplateView)"
 from django.views.generic.base import TemplateView
 
@@ -121,6 +134,7 @@ class HomePageView(TemplateView):
         return context
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet modelform "forms.ModelForm"
 from django import forms
 class BookForm(forms.ModelForm):
@@ -129,6 +143,7 @@ class BookForm(forms.ModelForm):
         fields = ['name', 'authors']
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet form_crispy "Crispy form with form helper"
 from django import forms
 
@@ -163,6 +178,7 @@ class ContactForm(forms.Form):
         )
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet formview "class MyFormView(FormView)"
 from django.views.generic.edit import FormView
 
@@ -182,6 +198,7 @@ class ContactView(FormView):
         return super().form_valid(form)
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet "templateview" "class HomePageView(TemplateView):"
 from django.views.generic.base import TemplateView
 
@@ -196,6 +213,7 @@ class HomePageView(TemplateView):
         return context
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet redirectview "class MyRedirectView(RedirectView):"
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import RedirectView
@@ -214,12 +232,14 @@ class ArticleCounterRedirectView(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet json_dumps_django "json.dumps(list(qs), cls=DjangoJSONEncoder)"
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 data = json.dumps(list(qs), cls=DjangoJSONEncoder)
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet createview "class AuthorCreate(CreateView)"
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -284,6 +304,7 @@ class AuthorCreate(LoginRequiredMixin, CreateView):
 endsnippet
 
 
+post_jump "clean_imports(snip)"
 snippet updateview "class AuthorUpdateView(UpdateView)"
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -353,6 +374,7 @@ class AuthorCreate(LoginRequiredMixin, UpdateView):
         return str(self.success_url)  # success_url may be lazy
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet detailview "class AppDetailView(DetailView)"
 from django.views.generic.detail import DetailView
 
@@ -365,6 +387,7 @@ class JobsDetailView(DetailView):
         return context
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet login_required "@login_required"
 from django.contrib.auth.decorators import login_required
 
@@ -378,6 +401,7 @@ obj, created = Person.objects.update_or_create(
 )
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet listview "class ArticleList(ListView)"
 from django.views.generic.list import ListView
 from articles.models import Article
@@ -396,6 +420,7 @@ class ArticleListView(ListView):
         return Article.objects.filter(foo="bar")
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet signal_receiver "Signal receiver function"
 # List of common signals
 # django.db.models.signals.pre_save
@@ -418,18 +443,31 @@ def my_callback(sender, **kwargs):
     print("Request finished!")
 endsnippet
 
-global !p
-import px.snippets
-
-def to_snake_case(s):
-    return re.sub('(?!^)([A-Z]+)', r'_\1', s).lower()
-endglobal
-
+post_jump "clean_imports(snip)"
 snippet foreign_key "models.ForeignKey()"
+from django.db import models
 `!p snip.rv = to_snake_case(t[1])` = models.ForeignKey(${1:MyModel}, on_delete=models.CASCADE)
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
 snippet models.ForeignKey "models.ForeignKey()"
 foreign_key$1
+endsnippet
+
+post_jump "clean_imports(snip)"
+snippet user "User = get_user_model()"
+from django.contrib.auth import get_user_model
+User = get_user_model()
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet get_user_model "User = get_user_model()"
+user$1
+endsnippet
+
+post_jump "clean_imports(snip)"
+snippet timestampedmodel "class MyModel(TimeStampedModel)"
+from model_utils.models import TimeStampedModel
+class MyModel(TimeStampedModel):
+    pass
 endsnippet

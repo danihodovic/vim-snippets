@@ -2,7 +2,7 @@ snippet pytest_django_db_decorator "@pytest.mark.django_db"
 @pytest.mark.django_db
 endsnippet
 
-snippet pytestmark_pytest_mark_django_db "pytest.mark.django_db"
+snippet pytestmark_django_db "pytestmark = pytest.mark.django_db"
 pytestmark = pytest.mark.django_db
 endsnippet
 
@@ -18,12 +18,12 @@ def test_with_parameters(p1, p2):
     pass
 endsnippet
 
+post_jump "clean_imports()"
 snippet pytest.fixture "@pytest.fixture"
+import pytest
 @pytest.fixture
-def inject():
+def inject(responses):
     with patch("bots.reddit.praw.Reddit", autospec=False) as Reddit:
-        Reddit.return_value.subreddit.return_value.user_is_banned = False
-        user = RedditUserFactory()
         responses.add(
             responses.GET, f"https://www.reddit.com/user/{user.username}", status=200
         )
