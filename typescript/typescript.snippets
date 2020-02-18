@@ -1,3 +1,5 @@
+extends javascript
+
 snippet console.log('var',var) "console.log(str, str)"
 console.log('${1}', $1);
 endsnippet
@@ -55,9 +57,9 @@ this.setState(prevState => {
 endsnippet
 
 
-snippet props_types ""
-type SomeProps = {
-  audienceGroup: MyType[];
+snippet type "Type definition"
+type State = {
+  myValue: MyType[];
 };
 endsnippet
 

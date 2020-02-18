@@ -1,0 +1,22 @@
+global !p
+from ultisnips_python import *
+endglobal
+
+
+post_jump "clean_imports(snip)"
+snippet factory_boy_class "class TargetingEntryFactory(factory.django.DjangoModelFactory)"
+class TargetingEntryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = TargetingEntry
+        # Fields whose name are passed in this list will be used to perform a
+        # Model.objects.get_or_create() instead of the usual
+        # Model.objects.create():
+        django_get_or_create = ('targeting_list',)
+
+    targeting_list = factory.SubFactory(TargetingListFactory)
+    # fb_id =
+    name = models.CharField(max_length=100)
+    path = ArrayField(models.CharField(max_length=50))
+    audience_size = models.PositiveIntegerField()
+    type = models.CharField(max_length=30, choices=[(t, t) for t in targeting_types])
+endsnippet

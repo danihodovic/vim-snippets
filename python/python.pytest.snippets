@@ -1,12 +1,23 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
+post_jump "clean_imports(snip)"
 snippet pytest_django_db_decorator "@pytest.mark.django_db"
+import pytest
 @pytest.mark.django_db
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet pytestmark_django_db "pytestmark = pytest.mark.django_db"
+import pytest
 pytestmark = pytest.mark.django_db
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet pytest_mark_parametrize "@pytest.mark.parametrize"
+import pytest
 @pytest.mark.parametrize(
     "p1,p2",
     [
@@ -18,7 +29,7 @@ def test_with_parameters(p1, p2):
     pass
 endsnippet
 
-post_jump "clean_imports()"
+post_jump "clean_imports(snip)"
 snippet pytest.fixture "@pytest.fixture"
 import pytest
 @pytest.fixture
@@ -30,16 +41,22 @@ def inject(responses):
         yield Reddit.return_value
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet pytest_raises "with pytest.raises()"
+import pytest
 with pytest.raises(ValueError, match=r".* 123 .*"):
     myfunc()
 endsnippet
 
 
+post_jump "clean_imports(snip)"
 snippet pytest.mark.xfail "@pytest.mark.xfail()"
+import pytest
 @pytest.mark.xfail(sys.version_info >= (3, 6), strict=True, raises=ValueError, reason="python3.6 api changes")
 endsnippet
 
+post_jump "clean_imports(snip)"
 snippet pytest.mark.skip "@pytest.mark.skip()"
+import pytest
 @pytest.mark.skip(reason="no way of currently testing this")
 endsnippet
