@@ -10,6 +10,9 @@ services:
     environment:
       ENV: production
     networks:
+      # The default compose network
+      - default
+      # The container must use the below network to communicate!
       - somenetwork
     restart: unless-stopped
     healthcheck:
