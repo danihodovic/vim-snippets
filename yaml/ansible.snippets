@@ -556,3 +556,74 @@ cron:
   # special times
   special_time: annually | daily | hourly | monthly | reboot | weekly | yearly
 endsnippet
+
+snippet yaml_inventory "Yaml inventory file"
+all: # keys must be unique, i.e. only one 'hosts' per group
+  hosts:
+    test2:
+      ansible_host: 127.0.0.1
+      host_var: value
+  vars:
+    group_all_var: value
+  children:
+    other_group:
+      vars:
+        g2_var2: value3
+      hosts:
+        test4:
+          ansible_host: 127.0.0.1
+      children:
+        group_x:
+          hosts:
+            test5   # Note that one machine will work without a colon
+  last_group:
+    hosts:
+      test1 # same host as above, additional group membership
+    vars:
+      group_last_var: value
+endsnippet
+
+snippet requirements_yaml "Ansible requirements yaml"
+---
+roles:
+  - name: geerlingguy.java
+    version: 1.9.7
+
+  # from GitHub, overriding the name and specifying a specific tag
+  - src: https://github.com/bennojoy/nginx
+    version: master
+    name: nginx_role
+
+collections:
+  - name: community.kubernetes
+    version: 0.9.0
+endsnippet
+
+
+snippet assert_variable "Assert role variables required"
+- name: 'Check mandatory variables are defined'
+  assert:
+    that:
+      - app_name is defined
+      - app_user is defined
+      - app_user_group is defined
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet required_variable "Assert role variables required"
+assert_variable$1
+endsnippet
+
+snippet make "Ansible make"
+- name: Build 'install' target with extra arguments
+  make:
+    chdir: /home/ubuntu/cool-project
+    target: install|all
+    params:
+      NUM_THREADS: 4
+      BACKEND: lapack
+
+- name: Make default
+  make:
+    chdir: /home/ubuntu/cool-project
+endsnippet
