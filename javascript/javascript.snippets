@@ -70,3 +70,13 @@ try {
   // handle error...
 }
 endsnippet
+
+snippet axios "axios"
+const http = axios.create({
+  baseURL: 'https://some-domain.com/api/',
+  timeout: 1000,
+  headers: {
+    'X-CSRFToken': document.querySelector("[name=csrfmiddlewaretoken]").value
+  }
+});
+endsnippet

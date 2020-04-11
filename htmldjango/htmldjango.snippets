@@ -49,13 +49,17 @@ snippet lorem "{% lorem %}"
 endsnippet
 
 snippet json_script "{{ value|json_script:'hello-data' }}"
-{{ value|json_script:"myscript-id" }}
+{{ value|json_script:"hello-data" }}
 const value = JSON.parse(document.getElementById('hello-data').textContent);
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
 snippet script_data "Pass Django data as JSON to Javascript"
 json_script$1
+endsnippet
+
+snippet unpkg "Unpkg script"
+<script src="https://unpkg.com/${1:[package]}@${2:[version]}/dist/${3:[file.min.js]}"></script>
 endsnippet
 
 snippet for "for"
