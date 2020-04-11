@@ -59,7 +59,8 @@ class Command(BaseCommand):
             "type",
             help="type of action",
             type=str,
-            required=True | default="confirmation",
+            required=False,
+            default="confirmation",
             choices=["confirmation", "subscription"],
         )
 
@@ -476,4 +477,16 @@ snippet shell_plus_pre_imports "SHELL_PLUS_PRE_IMPORTS"
 SHELL_PLUS_PRE_IMPORTS = [
     ("ninjads.web.facebook", ("get_ad_user", "get_api")),
 ]
+endsnippet
+
+snippet get_or_create "Person.objects.get_or_create"
+# Either gets a person with the first_name and last_name
+# Or creates a person with first_name, last_name and the defaults
+# If you want an exact creation, omit the defaults
+
+obj, created = Person.objects.get_or_create(
+    first_name='John',
+    last_name='Lennon',
+    defaults={'birthday': date(1940, 10, 9)},
+)
 endsnippet
