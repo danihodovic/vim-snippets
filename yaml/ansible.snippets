@@ -60,6 +60,12 @@ copy:
   group: developers
 endsnippet
 
+snippet copy:multiple "ansible: copy a dir or multiple files"
+synchronize:
+  src: some/relative/path
+  dest: /some/absolute/path
+endsnippet
+
 snippet template "template:"
 template:
   src: /path/to/src
@@ -301,6 +307,11 @@ import_role:
 vars:
   my_var: my_value
 tags: my_tag
+endsnippet
+
+snippet import_tasks "import_tasks:"
+- name: Import
+  import_tasks: stuff.yaml
 endsnippet
 
 snippet hostvars[inventory_hostname] "current host vars"
@@ -546,6 +557,12 @@ tags: cron
 cron:
   name: logrotate_prune_log
   job: /usr/sbin/logrotate >> /var/log/logrotate.log 2>&1
+
+  # "At every 15th minute."
+  # Creates an entry like "0 5,2 * * ls -alh > /dev/null"
+  minute: '*/15'
+
+  ############################################################
 
   # time in cron format
   minute: 0-59
