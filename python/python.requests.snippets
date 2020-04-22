@@ -1,0 +1,21 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
+snippet debug_http_request_headers "Debug incoming and outgoing HTTP headers"
+import http.client
+# Debugs headers, but not body
+http.client.HTTPConnection.debuglevel = 1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet http_debug "Debug incoming and outgoing HTTP headers"
+debug_http_requests$1
+endsnippet
+
+snippet requests_toolbelt_base_url ""
+from requests_toolbelt import sessions
+http = sessions.BaseUrlSession(base_url="https://api.org")
+res = http.get("/list")
+endsnippet
