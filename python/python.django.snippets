@@ -90,7 +90,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **_kwargs):
-        logger.info("Running command")
+        self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
+        logger.debug("Running command")
 endsnippet
 
 post_jump "clean_imports(snip)"
