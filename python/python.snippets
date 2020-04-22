@@ -65,14 +65,3 @@ snippet ansible_debug_log ""
 with open("/tmp/ansible-debug.log", "a") as f:
     print("", file=f)
 endsnippet
-
-snippet debug_http_requests "Debug incoming and outgoing HTTP"
-import http.client
-# Debugs headers, but not body
-http.client.HTTPConnection.debuglevel = 1
-endsnippet
-
-post_jump "px.snippets.expand(snip)"
-snippet http_debug "Debug incoming and outgoing HTTP"
-debug_http_requests$1
-endsnippet

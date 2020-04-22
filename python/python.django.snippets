@@ -158,9 +158,29 @@ post_jump "clean_imports(snip)"
 snippet modelform "forms.ModelForm"
 from django import forms
 class BookForm(forms.ModelForm):
+    non_model_variable = forms.BooleanField()
+
     class Meta:
         model = Book
         fields = ['name', 'authors']
+        widgets = {
+            'name': Textarea(attrs={'cols': 80, 'rows': 20}),
+        }
+
+
+    def save(self, commit=True):
+        return super().save(commit=False)
+        # Now you can use the bound save_m2m method after populating initial
+        # data, e.g in form_valid()
+        # instance = form.save()
+        # instance.new_variable = "hello"
+        # instance.save_m2m()
+
+
+    # Disable uniqueness validation, e.g when using a Create + Update view
+    def clean(self):
+        self._validate_unique = False
+        return self.cleaned_data
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -196,6 +216,38 @@ class ContactForm(forms.Form):
             ),
             Submit("submit", "Submit", css_class="btn btn-dark")
         )
+
+
+    def clean_recipients(self):
+        data = self.cleaned_data['recipients']
+        if "fred@example.com" not in data:
+            raise forms.ValidationError("You have forgotten about Fred!")
+
+        # Always return a value to use as the new cleaned data, even if
+        # this method didn't change it.
+        return data
+endsnippet
+
+snippet validate_form_field "Django form field validation"
+def clean_recipients(self):
+    data = self.cleaned_data['recipients']
+    if "fred@example.com" not in data:
+        raise forms.ValidationError("You have forgotten about Fred!")
+
+    # Always return a value to use as the new cleaned data, even if
+    # this method didn't change it.
+    return data
+
+
+def clean(self):
+    cleaned_data = super().clean()
+    cc_myself = cleaned_data.get("cc_myself")
+    subject = cleaned_data.get("subject")
+
+    if cc_myself and subject and "help" not in subject:
+        msg = "Must put 'help' in subject when cc'ing yourself."
+        self.add_error('cc_myself', msg)
+        self.add_error('subject', msg)
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -231,6 +283,14 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['latest_articles'] = Article.objects.all()[:5]
         return context
+endsnippet
+
+snippet redirect "from django.shortcuts import redirect"
+from django.shortcuts import redirect
+def my_view(request):
+    ...
+    obj = MyModel.objects.get(...)
+    return redirect(obj)
 endsnippet
 
 post_jump "clean_imports(snip)"

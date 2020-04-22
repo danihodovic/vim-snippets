@@ -44,6 +44,12 @@ snippet subprocess.run "subprocess.run"
 import subprocess
 
 cmd = "grep 'foo.html' core --include '*.py' -r -n"
-result = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE)
-output = result.decode("utf-8")
+result = subprocess.run(
+  cmd,
+  shell=True,
+  check=True,
+  stdout=subprocess.PIPE,
+  executable="/bin/zsh",
+)
+output = result.stdout.decode("utf-8")
 endsnippet
