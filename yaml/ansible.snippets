@@ -109,10 +109,23 @@ until: health_check_grafana.status == 200
 failed_when: "'AWESOME' not in health_check_grafana.content"
 endsnippet
 
-snippet docker_image "docker_image:"
+snippet docker_image_pull "docker_image: pull"
 docker_image:
+  source: pull
   name: some_repo/some_image:latest
   force: true
+endsnippet
+
+snippet docker_image_build "docker_image: build"
+- name: Build an image and push it to a private repo
+  docker_image:
+    source: build
+    build:
+      path: ./sinatra
+      dockerfile: Dockerfile_sinatra
+    name: registry.ansible.com/chouseknecht/sinatra
+    tag: v1
+    push: false
 endsnippet
 
 snippet docker_container "docker_container:"
@@ -351,12 +364,16 @@ snippet ansible_home "ansible_env.HOME"
 ansible_env.HOME
 endsnippet
 
+snippet lookup_template "lookup('template', 'nginx.conf')"
+lookup('template', 'nginx.conf')
+endsnippet
+
 snippet lookup_file "lookup('file', 'myfile.txt')"
-lookup('file', 'path/to/file.txt')
+lookup('file', 'file.txt')
 endsnippet
 
 snippet lookup_pipe "lookup('pipe', 'date')"
-lookup('pipe','date')
+lookup('pipe', 'date')
 endsnippet
 
 snippet default "default('default_value')"
@@ -393,10 +410,11 @@ snippet playbook "playbook skeleton"
 ---
 - name: Playbook
   hosts: all
-  tasks:
-    - import_role:
-        name: users
-      tags: users
+  roles:
+    - role: ansible-role-users
+      tags: ansible-role-users
+      vars:
+        foo: bar
 endsnippet
 
 snippet group "group:"
@@ -643,4 +661,16 @@ snippet make "Ansible make"
 - name: Make default
   make:
     chdir: /home/ubuntu/cool-project
+endsnippet
+
+snippet find "Find files that match a specific pattern"
+- name: Find files that match a specific pattern
+  register: find_files
+  find:
+    paths: "/var/tmp"
+    patterns: "*.old,*.log.gz"
+    use_regex: true # (default: false)
+    file_type: "file|directory|link (default: file)"
+
+- debug: var=tmp_files.files[0].path
 endsnippet
