@@ -88,3 +88,15 @@ snippet debugger_tags ""
 {% load debugger_tags %}
 {{ obj | debugger }}
 endsnippet
+
+snippet url_admin_changelist ""
+{% url "admin:${1:APP}_${2:MODEL}_changelist" %}
+endsnippet
+
+snippet url_admin_add ""
+{% url "admin:${1:APP}_${2:MODEL}_add" %}
+endsnippet
+
+snippet url_admin_change ""
+{% url "admin:${1:APP}_${2:MODEL}_change" model.id %}
+endsnippet

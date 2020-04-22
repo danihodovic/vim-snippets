@@ -12,6 +12,24 @@ from django.urls import reverse
 reverse("my-url", args=[], kwargs={})
 endsnippet
 
+post_jump "clean_imports(snip)"
+snippet reverse_admin_changelist ""
+from django.urls import reverse
+reverse("admin:${1:APP}_${2:MODEL}_changelist")
+endsnippet
+
+post_jump "clean_imports(snip)"
+snippet reverse_admin_add ""
+from django.urls import reverse
+reverse("admin:${1:APP}_${2:MODEL}_add")
+endsnippet
+
+post_jump "clean_imports(snip)"
+snippet reverse_admin_change ""
+from django.urls import reverse
+reverse("admin:${1:APP}_${2:MODEL}_change", args=[model.id])
+endsnippet
+
 snippet migration "django migration"
 from django.db import migrations
 
