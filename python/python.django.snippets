@@ -253,6 +253,7 @@ endsnippet
 post_jump "clean_imports(snip)"
 snippet formview "class MyFormView(FormView)"
 from django.views.generic.edit import FormView
+from django.shortcuts import render
 
 class ContactView(FormView):
     template_name = 'myapp/contact.html'
@@ -263,11 +264,31 @@ class ContactView(FormView):
             self.request
         )
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['template_path'] = 'hello'
+        return initial
+
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         form.send_email()
+
+        # Modify the success_url on the fly
+        self.success_url = reverse('leaderboard', board_name=board_name)
         return super().form_valid(form)
+
+        # If you don't want to redirect the view, return a response
+        # messages.success(self.request, "Your password is changed")
+        # return render(self.request, self.template_name, self.get_context_data())
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['latest_articles'] = 'hello'
+        return context
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -568,4 +589,38 @@ obj, created = Person.objects.get_or_create(
     last_name='Lennon',
     defaults={'birthday': date(1940, 10, 9)},
 )
+endsnippet
+
+snippet object_does_not_exist "try / catch ObjectDoesNotExist"
+from django.core.exceptions import ObjectDoesNotExist
+
+try:
+    user = User.objects.get(username='foo')
+except ObjectDoesNotExist:
+    pass
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet try_object_does_not_exist "try / catch ObjectDoesNotExist"
+object_does_not_exist$1
+endsnippet
+
+snippet message_info "messages.info"
+from django.contrib import messages
+messages.info(request, 'Three credits remain in your account.')
+endsnippet
+
+snippet message_success "messages.success"
+from django.contrib import messages
+messages.success(request, 'Profile details updated.')
+endsnippet
+
+snippet message_warning "messages.warning"
+from django.contrib import messages
+messages.warning(request, 'Your account expires in three days.')
+endsnippet
+
+snippet message_error "messages.error"
+from django.contrib import messages
+messages.error(request, 'Error.')
 endsnippet
