@@ -7,30 +7,24 @@ file:
   # files and directories
   state: directory|absent|file
   path: /some/path
-  recurse: true # only valid for directories
-
-  # symlinks
-  state: link
-  src: /actual/path
-  dest: /link/path
-
-  # force the creation of the symlinks in two cases: the source file does not
-  # exist (but will appear later); the destination exists and is a file (so, we
-  # need to unlink the "path" file and create symlink to the "src" file in place
-  # of it).
-  force: true
-
-  # general options
   mode: 0770
   owner: root
   group: developers
 endsnippet
 
-snippet filedir: "filedir:"
+snippet file_symlink
+file:
+  state: link
+  src: my_file.txt
+  dest: /link/path
+  force: true
+endsnippet
+
+snippet file_dir "filedir"
 file:
   state: directory
   path: /some/path
-  recurse: true # only valid for directories
+  recurse: true
   mode: 0770
   owner: root
   group: developers
