@@ -605,22 +605,116 @@ snippet try_object_does_not_exist "try / catch ObjectDoesNotExist"
 object_does_not_exist$1
 endsnippet
 
+
+snippet send_mail "Send email in Django"
+from django.core.mail import send_mail
+
+send_mail(
+    subject='Subject here',
+    message='Here is the message.',
+    from_email='from@example.com',
+    recipient_list=['to@example.com'],
+    fail_silently=False,
+    html_message='<div>Here is the message.</div>',
+)
+endsnippet
+
 snippet message_info "messages.info"
 from django.contrib import messages
-messages.info(request, 'Three credits remain in your account.')
+messages.info(self.request, 'Three credits remain in your account.')
 endsnippet
 
 snippet message_success "messages.success"
 from django.contrib import messages
-messages.success(request, 'Profile details updated.')
+messages.success(self.request, 'Profile details updated.')
 endsnippet
 
 snippet message_warning "messages.warning"
 from django.contrib import messages
-messages.warning(request, 'Your account expires in three days.')
+messages.warning(self.request, 'Your account expires in three days.')
 endsnippet
 
 snippet message_error "messages.error"
 from django.contrib import messages
-messages.error(request, 'Error.')
+messages.error(self.request, 'Error.')
+endsnippet
+
+snippet assertContains ""
+from pytest_django import asserts
+asserts.assertContains(
+    response,
+    count=None,
+    status_code=200,
+    msg_prefix='',
+    html=False
+)
+endsnippet
+
+snippet assertNotContains ""
+from pytest_django.asserts import assertNotContains
+assertNotContains(
+    response,
+    text,
+    status_code=200,
+    msg_prefix='',
+    html=False
+)
+endsnippet
+
+snippet assertRedirects ""
+from pytest_django.asserts import assertRedirects
+
+# Asserts that the response returned a status_code redirect status, redirected
+# to expected_url (including any GET data), and that the final page was
+# received with target_status_code.
+assertRedirects(
+    response,
+    expected_url,
+    status_code=302,
+    target_status_code=200,
+    msg_prefix='',
+    fetch_redirect_response=True,
+)
+endsnippet
+
+snippet assertNumQueries "Django assertNumQueries"
+from pytest_django.asserts import assertNumQueries
+
+# Asserts that when func is called with *args and **kwargs that num database
+# queries are executed.
+with assertNumQueries(2):
+    Person.objects.create(name="Aaron")
+    Person.objects.create(name="Daniel")
+endsnippet
+
+snippet assertFormError "Django assertFormError"
+from pytest_django.asserts import assertFormError
+
+# Asserts that a field on a form raises the provided list of errors when rendered
+# on the form.
+#
+# form is the name the Form instance was given in the template context.
+#
+# field is the name of the field on the form to check. If field has a value of
+# None, non-field errors (errors you can access via form.non_field_errors()) will
+# be checked.
+#
+# errors is an error string, or a list of error strings, that are expected as a
+# result of form validation.
+
+assertFormError(response, form, field, errors, msg_prefix='')
+endsnippet
+
+snippet assertHTMLEqual "Django assertHTMLEqual"
+from pytest_django.asserts import assertHTMLEqual
+
+assertHTMLEqual(
+    '<input type="checkbox" checked="checked" id="id_accept_terms" />',
+    '<input id="id_accept_terms" type="checkbox" checked>'
+)
+endsnippet
+
+snippet assertInHTML "Django assertInHTML"
+from pytest_django.asserts import assertInHTML
+assertInHTML("<div class='hello'>", response.content, count=None, msg_prefix='')
 endsnippet
