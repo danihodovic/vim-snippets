@@ -140,6 +140,39 @@ def validate_even(value):
         )
 endsnippet
 
+snippet choicefield_form ""
+status = forms.ChoiceField(
+  default=1,
+  choices=(
+    (1, _("Not relevant")),
+    (2, _("Review")),
+    (3, _("Maybe relevant")),
+    (4, _("Relevant")),
+    (5, _("Leading candidate"))
+  ),
+)
+endsnippet
+
+snippet uuid_field "models.UUIDField(primary_key=True)"
+models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+endsnippet
+
+snippet choicefield_model "class Status(models.TextChoices)"
+from django.db import models
+
+class Status(models.TextChoices):
+    UNPUBLISHED = 'UN', 'Unpublished'
+    PUBLISHED = 'PB', 'Published'
+
+
+class Book(models.Model):
+    status = models.CharField(
+        max_length=2,
+        choices=Status.choices,
+        default=Status.UNPUBLISHED,
+    )
+endsnippet
+
 post_jump "clean_imports(snip)"
 snippet templateview "class MyView(TemplateView)"
 from django.views.generic.base import TemplateView
@@ -153,6 +186,15 @@ class HomePageView(TemplateView):
         context['latest_articles'] = Article.objects.all()[:5]
         return context
 endsnippet
+
+
+snippet get_context_data "def get_context_data"
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['latest_articles'] = Article.objects.all()[:5]
+    return context
+endsnippet
+
 
 post_jump "clean_imports(snip)"
 snippet modelform "forms.ModelForm"
@@ -228,6 +270,25 @@ class ContactForm(forms.Form):
         return data
 endsnippet
 
+snippet form "Django form"
+from django import forms
+
+class ContactForm(forms.Form):
+    email = forms.EmailField(label='My Email', required=False)
+    message = forms.CharField(widget=forms.Textarea())
+    field_order = ['message', 'email']
+
+    def clean(self):
+        self._validate_unique = False
+        return self.cleaned_data
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if not data.endswith('@honeylogic.io'):
+            raise forms.ValidationError('You are not a HoneyLogicer')
+        return data
+endsnippet
+
 snippet validate_form_field "Django form field validation"
 def clean_recipients(self):
     data = self.cleaned_data['recipients']
@@ -258,16 +319,23 @@ from django.shortcuts import render
 class ContactView(FormView):
     template_name = 'myapp/contact.html'
     form_class = ContactForm
+    fields = []
+    success_url = reverse('foo:bar')
+    initial = {'my_field': 'my_value'}
 
-    def get_success_url(self):
-        return providers.registry.by_id("exist", self.request).get_login_url(
-            self.request
-        )
 
     def get_initial(self):
-        initial = super().get_initial()
-        initial['template_path'] = 'hello'
-        return initial
+        return {'my_field': 'my_value'}
+
+
+    def get_form_class(self):
+        return self.form_class
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['number'].label = 'Hello'
+        return form
+
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
@@ -280,15 +348,30 @@ class ContactView(FormView):
 
         # If you don't want to redirect the view, return a response
         # messages.success(self.request, "Your password is changed")
-        # return render(self.request, self.template_name, self.get_context_data())
+        return render(self.request, self.template_name, self.get_context_data())
+
 
     def form_invalid(self, form):
         return super().form_invalid(form)
+
+
+    def get_success_url(self):
+        return reverse('foo:bar')
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['latest_articles'] = 'hello'
         return context
+endsnippet
+
+snippet render_to_response "FormView render_to_response"
+return self.render_to_response(self.get_context_data(form=form))
+endsnippet
+
+snippet get_initial ""
+def get_initial(self):
+    return {'template_path': 'hello'}
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -323,9 +406,11 @@ from articles.models import Article
 
 class ArticleCounterRedirectView(RedirectView):
     permanent = False
-    query_string = True
+    url = reverse_lazy("my_view")
+    query_string = True # Pass on query strings in the redirect
     pattern_name = 'article-detail'
 
+    # If `url` is not specified, dynamically call this method.
     def get_redirect_url(self, *args, **kwargs):
         article = get_object_or_404(Article, pk=kwargs['pk'])
         article.update_counter()
@@ -547,7 +632,12 @@ endsnippet
 post_jump "clean_imports(snip)"
 snippet foreign_key "models.ForeignKey()"
 from django.db import models
-`!p snip.rv = to_snake_case(t[1])` = models.ForeignKey(${1:MyModel}, on_delete=models.CASCADE)
+`!p snip.rv = to_snake_case(t[1])` = models.ForeignKey(
+  ${1:MyModel},
+  on_delete=models.CASCADE,
+  related_name="tags",
+  related_query_name="tag",
+)
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
@@ -702,7 +792,13 @@ from pytest_django.asserts import assertFormError
 # errors is an error string, or a list of error strings, that are expected as a
 # result of form validation.
 
-assertFormError(response, form, field, errors, msg_prefix='')
+assertFormError(
+  res,
+  'form',
+  'recipients',
+  ['The email address invalid is invalid'],
+  msg_prefix=''
+)
 endsnippet
 
 snippet assertHTMLEqual "Django assertHTMLEqual"

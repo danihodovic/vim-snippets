@@ -14,7 +14,7 @@ class CommentSerializer(serializers.Serializer):
 
 class QuerySetView(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def get(self, request, path_param, format=None):
         serializer = QuerySerializer(request.data)
@@ -33,7 +33,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class QuerySetView(APIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated, permissions.IsAdminUser]
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def get(self, request, path_param, format=None):
         serializer = QuerySerializer(request.data)
@@ -44,7 +44,7 @@ class QuerySetView(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = UserSerializer(data=data)
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 endsnippet
@@ -72,6 +72,25 @@ class MySerializer(serializers.ModelSerializer):
         # Model fields which have editable=False set, and AutoField fields will
         # be set to read-only by default
         read_only_fields = ['account_name']
+
+    def to_internal_value(self, data):
+        return super().to_internal_value(data)
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)
+
+    def update(self, instance, validated_data):
+        super().update(instance, validated_data)
+
+    def create(self, validated_data):
+        super().create(validated_data)
+
+    def save(self):
+        # Save will call update or create
+        email = self.validated_data['email']
+        message = self.validated_data['message']
+        send_email(from=email, message=message)
+        return super().save()
 endsnippet
 
 
@@ -139,6 +158,9 @@ modelserializer$1
 
 class RelatedSerializer(serializers.ModelSerializer):
     my_list = MySerializer(many=True)
+endsnippet
+
+snippet serializer ""
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
