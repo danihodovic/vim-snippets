@@ -23,6 +23,9 @@ parser.add_argument(
 
 # Flag argument
 parser.add_argument('--flag-argument', type=str, help='helpful text...')
+parser.add_argument('--flag-boolean', action='store_true', help='enable a boolean value')
+parser.add_argument('--flag-boolean-negative', action='store_false', help='--no-feature')
+parser.add_argument('--flag-default', type=str, default='/boot', help='The boot directory to clean')
 
 # Parse and read args
 args = parser.parse_args()
@@ -51,5 +54,5 @@ result = subprocess.run(
   stdout=subprocess.PIPE,
   executable="/bin/zsh",
 )
-output = result.stdout.decode("utf-8")
+output = result.stdout.decode("utf-8").strip() # decode & strip newlines
 endsnippet
