@@ -347,7 +347,7 @@ snippet for_host_in_group "loop over hostvars in group"
 endsnippet
 
 snippet hostname "inventory_hostname"
-inventory_hostname
+'{{ inventory_hostname }}'
 endsnippet
 
 snippet ansible_ip "ansible_default_ipv4.address"
@@ -363,7 +363,12 @@ snippet ansible_user "ansible_env.USER"
 endsnippet
 
 snippet ansible_home "ansible_env.HOME"
-ansible_env.HOME
+'{{ ansible_env.HOME }}'
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet home "ansible_env.HOME"
+ansible_home$1
 endsnippet
 
 snippet lookup_template "lookup('template', 'nginx.conf')"
