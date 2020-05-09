@@ -1,9 +1,20 @@
 extends html
 
+snippet csrf_token ""
+{% csrf_token %}
+endsnippet
+
 snippet block "{% block b %}"
 {% block css %}
 {{ block.super }}
 {% endblock %}
+endsnippet
+
+snippet form "Basic HTML form"
+<form method="POST" action="{% url "foo:bar" arg kwarg=kwarg %}">
+  {% csrf_token %}
+  ${1:}
+</form>
 endsnippet
 
 snippet crispy_form "{% crispy form form.helper %}"
@@ -63,11 +74,16 @@ snippet unpkg "Unpkg script"
 endsnippet
 
 snippet for "for"
-<ul>
 {% for athlete in athlete_list %}
     <li>{{ athlete.name }}</li>
 {% endfor %}
-</ul>
+endsnippet
+
+snippet for_field_in_form "Iterate over form fields"
+{% for field in form %}
+  {{ field }}
+  {{ field.label_tag }}
+{% endfor %}
 endsnippet
 
 snippet for_empty "for_empty"
@@ -87,6 +103,10 @@ endsnippet
 snippet debugger_tags ""
 {% load debugger_tags %}
 {{ obj | debugger }}
+endsnippet
+
+snippet url "{% url %}"
+{% url "my_url" my_arg my_kwarg=my_kwarg %}
 endsnippet
 
 snippet url_admin_changelist ""
