@@ -1,0 +1,33 @@
+snippet k8s_deployment "Kubernetes deployment yaml"
+k8s:
+  state: present
+  apply: true
+  definition:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      namespace: '{{ namespace }}'
+      name: '{{ app }}'
+      labels:
+        app: '{{ app }}'
+        name: ${1:adin}
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: '{{ app }}'
+      template:
+        metadata:
+          labels:
+            app: '{{ app }}'
+            name: $1
+        spec:
+          containers:
+            - name: '{{ app }}'
+              image: n8nio/n8n
+              ports:
+                - containerPort: '{{ app_port }}'
+              env:
+                - name: N8N_PORT
+                  value: '{{ app_port | string }}'
+endsnippet
