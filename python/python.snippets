@@ -1,3 +1,8 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
 snippet breakpoint() "breakpoint()"
 breakpoint()
 ${1:}
@@ -10,9 +15,13 @@ endsnippet
 
 snippet __name__ "if __name__ == '__main__'"
 if __name__ == '__main__':
-    ${1:}
+    ${1:main()}
 endsnippet
 
+post_jump "px.snippets.expand(snip)"
+snippet if_main "if __name__ == '__main__'"
+__name__$1
+endsnippet
 
 snippet pylint_disable_line_too_long "# pylint: disable=line-too-long"
 # pylint: disable=line-too-long

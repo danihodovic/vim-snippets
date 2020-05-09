@@ -223,17 +223,25 @@ snippet apt "apt:"
 apt:
   name: package
   update_cache: true
+endsnippet
 
-# deb from the internet
+snippet apt_deb_internet
 apt:
   deb: https://example.com/python-ppq_0.1-1_all.deb
-
-# upgrade all packages to the latest version
-  apt:
-    name: "*"
-    state: latest
-    update_cache: true
 endsnippet
+
+snippet apt_update_all_packages ""
+apt:
+  name: "*"
+  state: latest
+  update_cache: true
+endsnippet
+
+snippet apt_autoremove "apt_autoremove"
+apt:
+  autoremove: true
+endsnippet
+
 
 snippet apt_repository "apt_repository:"
 apt_repository:
@@ -667,4 +675,31 @@ snippet find "Find files that match a specific pattern"
     file_type: "file|directory|link (default: file)"
 
 - debug: var=tmp_files.files[0].path
+endsnippet
+
+snippet script_python "Executes local python script on remote node"
+- name: Run a script using an executable in a system path
+  script: /some/local/script.py
+  args:
+    executable: python3
+    chdir: /my/dir
+    # creates: /some/file
+    # removes: /some/file
+endsnippet
+
+snippet script "Executes local script on remote node"
+- name: Run a script using an executable in a system path
+  script: /some/local/script.sh
+  args:
+    chdir: /my/dir
+    # creates: /some/file
+    # removes: /some/file
+endsnippet
+
+snippet base64decode ""
+{{ encoded | b64decode }}
+endsnippet
+
+snippet base64encode ""
+{{ decoded | string | b64encode }}
 endsnippet
