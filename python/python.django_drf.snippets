@@ -8,6 +8,7 @@ snippet serializer_usage_in_apiview "class CommentSerializer(serializers.Seriali
 from rest_framework import serializers
 
 class CommentSerializer(serializers.Serializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     email = serializers.EmailField()
     updated = serializers.CharField()
     created = serializers.DateTimeField()
@@ -55,6 +56,7 @@ snippet modelserializer "serializers.ModelSerializer"
 from rest_framework import serializers
 
 class MySerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     # Using foreign key field
     company_name = serializers.CharField(source="company.name")
     # Using model method
@@ -72,6 +74,9 @@ class MySerializer(serializers.ModelSerializer):
         # Model fields which have editable=False set, and AutoField fields will
         # be set to read-only by default
         read_only_fields = ['account_name']
+
+        # When many=True, use this custom bulk serializer
+        list_serializer_class = MyModelListSerializer
 
     def to_internal_value(self, data):
         return super().to_internal_value(data)

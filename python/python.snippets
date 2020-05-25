@@ -74,3 +74,8 @@ snippet ansible_debug_log ""
 with open("/tmp/ansible-debug.log", "a") as f:
     print("", file=f)
 endsnippet
+
+snippet random_int "Random integer in range between a - b"
+import random
+random.randint(a, b)
+endsnippet

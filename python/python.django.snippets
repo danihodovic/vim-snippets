@@ -89,9 +89,11 @@ class Command(BaseCommand):
             default=False,
         )
 
-    def handle(self, *args, **_kwargs):
+    def handle(self, *args, **kwargs):
         self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
+        # styles: ERROR, NOTICE, WARNING, SUCCESS
         logger.debug("Running command")
+        user = User.objects.get(username=kwargs["username"])
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -374,6 +376,24 @@ def get_initial(self):
     return {'template_path': 'hello'}
 endsnippet
 
+snippet clean "def clean(self) # clean form"
+def clean(self):
+    data = super().clean()
+
+    # Raise a general error
+    raise forms.ValidationError(
+        "Did not send for 'help' in the subject despite "
+        "CC'ing yourself."
+    )
+
+    # Add a specific error
+    self.add_error('cc_myself', msg)
+
+    return data
+endsnippet
+
+
+
 post_jump "clean_imports(snip)"
 snippet "templateview" "class HomePageView(TemplateView):"
 from django.views.generic.base import TemplateView
@@ -632,11 +652,26 @@ endsnippet
 post_jump "clean_imports(snip)"
 snippet foreign_key "models.ForeignKey()"
 from django.db import models
+
+# Before using foreinkey, consider if it's a OneToOne relationship
 `!p snip.rv = to_snake_case(t[1])` = models.ForeignKey(
   ${1:MyModel},
   on_delete=models.CASCADE,
   related_name="tags",
   related_query_name="tag",
+)
+endsnippet
+
+post_jump "clean_imports(snip)"
+snippet foreign_key "models.ForeignKey()"
+from django.db import models
+
+# If you do not specify the related_name argument for the OneToOneField, Django
+# will use the lowercase name of the current model as default value.
+`!p snip.rv = to_snake_case(t[1])` = models.OneToOneField(
+  ${1:MyModel},
+  on_delete=models.CASCADE,
+  related_name="tags",
 )
 endsnippet
 
@@ -733,6 +768,7 @@ snippet assertContains ""
 from pytest_django import asserts
 asserts.assertContains(
     response,
+    text,
     count=None,
     status_code=200,
     msg_prefix='',
