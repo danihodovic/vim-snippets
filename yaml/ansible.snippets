@@ -30,6 +30,23 @@ file:
   group: developers
 endsnippet
 
+snippet tempfile "Create a temporary file or directory"
+- name: create temporary build directory
+  register: tempfile_1
+  tempfile:
+    state: directory|file
+    path: /tmp              # optional, uses system default
+    prefix: 'ansible.'      # optional, default 'ansible.'
+    suffix: build           # optional, default ''
+
+- debug: var=tempfile_1.path
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet tmp "Create a temporary directory"
+tempfile$1
+endsnippet
+
 snippet stat "stat:"
 stat:
   path: /tmp/parity.tgz
@@ -58,6 +75,21 @@ snippet copy:multiple "ansible: copy a dir or multiple files"
 synchronize:
   src: some/relative/path
   dest: /some/absolute/path
+endsnippet
+
+snippet slurp "Read a file on a remote host"
+- name: Read the openproject config
+  slurp:
+    src: '{{ openproject_dir }}/config/configuration.yml'
+  register: config_contents_b64
+
+- set_fact:
+    config_contents: '{{ config_contents_b64.content | b64decode }}'
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet read_remote_file "Read a file on the remote host"
+slurp$1
 endsnippet
 
 snippet template "template:"
@@ -145,6 +177,24 @@ docker_container:
   volumes:
     - '{{ selfservice_directory }}/nginx.conf:/etc/nginx/nginx.conf'
     - '{{ selfservice_directory }}/selfservice/frontend/dist:/data'
+endsnippet
+
+snippet docker_container_info "Docker inspect a container with Ansible"
+- name: Assert that it uses docker networks provided
+  register: container_info
+  docker_container_info:
+    name: openproject
+
+- name: Assert docker container settings
+  assert:
+    that:
+      - "'openproject' in container_info.container.NetworkSettings.Networks"
+      - 'container_info.container.HostConfig.RestartPolicy.Name == "unless-stopped"'
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet inspect "Docker inspect Ansible"
+docker_container_info$1
 endsnippet
 
 snippet docker_service "docker_service:"
@@ -372,15 +422,15 @@ ansible_home$1
 endsnippet
 
 snippet lookup_template "lookup('template', 'nginx.conf')"
-lookup('template', 'nginx.conf')
+'{{ lookup("template", "nginx.conf") }}'
 endsnippet
 
 snippet lookup_file "lookup('file', 'myfile.txt')"
-lookup('file', 'file.txt')
+'{{ lookup("file", "file.txt") }}'
 endsnippet
 
 snippet lookup_pipe "lookup('pipe', 'date')"
-lookup('pipe', 'date')
+'{{ lookup("pipe", "date") }}'
 endsnippet
 
 snippet default "default('default_value')"
@@ -707,4 +757,35 @@ endsnippet
 
 snippet base64encode ""
 {{ decoded | string | b64encode }}
+endsnippet
+
+snippet wait_for_tcp_output "Wait for port to open or file to exist"
+- name: Wait 300 seconds for port 22 to become open and contain "OpenSSH"
+  wait_for:
+    port: 22
+    host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
+    search_regex: OpenSSH
+    delay: 10 # delay 10s before starting
+    timeout: 300
+  connection: local
+endsnippet
+
+snippet wait_for_file_output "Wait for port to open or file to exist"
+- name: Wait until the string "completed" is in the file /tmp/foo before continuing
+  wait_for:
+    path: /tmp/foo
+    search_regex: completed
+    timeout: 300
+endsnippet
+
+snippet handler "Ansible handler"
+- name: Health check openproject
+  listen: health_check_openproject
+  uri:
+    url: http://localhost/api/v3
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 300
+  delay: 1
 endsnippet
