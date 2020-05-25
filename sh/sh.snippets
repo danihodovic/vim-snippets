@@ -22,11 +22,18 @@ snippet dir "get the script current directory"
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 endsnippet
 
-snippet eof "EOF"
+snippet eof_variable "EOF content to a variable"
 local VAR=$(cat <<EOF
 abc'asdf"
 $(dont-execute-this)
 foo"bar"''
 EOF
 )
+endsnippet
+
+snippet eof_file "EOF content to a file"
+cat <<'EOF' > .envrc
+dotenv
+source .venv/bin/activate
+EOF
 endsnippet
