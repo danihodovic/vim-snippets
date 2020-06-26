@@ -5,18 +5,22 @@ endglobal
 
 post_jump "clean_imports(snip)"
 snippet factory_boy_class "class TargetingEntryFactory(factory.django.DjangoModelFactory)"
-class TargetingEntryFactory(factory.django.DjangoModelFactory):
+class EntryFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = TargetingEntry
+        model = Entry
         # Fields whose name are passed in this list will be used to perform a
         # Model.objects.get_or_create() instead of the usual
         # Model.objects.create():
-        django_get_or_create = ('targeting_list',)
+        django_get_or_create = ('user',)
 
-    targeting_list = factory.SubFactory(TargetingListFactory)
-    # fb_id =
-    name = models.CharField(max_length=100)
-    path = ArrayField(models.CharField(max_length=50))
-    audience_size = models.PositiveIntegerField()
-    type = models.CharField(max_length=30, choices=[(t, t) for t in targeting_types])
+    # Creates a dependent object (foreign key or one to one field)
+    tags_list = factory.SubFactory(TagsListFactory)
+
+    # Create a field that depends on other fields
+    @factory.lazy_attribute
+    def email(self):
+        return f"{self.name}@domain.com"
+
+    # Alternatively use a lambda
+    email = factory.LazyAttribute(lambda o: '%s@example.com' % o.username)
 endsnippet

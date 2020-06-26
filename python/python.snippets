@@ -79,3 +79,15 @@ snippet random_int "Random integer in range between a - b"
 import random
 random.randint(a, b)
 endsnippet
+
+snippet responses_assert_request "responses.calls"
+import responses
+import furl
+
+assert len(responses.calls) == 1
+assert responses.calls[0].request.url == 'http://twitter.com/api/1/foobar?foo=bar'
+responses.calls[0].request.body == '{"payload": "hello"}'
+# Assert on request params
+url = furl(responses.calls[0].request.url)
+assert url.args['contact_ref'] == 'xk432kws'
+endsnippet

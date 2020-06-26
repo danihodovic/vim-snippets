@@ -56,3 +56,40 @@ result = subprocess.run(
 )
 output = result.stdout.decode("utf-8").strip() # decode & strip newlines
 endsnippet
+
+post_jump "clean_imports(snip)"
+snippet testcase "class MyTest(TestCase):"
+from unittest import TestCase
+from django.test import TestCase
+from unittest import skip
+
+
+class SomeClass(TestCase):
+    def setUp(self):
+        self.widget = Widget('The widget')
+
+    def tearDown(self):
+        self.widget.dispose()
+
+    @classmethod
+    def setUpClass(cls):
+        cls._connection = createExpensiveConnectionObject()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._connection.destroy()
+
+    def test_subtest(self):
+        for i in range(0, 6):
+            with self.subTest(i=i):
+                self.assertEqual(i % 2, 0)
+
+    @unittest.skip("demonstrating skipping")
+    def test_skip(self):
+        pass
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet testclass "class MyTest(TestCase):"
+testcase$1
+endsnippet

@@ -1,5 +1,10 @@
 extends html
 
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
 snippet csrf_token ""
 {% csrf_token %}
 endsnippet
@@ -39,6 +44,11 @@ endsnippet
 
 snippet load "{% load static %}"
 {% load static %}
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet {% "{% load static %}"
+load$1
 endsnippet
 
 snippet static "{% static 'images/favicons/favicon.ico' %}"
@@ -81,8 +91,9 @@ endsnippet
 
 snippet for_field_in_form "Iterate over form fields"
 {% for field in form %}
-  {{ field }}
   {{ field.label_tag }}
+  {{ field }}
+  {{ field.errors }}
 {% endfor %}
 endsnippet
 
