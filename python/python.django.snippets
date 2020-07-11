@@ -13,6 +13,12 @@ reverse("my-url", args=[], kwargs={})
 endsnippet
 
 post_jump "clean_imports(snip)"
+snippet reverse_lazy "reverse_lazy('some-url')"
+from django.urls import reverse_lazy
+reverse_lazy("my-url", args=[], kwargs={})
+endsnippet
+
+post_jump "clean_imports(snip)"
 snippet reverse_admin_changelist ""
 from django.urls import reverse
 reverse("admin:${1:APP}_${2:MODEL}_changelist")
@@ -67,6 +73,13 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
+            "--dry-run",
+            help="Print commands without executing",
+            action="store_true",
+            default=False,
+        )
+
+        parser.add_argument(
             "--id",
             type=int,
             default=1,
@@ -82,13 +95,6 @@ class Command(BaseCommand):
             choices=["confirmation", "subscription"],
         )
 
-        parser.add_argument(
-            "--watch",
-            help="watch files",
-            action="store_true",
-            default=False,
-        )
-
     def handle(self, *args, **kwargs):
         self.stdout.write(self.style.SUCCESS('Successfully closed poll "%s"' % poll_id))
         self.stdout.write(self.style.NOTICE('notice - A minor error.'))
@@ -96,6 +102,18 @@ class Command(BaseCommand):
         self.stdout.write(self.style.ERROR('error - A major error.'))
         logger.debug("Running command")
         user = User.objects.get(username=kwargs["username"])
+
+        self.stdout.write(self.style.SUCCESS('Migrating users'))
+        if kwargs['dry_run']:
+            self.stdout.write(self.style.NOTICE('\tdry-run enabled\n'))
+
+        for u in User.objects.filter(conferencecalluser__isnull=False):
+            if not kwargs['dry_run']:
+                u.conferencecalluser.delete()
+                ConferenceCallUser.create(u)
+            self.stdout.write(self.style.SUCCESS('Migrated user "%s"' % u.username))
+
+        self.stdout.write(self.style.SUCCESS('\nSuccess'))
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -186,6 +204,11 @@ class Book(models.Model):
         choices=Status.choices,
         default=Status.UNPUBLISHED,
     )
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet enum_choice_field "Enum for a model choicefield"
+choicefield_model$1
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -354,13 +377,13 @@ post_jump "clean_imports(snip)"
 snippet formview "class MyFormView(FormView)"
 from django.views.generic.edit import FormView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 class ContactView(SuccessMessageMixin, FormView):
     template_name = 'myapp/contact.html'
     form_class = ContactForm
     fields = []
-    success_url = reverse('foo:bar')
+    success_url = reverse_lazy('foo:bar')
     initial = {'my_field': 'my_value'}
 
     # The cleaned data from the form is available for string interpolation using
@@ -948,7 +971,14 @@ endsnippet
 
 snippet assertInHTML "Django assertInHTML"
 from pytest_django.asserts import assertInHTML
-assertInHTML("<div class='hello'>", response.content, count=None, msg_prefix='')
+assertInHTML("<div class='hello'>", res.content, count=None, msg_prefix='')
+
+# If that doesn't work, use
+
+import re
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(res.content, 'html.parser')
+assert soup.find('a', text=re.compile(self.call.created_at.strftime("%m/%d/%Y")))
 endsnippet
 
 post_jump "clean_imports(snip)"
