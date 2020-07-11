@@ -1,0 +1,18 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
+snippet singleobjectmixin "SingleObjectMixin"
+from django.views.generic.detail import SingleObjectMixin
+
+# Retrieves and assigns to self.object based on kwargs.pk
+class ViewThatRetrievesObjectFromPath(SingleObjectMixin, TemplateView):
+    model = MyModel
+    queryset = MyModel.objects.all()
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet mixin_singleobject "SingleObjectMixin"
+singleobjectmixin$1
+endsnippet
