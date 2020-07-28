@@ -16,3 +16,43 @@ post_jump "px.snippets.expand(snip)"
 snippet mixin_singleobject "SingleObjectMixin"
 singleobjectmixin$1
 endsnippet
+
+snippet "accessmixin" "class AccessMixin"
+from django.contrib.auth.mixins import AccessMixin
+class ConferenceUserRequired(AccessMixin):
+    # Default return value for get_redirect_field_name(). Defaults to "next".
+    # redirect_field_name = "next"
+
+    # Defaults to None in which case get_login_url() falls back to settings.LOGIN_URL.
+    # login_url = None
+
+    # If this attribute is set to True, a PermissionDenied exception is raised
+    # when the conditions are not met. When False (the default), anonymous users
+    # are redirected to the login page.
+    # raise_exception = False
+
+    # Default return value for get_permission_denied_message(). Defaults to an empty string.
+    permission_denied_message = ""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not ConferenceCallUser.objects.filter(user=self.request.user):
+            return redirect(self.redirect_url_register_pin)
+        return super().dispatch(request, *args, **kwargs)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet login_accessmixin "Allows for customized "
+accessmixin$1
+endsnippet
+
+snippet userpassestextmixin "class UserPassesTestMixin"
+from django.contrib.auth.mixins import UserPassesTestMixin
+
+class MyView(UserPassesTestMixin, View):
+    # For a list of allowed parameters, check AccessMixin which this mixin
+    # subclassses
+    def test_func(self):
+        return self.request.user.email.endswith('@example.com')
+endsnippet

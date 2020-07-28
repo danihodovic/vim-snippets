@@ -992,3 +992,12 @@ post_jump "px.snippets.expand(snip)"
 snippet message_assert "Assert message in response"
 assert_message$1
 endsnippet
+
+snippet refresh_from_db "mymodel.refresh_from_db()"
+mymodel.refresh_from_db()
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet reload_from_db "mymodel.refresh_from_db()"
+refresh_from_db$1
+endsnippet

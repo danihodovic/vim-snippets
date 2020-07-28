@@ -57,6 +57,13 @@ logger = logging.LoggerAdapter(logging.getLogger(), extra={
   "app": "jobs",
   "__name__": __name__,
 })
+# If running outside of Django, configure the level of the root logger to INFO,
+# WARNING is the default
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+#     datefmt='%Y-%m-%d:%H:%M:%S',
+# )
 endsnippet
 
 snippet call "assert a chained call was made"
@@ -90,4 +97,8 @@ responses.calls[0].request.body == '{"payload": "hello"}'
 # Assert on request params
 url = furl(responses.calls[0].request.url)
 assert url.args['contact_ref'] == 'xk432kws'
+endsnippet
+
+snippet next "next()"
+pending_message = next((v for v in my_list if v == "foo"), None)
 endsnippet
