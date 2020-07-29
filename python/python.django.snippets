@@ -167,8 +167,13 @@ from django import forms
 timezone = forms.ModelChoiceField(
   # Determines the value
   queryset=Timezone.objects.values_list('name', flat=True),
-  # Determines the label
-  to_field_name='name',
+
+  # This optional argument is used to specify the field to use as the value of
+  # the choices in the field’s widget.
+  # By default it is set to None, in which case the primary key of each object
+  # will be used.
+  to_field_name=None,
+
   label=_("(Select the Time Zone)"),
   empty_label='--------',
 )
