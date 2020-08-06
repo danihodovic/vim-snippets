@@ -11,7 +11,7 @@ class EntryFactory(factory.django.DjangoModelFactory):
         # Fields whose name are passed in this list will be used to perform a
         # Model.objects.get_or_create() instead of the usual
         # Model.objects.create():
-        django_get_or_create = ('user',)
+        django_get_or_create = ('user', 'tags_list')
 
     # Creates a dependent object (foreign key or one to one field)
     tags_list = factory.SubFactory(TagsListFactory)
@@ -23,4 +23,12 @@ class EntryFactory(factory.django.DjangoModelFactory):
 
     # Alternatively use a lambda
     email = factory.LazyAttribute(lambda o: '%s@example.com' % o.username)
+endsnippet
+
+snippet factory_faker_random_int "factory.Faker('random_int')"
+share_cost_as_amount = factory.Faker('random_int', min=10, max=20)
+endsnippet
+
+snippet factory_faker_date_between "factory.Faker('date_between')"
+start_date = factory.Faker('date_between', start_date='-30d', end_date='-10d')
 endsnippet
