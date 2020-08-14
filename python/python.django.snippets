@@ -492,7 +492,16 @@ def clean(self):
     return data
 endsnippet
 
+snippet clean_field "def clean_field(self)"
+def clean_recipients(self):
+    data = self.cleaned_data['recipients']
+    if "fred@example.com" not in data:
+        raise ValidationError("You have forgotten about Fred!")
 
+    # Always return a value to use as the new cleaned data, even if
+    # this method didn't change it.
+    return data
+endsnippet
 
 post_jump "clean_imports(snip)"
 snippet "templateview" "class HomePageView(TemplateView):"
@@ -1005,4 +1014,61 @@ endsnippet
 post_jump "px.snippets.expand(snip)"
 snippet reload_from_db "mymodel.refresh_from_db()"
 refresh_from_db$1
+endsnippet
+
+snippet mailoutbox "Test emails in Django"
+from django.core import mail
+self.assertEqual(len(mail.outbox), 1)
+email = mail.outbox[0]
+self.assertEqual(email.to, ['contact@test.com'])
+self.assertEqual(email.subject, 'My Subject')
+self.assertEqual(email.body, 'My Body')
+self.assertEqual(email.attachments, [
+  (pdf.name, b'content', pdf.content_type)
+])
+endsnippet
+
+snippet attachment_email "Add django-attachments attachment"
+from attachments.models import Attachment
+attachments = Attachment.objects.attachments_for_object(email)
+for attachment in attachments:
+    email.attach_file(attachment.attachment_file.path)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet email_attachment "Add django-attachments attachment"
+attachment_email$1
+endsnippet
+
+snippet attachment_test_send_pdf_admin ""
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+pdf = SimpleUploadedFile(
+    "file.pdf",
+    b"content",
+    content_type="application/pdf"
+)
+
+prefix = "attachments-attachment-content_type-object_id"
+res = client.post(reverse("admin:core_marketingmessage_add"), {
+    "title": "Title",
+    f"{prefix}-INITIAL_FORMS": 0,
+    f"{prefix}-TOTAL_FORMS": 1,
+    f"{prefix}-MIN_NUM_FORMS": 0,
+    f"{prefix}-MAX_NUM_FORMS": 1000,
+    f"{prefix}-0-creator": client.user.uuid,
+    f"{prefix}-0-attachment_file": pdf,
+})
+self.assertRedirects(res, reverse("admin:core_marketingmessage_changelist"))
+self.assertEqual(mail.outbox[0].attachments, [
+  (pdf.name, b'content', pdf.content_type),
+])
+endsnippet
+
+snippet test_post_django_file ""
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+def test_upload_video(self):
+    video = SimpleUploadedFile("file.mp4", "file_content", content_type="video/mp4")
+    self.client.post(reverse('app:some_view'), {'video': video})
 endsnippet
