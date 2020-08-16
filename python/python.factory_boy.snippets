@@ -23,6 +23,29 @@ class EntryFactory(factory.django.DjangoModelFactory):
 
     # Alternatively use a lambda
     email = factory.LazyAttribute(lambda o: '%s@example.com' % o.username)
+
+    choice = factory.Faker('random_element', elements=my_list)
+
+    # Many-to-many relation
+    @factory.post_generation
+    def countries(self, create, models, **kwargs):
+        # Simple build, do nothing.
+        if not create:
+            return
+
+        # But when UserFactory.create(groups=(group1, group2, group3)) is called, the
+        # groups declaration will add passed in groups to the set of groups for the
+        # user.
+        if models:
+            # A list of groups were passed in, use them
+            for model in models:
+                self.countries.add(model)
+        # If no models are passed as argument create default ones
+        else:
+            self.countries.add(CountryFactory())
+
+# When calling UserFactory() or UserFactory.build(), no group binding will be created.
+
 endsnippet
 
 snippet factory_faker_random_int "factory.Faker('random_int')"
@@ -31,4 +54,28 @@ endsnippet
 
 snippet factory_faker_date_between "factory.Faker('date_between')"
 start_date = factory.Faker('date_between', start_date='-30d', end_date='-10d')
+endsnippet
+
+snippet factory_faker_lorem ""
+# :param nb_sentences: around how many sentences the paragraph
+# :param variable_nb_sentences: set to false if you want exactly nb
+paragraph = factory.Faker('lorem', nb_sentences=3, variable_nb_sentences=True)
+endsnippet
+
+snippet factory_faker_random_element ""
+choice = factory.Faker('random_element', elements=['a', 'b', 'c', 'd'])
+endsnippet
+
+snippet factory_faker_random_elements ""
+# https://faker.readthedocs.io/en/master/providers/baseprovider.html?highlight=random_elements#faker.providers.BaseProvider.random_elements
+# Set unique to False for random sampling with replacement, and set unique to True for random sampling without replacement.
+factory.Faker('random_elements',
+    elements=OrderedDict([
+        ("variable_1", 0.5),        # Generates "variable_1" 50% of the time
+        ("variable_2", 0.2),        # Generates "variable_2" 20% of the time
+        ("variable_3", 0.2),        # Generates "variable_3" 20% of the time
+        ("variable_4": 0.1),        # Generates "variable_4" 10% of the time
+    ]),
+    unique=False
+)
 endsnippet

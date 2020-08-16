@@ -239,6 +239,31 @@ def get_context_data(self, **kwargs):
     return context
 endsnippet
 
+snippet get_form_kwargs_modelform "def get_form_kwargs"
+def get_form_kwargs(self):
+    """Return the keyword arguments for instantiating the form."""
+    kwargs = super().get_form_kwargs()
+    if hasattr(self, 'object'):
+        kwargs.update({'instance': self.object})
+    return kwargs
+endsnippet
+
+snippet get_form_kwargs_form_mixin "get_form_kwargs"
+def get_form_kwargs(self):
+    """Return the keyword arguments for instantiating the form."""
+    kwargs = {
+        'initial': self.get_initial(),
+        'prefix': self.get_prefix(),
+    }
+
+    if self.request.method in ('POST', 'PUT'):
+        kwargs.update({
+            'data': self.request.POST,
+            'files': self.request.FILES,
+        })
+      return kwargs
+endsnippet
+
 snippet form_invalid "form_invalid(self, form):"
 def form_invalid(self, form):
     """

@@ -1,0 +1,13 @@
+snippet admin_media_js_css "Admin media"
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
+class Media:
+    css = {
+        "all": (
+            "admin/css/marketing_message_new_changelist.css",
+        )
+    }
+    js = (
+        "admin/css/code.js",
+    )
+endsnippet
