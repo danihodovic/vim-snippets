@@ -1,0 +1,32 @@
+global !p
+import px.snippets
+endglobal
+
+snippet action "Admin action"
+import easy
+@easy.action(short_description='My description',permission=("publish",))
+def simple_action(self, request, queryset):
+    return queryset.update(magic=True)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet admin_action_easy ""
+action$1
+endsnippet
+
+snippet admin_field_easy ""
+import easy
+@easy.smart(
+  short_description='My description',
+  admin_order_field='model_field',
+  allow_tags=False,
+  empty_value_display='-',
+)
+def field(self, obj):
+    return obj.something_cool()
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet easy_admin_field ""
+admin_field_easy$1
+endsnippet

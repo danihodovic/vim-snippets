@@ -44,8 +44,12 @@ class EntryFactory(factory.django.DjangoModelFactory):
         else:
             self.countries.add(CountryFactory())
 
-# When calling UserFactory() or UserFactory.build(), no group binding will be created.
-
+    @factory.lazy_attribute
+    def attachment_file(self):
+        return SimpleUploadedFile(
+            "best_file_eva.txt",
+            b"these are the file contents!"   # note the b in front of the string [bytes]
+        )
 endsnippet
 
 snippet factory_faker_random_int "factory.Faker('random_int')"

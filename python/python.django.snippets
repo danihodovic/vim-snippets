@@ -282,6 +282,7 @@ from django import forms
 
 class BookForm(forms.ModelForm):
     non_model_variable = forms.BooleanField()
+    field_order = ['username', 'email', 'password']
 
     class Meta:
         model = Book
@@ -328,6 +329,7 @@ from crispy_forms.layout import Submit, Layout, Div
 class ContactForm(forms.Form):
     email = forms.EmailField()
     message = forms.CharField(widget=forms.Textarea())
+    field_order = ['username', 'email', 'password']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -581,6 +583,17 @@ class ArticleCounterRedirectView(RedirectView):
         article.update_counter()
         # return "https://foo"
         return super().get_redirect_url(*args, **kwargs)
+endsnippet
+
+snippet 404_get_object_or_404 ""
+from django.shortcuts import get_object_or_404
+def my_view(request):
+    obj = get_object_or_404(MyModel, pk=1)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet get_object_or_404 ""
+404_get_object_or_404$1
 endsnippet
 
 post_jump "clean_imports(snip)"
@@ -1046,8 +1059,10 @@ from django.core import mail
 self.assertEqual(len(mail.outbox), 1)
 email = mail.outbox[0]
 self.assertEqual(email.to, ['contact@test.com'])
+self.assertEqual(email.bcc, ['marketing_email@webtel.mobi'])
 self.assertEqual(email.subject, 'My Subject')
 self.assertEqual(email.body, 'My Body')
+self.assertEqual(email.alternatives, [('<h1>Hello<h/1>', 'text/html')])
 self.assertEqual(email.attachments, [
   (pdf.name, b'content', pdf.content_type)
 ])

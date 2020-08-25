@@ -1,3 +1,103 @@
+global !p
+from ultisnips_helpers import *
+import px.snippets
+endglobal
+
+snippet admin "Django model admin"
+from django.contrib import admin
+from .models import Author
+from django.shortcuts import render
+from django.urls import path
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('uuid', 'first_name', 'last_name')
+    list_display_links = ('uuid',)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user)
+
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        return super().changeform_view(request, object_id, form_url, extra_context)
+
+    # The get_urls method on a ModelAdmin returns the URLs to be used for that
+    # ModelAdmin in the same way as a URLconf.
+    def get_urls(self):
+        return  [
+            path(
+              'my_view/',
+              self.admin_site.admin_view(self.my_view),
+              name='app_model_my_view'
+            )
+        ] + super().get_urls()
+
+    def my_view(self, request):
+        # ...
+        context = dict(
+            # Include common variables for rendering the admin template.
+            self.admin_site.each_context(request),
+            # Anything else you want in the context...
+            key="value",
+        )
+        return render(
+            request,
+            "sometemplate.html",
+            context=context,
+            content_type=None,
+            status=None,
+        )
+
+    # Finally, you can conditionally enable or disable actions on a per-request
+    # (and hence per-user basis) by overriding ModelAdmin.get_actions().
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if request.user.username[0].upper() != 'J':
+            if 'delete_selected' in actions:
+                del actions['delete_selected']
+        return actions
+endsnippet
+
+snippet get_urls "Add custom urls to Django admin"
+from django.shortcuts import render
+from django.urls import path
+
+# The get_urls method on a ModelAdmin returns the URLs to be used for that
+# ModelAdmin in the same way as a URLconf.
+def get_urls(self):
+    return  [
+        path('my_view/', self.admin_site.admin_view(self.my_view))
+    ] + super().get_urls()
+
+def my_view(self, request):
+    # ...
+    context = dict(
+        # Include common variables for rendering the admin template.
+        self.admin_site.each_context(request),
+        # Anything else you want in the context...
+        key="value",
+    )
+    return render(
+        request,
+        "sometemplate.html",
+        context=context,
+        content_type=None,
+        status=None,
+    )
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet custom_admin_view ""
+get_urls$1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet model_admin "Django model admin"
+admin$1
+endsnippet
+
 snippet admin_media_js_css "Admin media"
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
