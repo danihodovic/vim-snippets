@@ -6,6 +6,7 @@ endglobal
 post_jump "clean_imports()"
 snippet serializer_usage_in_apiview "class CommentSerializer(serializers.Serializer)"
 from rest_framework import serializers
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class CommentSerializer(serializers.Serializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
@@ -143,6 +144,24 @@ class UserViewSet(viewsets.GenericViewSet):
 
     def destroy(self, request, pk=None):
         pass
+endsnippet
+
+snippet retrieveapiview "DRF RetrieveAPIView"
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+class MyObjectView(RetrieveAPIView):
+    queryset = MyModel.objects.all()
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = MySerializer
+endsnippet
+
+
+post_jump "px.snippets.expand(snip)"
+snippet detail_apiview "DRF RetrieveAPIView"
+retrieveapiview$1
 endsnippet
 
 

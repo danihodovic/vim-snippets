@@ -169,6 +169,8 @@ endsnippet
 
 snippet docker_container "docker_container:"
 docker_container:
+  comparisons:
+    '*': strict
   image: nginx
   name: nginx
   state: started|stopped|present|absent
