@@ -1,0 +1,53 @@
+global !p
+import px.snippets
+endglobal
+
+snippet digitalocean_droplet ""
+---
+# Make sure you export DO_API_TOKEN
+# yamllint disable-line rule:line-length
+- name: Create DO services
+  hosts: localhost
+  tasks:
+    - name: Get all ssh keys in DO account
+      community.digitalocean.digital_ocean_sshkey_info:
+      register: ssh_keys
+
+    - set_fact:
+        ssh_key_ids: '{{ ssh_keys.data | map(attribute="id") | list }}'
+
+    - name: Ensure a droplet is present with SSH keys installed
+      register: droplet1
+      community.digitalocean.digital_ocean_droplet:
+        # require unique hostnames. By default, DigitalOcean allows multiple
+        # hosts with the same name. Setting this to "yes" allows only one host
+        # per name. Useful for idempotence.
+        unique_name: true
+        name: consul1
+        size: 2gb
+        region: fra1
+        ssh_keys: '{{ ssh_key_ids }}'
+        image: ubuntu-20-04-x64
+        wait_timeout: 500
+
+    - name: Add to hosts
+      add_host:
+        hostname: '{{ droplet1.data.droplet.name }}'
+        ansible_host: '{{ droplet1.data.ip_address }}'
+        ansible_ssh_user: root
+        private_ipv4_address: '{{ droplet1.data.private_ipv4_address }}'  # Set arbitrary var
+        groups: [consul]
+
+- name: Deploy
+  hosts: consul
+  tasks:
+    - name: Install docker
+      community.general.snap:
+        name:
+          - docker
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet droplet ""
+digitalocean_droplet$1
+endsnippet
