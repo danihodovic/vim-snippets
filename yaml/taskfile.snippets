@@ -1,0 +1,24 @@
+snippet taskfile ""
+---
+version: '2'
+
+vars:
+  var: value
+
+tasks:
+  default:
+    cmds:
+      - task: run
+
+  run:
+    desc: Build and run the web app
+    cmds:
+      - task: build
+      - ./{{.EXE}}
+
+  build:
+    desc: Build the app
+    deps: [some_dep]
+    cmds:
+      - echo foo
+endsnippet

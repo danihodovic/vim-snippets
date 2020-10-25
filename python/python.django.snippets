@@ -828,7 +828,7 @@ from django.db import models
 endsnippet
 
 post_jump "clean_imports(snip)"
-snippet foreign_key "models.ForeignKey()"
+snippet onetoonefield "models.OneToOneField()"
 from django.db import models
 
 # If you do not specify the related_name argument for the OneToOneField, Django
@@ -888,6 +888,11 @@ try:
     user = User.objects.get(username='foo')
 except ObjectDoesNotExist:
     pass
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet 404_does_not_exist_exception "ObjectDoesNotExist"
+object_does_not_exist$1
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
@@ -1111,4 +1116,11 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 def test_upload_video(self):
     video = SimpleUploadedFile("file.mp4", b"binary content", content_type="video/mp4")
     self.client.post(reverse('app:some_view'), {'video': video})
+endsnippet
+
+snippet loginrequiredmixin "LoginRequiredMixin"
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+class MyView(LoginRequiredMixin, View):
+    redirect_field_name = 'next'  # default
 endsnippet

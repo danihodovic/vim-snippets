@@ -271,6 +271,16 @@ lineinfile:
   path: /some/path
   regexp: 'some regexp'
   line: 'some replacement'
+  create: true
+endsnippet
+
+snippet blockinfile "blockinfile:"
+blockinfile:
+  path: /some/path
+  regexp: 'some regexp'
+  create: true
+  block: |
+    'some replacement'
 endsnippet
 
 snippet get_url "get_url:"

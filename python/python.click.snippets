@@ -1,0 +1,48 @@
+snippet click_command "@click.command()"
+import click
+
+@click.command()
+@click.option(
+    "--directory",
+    "-d",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False),
+    help="Postgres archive directory",
+    required=True,
+)
+@click.option(
+    "--number",
+    "-n",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False),
+    help="A number",
+    show_default=True,
+    default=5,
+)
+@click.option(
+  '--hash-type',
+  type=click.Choice(['MD5', 'SHA1'], case_sensitive=False)
+)
+@click.option(
+  '--username',
+  prompt=True
+)
+@click.option(
+  '--password',
+  prompt=True,
+  hide_input=True,
+  confirmation_prompt=True,
+  envvar="SOME_TOKEN",
+)
+def clear_postgres_archives(directory, number, hash_type, username, password):
+    """
+    The documentation for your command here
+    """
+    pass
+    click.echo(click.style('Hello World!', fg='green', bold=True))
+    if some_error:
+        raise click.Abort()
+endsnippet
+
+snippet click_echo "click.echo(click.style))"
+click.echo(click.style('Hello World!', fg='green', bold=True))
+endsnippet
+
