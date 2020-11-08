@@ -433,6 +433,15 @@ snippet ansible_ip "ansible_default_ipv4.address"
 '{{ ansible_default_ipv4.address }}'
 endsnippet
 
+snippet ip_address_filter ""
+ansible_all_ipv4_addresses | ipaddr(some_range) | max
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet private_ip
+ip_address_filter$1
+endsnippet
+
 snippet play_hosts "play_hosts"
 play_hosts
 endsnippet
@@ -496,11 +505,16 @@ snippet playbook "playbook skeleton"
 ---
 - name: Playbook
   hosts: all
-  roles:
-    - role: ansible-role-users
-      tags: ansible-role-users
+  tasks:
+    - name: Deploy role
+      import_role:
+        name: myrole
+        tasks_from: tasks.yml
+        vars_from: vars.yml
+        defaults_from: defaults.yml
       vars:
-        foo: bar
+        my_var: my_value
+      tags: my_tag
 endsnippet
 
 snippet group "group:"
@@ -618,6 +632,11 @@ endsnippet
 
 snippet end_play "meta: end_play"
 meta: end_play
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet exit_play ""
+end_play$1
 endsnippet
 
 snippet random_uuid "generate a ranom uuid"
@@ -843,8 +862,6 @@ snippet k8s_deployment_ansible ""
           port: 8000
 endsnippet
 
-snippet postgres
-
 snippet postgres_restore "Restore from a PG dump"
 delegate_to: '{{ to_server }}'
 postgresql_db:
@@ -860,4 +877,13 @@ postgresql_db:
 # postgresql_db:
 #   target: '{{ dump_path }}'
 #   target_opts: '-F c' # If you wish to overwrite existing tables
+endsnippet
+
+snippet ufw
+- name: Allow ufw
+  community.general.ufw:
+    rule: allow
+    port: 8300
+    from_ip: 10.0.0.0/24
+    proto: any
 endsnippet

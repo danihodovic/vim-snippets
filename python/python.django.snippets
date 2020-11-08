@@ -39,19 +39,25 @@ endsnippet
 snippet migration "django migration"
 from django.db import migrations
 
+
 def forwards(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     model = apps.get_model("jobs", "JobPosting")
     qs = model.objects.using(db_alias)
     qs.filter(job_urls=[None]).update(job_urls=[])
 
+
+def backwards(_apps, _schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
     dependencies = [
-        ('jobs', '0033_email_to_use_emailfield'),
+        ("jobs", "0068_auto_20201027_1842"),
     ]
 
     operations = [
-        migrations.RunPython(forwards, lambda a, b: None),
+        migrations.RunPython(forwards, backwards),
     ]
 endsnippet
 
@@ -739,6 +745,33 @@ class AuthorUpdate(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         return reverse('foo:bar', args=[self.request.something])
 endsnippet
 
+snippet deleteview "DeleteView"
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
+from myapp.models import Author
+from django.contrib.messages.views import SuccessMessageMixin
+
+class AuthorDelete(SuccessMessageMixin, DeleteView):
+    model = Author
+    success_url = reverse_lazy('author-list')
+    success_message = "%(name)s was deleted"
+    template_name = "author_confirm_delete.html"
+    success_url = reverse_lazy('author-list')
+
+    def get_object(self, queryset=None):
+        # Override pk
+        return request.user.model
+
+        # default implementation
+        return super().get_object(queryset=queryset)
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            calculated_field=self.object.calculated_field,
+        )
+endsnippet
+
 post_jump "clean_imports(snip)"
 snippet detailview "class AppDetailView(DetailView)"
 from django.views.generic.detail import DetailView
@@ -1041,13 +1074,18 @@ endsnippet
 
 post_jump "clean_imports(snip)"
 snippet assert_message "Assert message in response"
-messages = [m.message for m in res.context['messages']]
-self.assertIn('My message', messages)
+from django.contrib.messages import get_messages
+messages = list(m.message for m in get_messages(res.wsgi_request))
+assert "my message" in messages
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
 snippet message_assert "Assert message in response"
 assert_message$1
+endsnippet
+
+snippet assert_initial ""
+assert res.context['form'].fields['employment_type'].initial == ""
 endsnippet
 
 snippet refresh_from_db "mymodel.refresh_from_db()"
