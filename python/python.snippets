@@ -102,3 +102,14 @@ endsnippet
 snippet next "next()"
 pending_message = next((v for v in my_list if v == "foo"), None)
 endsnippet
+
+snippet yesterday_timedelta ""
+from datetime import timedelta
+from django.utils import timezone
+yesterday = timezone.now() - timedelta(days=1)
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet days_ago ""
+yesterday$1
+endsnippet
