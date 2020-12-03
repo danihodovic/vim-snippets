@@ -1,3 +1,7 @@
+global !p
+import px.snippets
+endglobal
+
 snippet click_command "@click.command()"
 import click
 
@@ -46,3 +50,146 @@ snippet click_echo "click.echo(click.style))"
 click.echo(click.style('Hello World!', fg='green', bold=True))
 endsnippet
 
+snippet click_group ""
+import click
+
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+@click.pass_context
+def command(ctx, debug):
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `if` block below)
+    ctx.ensure_object(dict)
+
+    ctx.obj['DEBUG'] = debug
+
+# cli.command!, not click.command
+@command.command()
+@click.pass_context
+def subcommand(ctx):
+    click.echo('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet subcommand ""
+click_group$1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet click_subcommand ""
+click_group$1
+endsnippet
+
+snippet click_exit ""
+raise click.Abort()
+endsnippet
+
+snippet click_abort ""
+raise click.Abort()
+endsnippet
+
+snippet click_usage_error ""
+raise click.UsageError(message, ctx=None)
+endsnippet
+
+snippet click_option ""
+@click.option(
+  '--n',
+  default=1,
+  # default=lambda: os.environ.get('USER', ''),
+  show_default=True,
+)
+endsnippet
+
+snippet click_option_choice ""
+@click.option(
+  '--hash-type',
+  type=click.Choice(['MD5', 'SHA1'], case_sensitive=False)
+  default='MD5',
+  show_default=True,
+)
+endsnippet
+
+snippet click_option_double_confirmation ""
+@click.option(
+  '--yes',
+  is_flag=True,
+  callback=abort_if_false,
+  expose_value=False,
+  prompt='Are you sure you want to drop the db?'
+)
+endsnippet
+
+snippet click_option_prompt ""
+@click.command()
+@click.option('--username', prompt=True,
+              default=lambda: os.environ.get('USER', ''),
+              show_default='current user')
+def hello(username):
+    # Only prompts if not specified using --username=billy
+    print("Hello,", username)
+endsnippet
+
+snippet click_option_password_prompt ""
+@click.command()
+@click.option('--password', prompt=True, hide_input=True,
+              confirmation_prompt=True)
+def encrypt(password):
+    click.echo('Encrypting password to %s' % password.encode('rot13'))
+endsnippet
+
+snippet click_option_env
+@click.option('--github-token', prompt=True,
+              default=lambda: os.environ.get('GITHUB_TOKEN', ''),
+              show_default='Gitub API token')
+endsnipppet
+
+snippet click_option_multi_value ""
+@click.command()
+@click.option('--message', '-m', multiple=True)
+def commit(message):
+    click.echo('\n'.join(message))
+# $ commit -m foo -m bar
+# foo
+# bar
+endsnippet
+
+snippet click_option_nargs ""
+@click.command()
+@click.option('--pos', nargs=2, type=float)
+def findme(pos):
+    click.echo('%s / %s' % pos)
+
+# $ findme --pos 2.0 3.0
+endsnippet
+
+snippet click_datetime ""
+# The format strings are processed using datetime.strptime, and this consequently
+# defines the format strings which are allowed. Parsing is tried using each
+# format, in order, and the first format which parses successfully is used.
+type=click.DateTime(formats=None)
+endsnippet
+
+snippet click_path ""
+type=click.Path(
+  exists=False,       # if set to true, the file or directory needs to exist for this value to be valid
+  file_okay=True,     # controls if a file is a possible value.
+  dir_okay=True,      # controls if a directory is a possible value.
+  writable=False,     # if true, a writable check is performed.
+  readable=True,      # if true, a readable check is performed.
+  resolve_path=False, # This means that it’s absolute and symlinks are resolved
+  allow_dash=False,   # If this is set to True, a single dash to indicate standard streams is permitted.
+)
+endsnippet
+
+snippet click_file ""
+# The file is automatically closed once the context tears down (after the
+# command finished working).
+type=click.File(
+  mode='r',
+  encoding=None,
+  errors='strict',
+  lazy=None,
+  atomic=False
+)
+endsnippet
