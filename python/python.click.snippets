@@ -41,13 +41,13 @@ def clear_postgres_archives(directory, number, hash_type, username, password):
     The documentation for your command here
     """
     pass
-    click.echo(click.style('Hello World!', fg='green', bold=True))
+    click.secho('Hello World!')
     if some_error:
         raise click.Abort()
 endsnippet
 
 snippet click_echo "click.echo(click.style))"
-click.echo(click.style('Hello World!', fg='green', bold=True))
+click.secho('Hello World!', fg='green', bold=True)
 endsnippet
 
 snippet click_group ""
@@ -67,7 +67,7 @@ def command(ctx, debug):
 @command.command()
 @click.pass_context
 def subcommand(ctx):
-    click.echo('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
+    click.secho('Debug is %s' % (ctx.obj['DEBUG'] and 'on' or 'off'))
 endsnippet
 
 post_jump "px.snippets.expand(snip)"
@@ -144,7 +144,7 @@ snippet click_option_password_prompt ""
 @click.option('--password', prompt=True, hide_input=True,
               confirmation_prompt=True)
 def encrypt(password):
-    click.echo('Encrypting password to %s' % password.encode('rot13'))
+    click.secho('Encrypting password to %s' % password.encode('rot13'))
 endsnippet
 
 snippet click_option_env ""
