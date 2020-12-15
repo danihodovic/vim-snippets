@@ -101,6 +101,15 @@ snippet click_option ""
 )
 endsnippet
 
+snippet click_option_boolean ""
+@click.option(
+    "--force-push/--no-force-push",
+    "-f",
+    default=False,
+    show_default=True,
+)
+endsnippet
+
 snippet click_option_choice ""
 @click.option(
   '--hash-type',
@@ -138,11 +147,22 @@ def encrypt(password):
     click.echo('Encrypting password to %s' % password.encode('rot13'))
 endsnippet
 
-snippet click_option_env
-@click.option('--github-token', prompt=True,
-              default=lambda: os.environ.get('GITHUB_TOKEN', ''),
-              show_default='Gitub API token')
-endsnipppet
+snippet click_option_env ""
+@click.option('--github-token',
+              required=True,
+              envvar="GITHUB_TOKEN"
+              )
+endsnippet
+
+snippet click_option_varargs ""
+@click.command()
+@click.argument('src', nargs=-1)
+@click.argument('dst', nargs=1)
+def copy(src, dst):
+    """Move file SRC to DST."""
+    for fn in src:
+        click.echo('move %s to folder %s' % (fn, dst))
+endsnippet
 
 snippet click_option_multi_value ""
 @click.command()
