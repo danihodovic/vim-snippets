@@ -93,3 +93,10 @@ post_jump "px.snippets.expand(snip)"
 snippet testclass "class MyTest(TestCase):"
 testcase$1
 endsnippet
+
+snippet urlparse "urllib.parse.urlparse"
+from urllib.parse import urlparse
+result = urlparse("ssh://git@gitlab.foo.com:22222/project/repo.git")
+# result.hostname = 'gitlab.foo.com'
+# result.path     = '/project/repo.git'
+endsnippet
