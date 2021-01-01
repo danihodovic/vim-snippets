@@ -183,6 +183,7 @@ docker_container:
   working_dir: /app
   memory: '{{ ansible_memory_mb.real.total * 0.1 }}m'
   cpu_shares: '{{ (1024 * 0.1) | int }}'
+  network_mode: host | default
   networks:
     - name: '{{ docker_network_name }}'
   env:
@@ -891,4 +892,18 @@ snippet ufw
     port: 8300
     from_ip: 10.0.0.0/24
     proto: any
+endsnippet
+
+snippet consul_register ""
+- name: Register nginx with an http check
+  community.general.consul:
+    service_name: nginx
+    service_port: 80
+    # service_address: 10.0.23.3 # By default, the IP address of the agent is used, and this does not need to be provided.
+    http: http://localhost:80/status
+    interval: 60s
+    # or
+    # script: curl http://localhost
+    # or
+    # tcp: localhost:80
 endsnippet
