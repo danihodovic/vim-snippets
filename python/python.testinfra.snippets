@@ -1,0 +1,67 @@
+snippet testinfra_http_check_status "host.ansible('uri', f'url={url}', check=False)"
+message, url = component
+res = host.ansible("uri", f"url={url}", check=False)
+assert res["status"] == 200, message
+endsnippet
+
+snippet testinfra_http_get_json "host.ansible('uri', f'url={url}', check=False)"
+res = host.ansible("uri", f"url={url} return_content=true", check=False)
+res["json"]["key"] == "value"
+endsnippet
+
+snippet testinfra_http_get_text ""
+res = host.ansible("uri", f"url={url} return_content=true", check=False)
+assert "foo" in res["content"]
+endsnippet
+
+snippet testinfra_docker_container_running "host.docker('app_nginx')"
+assert host.docker("app_nginx").is_running
+nginx.is_running
+endsnippet
+
+snippet testinfra_check_output ""
+assert host.check_output("some command") == "yeah!"
+endsnippet
+
+snippet testinfra_file ""
+assert host.file("/opt/grafana/data/grafana.sqlite3").is_file
+endsnippet
+
+snippet testinfra_sudo ""
+with host.sudo():
+    host.do_sudo_things()
+endsnippet
+
+snippet testinfra_user ""
+assert host.user("root").exists
+endsnippet
+
+snippet testinfra_user_groups ""
+host.user("root").groups
+endsnippet
+
+snippet testinfra_group_exists ""
+assert host.group("wheel").exists
+endsnippet
+
+snippet testinfra_service ""
+assert host.service("node_exporter").is_enabled
+assert host.service("node_exporter").is_running
+endsnippet
+
+snippet testinfra_facts ""
+host.ansible("setup")["ansible_facts"]["ansible_lsb"]["codename"]
+endsnippet
+
+snippet testinfra_address ""
+host.interface("ens5").addresses
+['172.31.10.35', 'fe80::b3:c8ff:feb0:30b7']
+endsnippet
+
+snippet testinfra_vars ""
+primary.ansible.get_variables()
+endsnippet
+
+snippet testinfra_is_listening ""
+host.socket("tcp://0.0.0.0:80").is_listening
+endsnippet
