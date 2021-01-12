@@ -231,3 +231,32 @@ type=click.File(
   atomic=False
 )
 endsnippet
+
+snippet click_prompt_continue ""
+if click.confirm('Do you want to continue?'):
+    click.echo('Well done!')
+endsnippet
+
+snippet click_prompt_abort ""
+click.confirm('Do you want to continue?', abort=True)
+endsnippet
+
+snippet click_slug ""
+from click_params import SLUG
+@click.option('--id', type=SLUG)
+endsnippet
+
+snippet click_domain ""
+from click_params import DOMAIN
+@click.option('-d', '--domain', type=DOMAIN)
+endsnippet
+
+snippet click_url ""
+from click_params import URL
+@click.option('-u', '--url', type=URL)
+endsnippet
+
+snippet click_email ""
+from click_params import EMAIL
+@click.option('-e', '--email', type=EMAIL)
+endsnippet
