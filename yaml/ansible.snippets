@@ -895,15 +895,23 @@ snippet ufw
 endsnippet
 
 snippet consul_register ""
-- name: Register nginx with an http check
-  community.general.consul:
-    service_name: nginx
-    service_port: 80
-    # service_address: 10.0.23.3 # By default, the IP address of the agent is used, and this does not need to be provided.
-    http: http://localhost:80/status
-    interval: 60s
-    # or
-    # script: curl http://localhost
-    # or
-    # tcp: localhost:80
+community.general.consul:
+  service_name: nginx
+  service_port: 80
+  # service_address: 10.0.23.3 # By default, the IP address of the agent is used, and this does not need to be provided.
+  http: http://localhost:80/status
+  interval: 60s
+  # or
+  # script: curl http://localhost
+  # or
+  # tcp: localhost:80
+endsnippet
+
+snippet retry ""
+retries: 3
+delay: 3
+register: _health
+until: _health.rc == 0
+# OR
+until: "'AWESOME' not in _health.content"
 endsnippet
