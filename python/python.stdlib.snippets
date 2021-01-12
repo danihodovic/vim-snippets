@@ -100,3 +100,19 @@ result = urlparse("ssh://git@gitlab.foo.com:22222/project/repo.git")
 # result.hostname = 'gitlab.foo.com'
 # result.path     = '/project/repo.git'
 endsnippet
+
+snippet file_exists "os.path.isfile(fname)"
+import os.path
+os.path.isfile(fname)
+endsnippet
+
+snippet home_dir ""
+from pathlib import Path
+home = str(Path.home())
+endsnippet
+
+snippet cwd ""
+from pathlib import Path
+import os
+Path(os.getcwd()).name
+endsnippet
