@@ -260,3 +260,20 @@ snippet click_email ""
 from click_params import EMAIL
 @click.option('-e', '--email', type=EMAIL)
 endsnippet
+
+snippet click_invoke ""
+# Context.invoke() merely invokes another command with the arguments you provide
+# as a caller, whereas Context.forward() fills in the arguments from the current
+# command.
+ctx.invoke(other_command, count=42)
+ctx.forward(other_command)
+endsnippet
+
+snippet click_verbose ""
+click.option(
+    "--verbose/--no-verbose",
+    "-v",
+    default=False,
+    show_default=True,
+)
+endsnippet

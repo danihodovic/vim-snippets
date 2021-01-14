@@ -116,3 +116,11 @@ from pathlib import Path
 import os
 Path(os.getcwd()).name
 endsnippet
+
+
+snippet walk ""
+for root, dirs, files in os.walk(top, topdown=True):
+    # Modifying dirs in-place will prune the (subsequent) files and directories
+    # visited by os.walk
+    dirs[:] = [d for d in dirs if d not in exclude]
+endsnippet
