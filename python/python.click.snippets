@@ -277,3 +277,22 @@ click.option(
     show_default=True,
 )
 endsnippet
+
+snippet click_prompt
+click.prompt(
+  text,
+  default=None, # the default value to use if no input happens. If this is not given it will prompt until it’s aborted.
+  hide_input=False,
+  confirmation_prompt=False,
+  type=None,
+  value_proc=None, # if this parameter is provided it’s a function that is invoked instead of the type conversion to convert a value
+  prompt_suffix=': ',
+  show_default=True,
+  err=False,
+  show_choices=True
+)
+endsnippet
+
+snippet click_prompt_password
+click.prompt(text, hide_input=True)
+endsnippet
