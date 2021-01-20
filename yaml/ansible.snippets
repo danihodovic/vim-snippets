@@ -915,3 +915,15 @@ until: _health.rc == 0
 # OR
 until: "'AWESOME' not in _health.content"
 endsnippet
+
+snippet link ""
+file:
+  src: path
+  dest: path
+  state: link
+  # Force the creation of the symlinks in two cases: the source file does not
+  # exist (but will appear later); the destination exists and is a file (so, we
+  # need to unlink the path file and create symlink to the src file in place of
+  # it).
+  force: true
+endsnippet
