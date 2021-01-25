@@ -1,0 +1,25 @@
+global !p
+import px.snippets
+endglobal
+
+snippet flag_active
+import waffle
+if waffle.flag_is_active(request, "flag_name"):
+    pass
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet feature_flag_active ""
+flag_active$1
+endsnippet
+
+snippet switch_active ""
+import waffle
+if waffle.switch_is_active("switch_name"):
+    pass
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet flag_switch_active ""
+switch_active$1
+endsnippet
