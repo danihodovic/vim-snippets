@@ -23,3 +23,8 @@ post_jump "px.snippets.expand(snip)"
 snippet flag_switch_active ""
 switch_active$1
 endsnippet
+
+snippet feature_flag_test_override ""
+from waffle.testutils import override_flag
+@override_flag('flag_name', active=True)
+endsnippet

@@ -87,3 +87,19 @@ for root, dirs, files in os.walk(top, topdown=True):
     # visited by os.walk
     dirs[:] = [d for d in dirs if d not in exclude]
 endsnippet
+
+snippet context_manager ""
+from contextlib import contextmanager
+
+@contextmanager
+def managed_resource(*args, **kwds):
+    # Code to acquire resource, e.g.:
+    resource = acquire_resource(*args, **kwds)
+    try:
+        yield resource
+    finally:
+        # Code to release resource, e.g.:
+        release_resource(resource)
+
+# >>> with managed_resource(timeout=3600) as resource:
+endsnippet
