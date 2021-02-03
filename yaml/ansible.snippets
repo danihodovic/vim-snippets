@@ -761,17 +761,16 @@ assert_variable$1
 endsnippet
 
 snippet make "Ansible make"
-- name: Build 'install' target with extra arguments
-  make:
-    chdir: /home/ubuntu/cool-project
-    target: install|all
-    params:
-      NUM_THREADS: 4
-      BACKEND: lapack
+make:
+  chdir: /home/ubuntu/cool-project
+  target: install|all
+  params:
+    NUM_THREADS: 4
+    BACKEND: lapack
 
 - name: Make default
-  make:
-    chdir: /home/ubuntu/cool-project
+make:
+  chdir: /home/ubuntu/cool-project
 endsnippet
 
 snippet find "Find files that match a specific pattern"
