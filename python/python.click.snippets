@@ -296,3 +296,10 @@ endsnippet
 snippet click_prompt_password
 click.prompt(text, hide_input=True)
 endsnippet
+
+snippet click_edit
+MARKER = '# Everything below is ignored\n'
+message = click.edit(text='\n\n' + MARKER, editor=None, env=None, require_save=True, extension=".txt", filename=None)
+if message is not None:
+    return message.split(MARKER, 1)[0].rstrip('\n')
+endsnippet
