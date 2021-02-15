@@ -1,0 +1,18 @@
+snippet spy "Pytest Spy"
+class Foo(object):
+    def bar(self, v):
+        return v * 2
+
+foo = Foo()
+spy = mocker.spy(foo, 'bar')
+assert foo.bar(21) == 42
+endsnippet
+
+snippet mock "Pytest Mocker"
+mocked_isfile = mocker.patch('os.path.isfile', return_value=True)
+mocked_isfile.side_effect = Exception()
+endsnippet
+
+snippet mock_method "Pytest mock method"
+mocker.patch.object(instance, "method")
+endsnippet
