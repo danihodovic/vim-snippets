@@ -926,3 +926,17 @@ file:
   # it).
   force: true
 endsnippet
+
+snippet ansible_network_range
+{{ hostvars[redis_primary].ansible_all_ipv4_addresses | ipaddr(redis_network_range) | max }}
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet network_range
+ansible_network_range$1
+endsnippet
+
+post_jump "px.snippets.expand(snip)"
+snippet ip_range
+ansible_network_range$1
+endsnippet
