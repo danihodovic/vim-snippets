@@ -328,6 +328,12 @@ apt_repository:
   repo: deb http://archive.canonical.com/ubuntu hardy partner
 endsnippet
 
+snippet apt_ppa "apt_ppa:"
+apt_repository:
+  repo: ppa:foo/bar
+  validate_certs: false
+endsnippet
+
 snippet apt_key "apt_key:"
 apt_key:
   url: https://ftp-master.debian.org/keys/archive-key-6.0.asc
