@@ -352,8 +352,8 @@ endsnippet
 
 snippet unarchive "unarchive:"
 unarchive:
-  src: foo.tgz
-  dest: /var/lib/foo
+  src: "{{ lookup('fileglob', '/tmp/nav*tar.gz', wantlist=True) | first }}"
+  dest: /usr/local/bin
   remote_src: true
   list_files: true
 endsnippet
