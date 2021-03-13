@@ -940,3 +940,11 @@ post_jump "px.snippets.expand(snip)"
 snippet ip_range
 ansible_network_range$1
 endsnippet
+
+snippet fetch_release ""
+shell: >-
+  fetch --repo
+  https://github.com/muesli/duf
+  --release-asset=".*amd64.deb"
+  --tag=v{{ duf_tag }} /tmp
+endsnippet
