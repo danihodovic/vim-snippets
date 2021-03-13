@@ -303,3 +303,8 @@ message = click.edit(text='\n\n' + MARKER, editor=None, env=None, require_save=T
 if message is not None:
     return message.split(MARKER, 1)[0].rstrip('\n')
 endsnippet
+
+snippet click_stdin
+sys.stdin.read()
+# or json.load()
+endsnippet
