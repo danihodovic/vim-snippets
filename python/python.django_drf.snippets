@@ -4,7 +4,7 @@ import px.snippets
 endglobal
 
 post_jump "clean_imports()"
-snippet serializer_usage_in_apiview "class CommentSerializer(serializers.Serializer)"
+snippet drf_serializer_usage_in_apiview "class CommentSerializer(serializers.Serializer)"
 from rest_framework import serializers
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
@@ -26,7 +26,7 @@ class QuerySetView(APIView):
 endsnippet
 
 post_jump "clean_imports()"
-snippet apiview_example "class MyView(APIView)"
+snippet drf_apiview_example "class MyView(APIView)"
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -53,7 +53,7 @@ endsnippet
 
 
 post_jump "clean_imports()"
-snippet modelserializer "serializers.ModelSerializer"
+snippet drf_modelserializer "serializers.ModelSerializer"
 from rest_framework import serializers
 
 class MySerializer(serializers.ModelSerializer):
@@ -101,7 +101,7 @@ endsnippet
 
 
 post_jump "clean_imports()"
-snippet viewset_generic "Generic Viewset"
+snippet drf_viewset_generic "Generic Viewset"
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from myapps.serializers import UserSerializer
@@ -146,7 +146,7 @@ class UserViewSet(viewsets.GenericViewSet):
         pass
 endsnippet
 
-snippet retrieveapiview "DRF RetrieveAPIView"
+snippet drf_retrieveapiview "DRF RetrieveAPIView"
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -160,14 +160,19 @@ endsnippet
 
 
 post_jump "px.snippets.expand(snip)"
-snippet detail_apiview "DRF RetrieveAPIView"
+snippet drf_detail_apiview "DRF RetrieveAPIView"
 retrieveapiview$1
 endsnippet
 
 
-post_jump "px.snippets.expand(snip)"
-snippet readonly_modelviewset "viewsets.ReadOnlyModelViewSet"
-modelviewset_readonly$1
+snippet drf_readonly_modelviewset "viewsets.ReadOnlyModelViewSet"
+from rest_framework import viewsets
+class AccountViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A simple ViewSet for viewing accounts.
+    """
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
 endsnippet
 
 
