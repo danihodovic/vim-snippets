@@ -5,3 +5,8 @@ endsnippet
 snippet django_model_fields "Get all field names of a model"
 [field.name for field in JobPosting._meta.fields]
 endsnippet
+
+snippet django_render_template "Render template in memory"
+from django.template.loader import render_to_string
+msg_plain = render_to_string('templates/email.txt', {'some_params': some_params})
+endsnippet
