@@ -60,3 +60,8 @@ snippet pytest.mark.skip "@pytest.mark.skip()"
 import pytest
 @pytest.mark.skip(reason="no way of currently testing this")
 endsnippet
+
+snippet assert_raises
+with pytest.raises(ZeroDivisionError):
+    1 / 0
+endsnippet
