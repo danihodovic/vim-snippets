@@ -1,0 +1,9 @@
+snippet hcloud_server "Hetzner server"
+hcloud_server:
+  name: my-server
+  location: fsn1
+  server_type: cx11
+  image: ubuntu-20.04
+  ssh_keys: [dani]
+  state: present
+endsnippet
