@@ -1,0 +1,7 @@
+snippet django_session_variable "Set a session variable"
+self.request.session['has_commented'] = True
+endsnippet
+
+snippet django_model_fields "Get all field names of a model"
+[field.name for field in JobPosting._meta.fields]
+endsnippet
