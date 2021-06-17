@@ -155,16 +155,16 @@ docker_image:
 endsnippet
 
 snippet docker_image_build "docker_image: build"
-- name: Build an image and push it to a private repo
-  docker_image:
-    source: build
-    force: true # rebuild if Dockerfile changes
-    build:
-      path: ./sinatra
-      dockerfile: Dockerfile_sinatra
-    name: registry.ansible.com/chouseknecht/sinatra
-    tag: v1
-    push: false
+docker_image:
+  source: build
+  force_source: true  # rebuild if Dockerfile changes
+  build:
+    path: ./sinatra
+    dockerfile: Dockerfile_sinatra
+    network: host
+  name: registry.ansible.com/chouseknecht/sinatra
+  tag: v1
+  push: false
 endsnippet
 
 snippet docker_container "docker_container:"
@@ -290,6 +290,7 @@ get_url:
   dest: /tmp
   owner: root
   group: developers
+  checksum: sha256:b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
   mode: 0660
   force: true
 endsnippet
@@ -348,11 +349,12 @@ git:
   depth: 1
   force: false
   version: HEAD
+  accept_hostkey: true
 endsnippet
 
 snippet unarchive "unarchive:"
 unarchive:
-  src: "{{ lookup('fileglob', '/tmp/nav*tar.gz', wantlist=True) | first }}"
+  src: /tmp/foo.tar.gz
   dest: /usr/local/bin
   remote_src: true
   list_files: true
@@ -414,6 +416,10 @@ snippet import_tasks "import_tasks:"
   import_tasks: stuff.yaml
 endsnippet
 
+snippet import_playbook "Import another playbook"
+- import_playbook: ./consul.yml
+endsnippet
+
 snippet hostvars[inventory_hostname] "current host vars"
 hostvars[inventory_hostname].my_var
 endsnippet
@@ -463,6 +469,14 @@ endsnippet
 post_jump "px.snippets.expand(snip)"
 snippet home "ansible_env.HOME"
 ansible_home$1
+endsnippet
+
+snippet lookup_fileglob ""
+{{ lookup('fileglob', '/my/path/foo-v.1*.txt', wantlist=True) }}
+endsnippet
+
+snippet lookup_env ""
+{{ lookup('env', 'MY_VARIABLE') }}
 endsnippet
 
 snippet lookup_template "lookup('template', 'nginx.conf')"
@@ -947,4 +961,14 @@ shell: >-
   https://github.com/muesli/duf
   --release-asset=".*amd64.deb"
   --tag=v{{ duf_tag }} /tmp
+endsnippet
+
+snippet ip_other_host "Get the Ansible IP of another host"
+- name: Collect facts
+  delegate_to: other_server
+  delegate_facts: true
+  ansible.builtin.setup:
+    gather_subset: [network]
+
+- debug: var=hostvars.other_server.ansible_default_ipv4.address
 endsnippet
