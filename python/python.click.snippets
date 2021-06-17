@@ -269,6 +269,11 @@ ctx.invoke(other_command, count=42)
 ctx.forward(other_command)
 endsnippet
 
+post_jump "px.snippets.expand(snip)"
+snippet click_call ""
+click_invoke$1
+endsnippet
+
 snippet click_verbose ""
 click.option(
     "--verbose/--no-verbose",
