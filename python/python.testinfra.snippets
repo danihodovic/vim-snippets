@@ -65,3 +65,15 @@ endsnippet
 snippet testinfra_is_listening ""
 host.socket("tcp://0.0.0.0:80").is_listening
 endsnippet
+
+snippet testinfra_public_ip ""
+host = target_host("consul1")
+ipify_facts = host.ansible("community.general.ipify_facts")
+public_ip = ipify_facts["ansible_facts"]["ipify_public_ip"]
+requests.get(f"http://{public_ip}:8500/v1/agent/members", timeout=10)
+endsnippet
+
+snippet testinfra_binary_exists "Tests if a binary exists in $PATH"
+# Return True if given command exist in $PATH
+host.exists("postgresql-client")
+endsnippet
