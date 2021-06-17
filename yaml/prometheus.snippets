@@ -1,0 +1,20 @@
+snippet prometheus_static_configs
+static_configs:
+- targets: ['localhost:9090', 'localhost:9191']
+  labels:
+    my:   label
+    your: label
+endsnippet
+
+snippet prometheus_consul_sd_configs
+    consul_sd_configs:
+      - server: '172.16.142.102:8500'
+        services: [node-exporter]
+      - server: '172.16.140.101:8500'
+        services: [node-exporter]
+    relabel_configs:
+      - source_labels: [__meta_consul_dc]
+        target_label: environment
+      - source_labels: [__meta_consul_node]
+        target_label: instance
+endsnippet
