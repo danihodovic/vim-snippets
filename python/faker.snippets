@@ -1,0 +1,42 @@
+snippet faker_date_string ""
+# '1998-08-15'
+Faker("date")
+endsnippet
+
+snippet faker_date ""
+# datetime.date(1996, 3, 20)
+Faker("date_object")
+endsnippet
+
+snippet faker_date_of_birth ""
+# datetime.date(1996, 3, 20)
+Faker("date_of_birth", minimum_age=0, maximum_age=115)
+endsnippet
+
+snippet faker_name ""
+#'Jorge Sullivan'
+Faker("name")
+endsnippet
+
+snippet faker_company ""
+# 'Wagner LLC'
+Faker("company")
+endsnippet
+
+snippet faker_md5 ""
+'f112d652ecf13dacd9c78c11e1e7f987'
+Faker("mk5")
+endsnippet
+
+snippet faker_int ""
+Faker("random_int", min=0, max=100)
+endsnippet
+
+snippet faker_bothify ""
+# Text: dsJ, Numbers: 943
+Faker("bothify", text="Text: ???, Numbers: ###")
+endsnippet
+
+snippet faker_random_choice ""
+Faker("random_element", elements=("a", "b", "c"))
+endsnippet

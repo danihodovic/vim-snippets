@@ -1,0 +1,10 @@
+snippet re_find_groupdict ""
+import re
+m = re.search(r"(?P<first_name>\w+) (?P<last_name>\w+)", "Malcolm Reynolds")
+m.groupdict()
+# {'first_name': 'Malcolm', 'last_name': 'Reynolds'}
+endsnippet
+
+snippet re_find_one ""
+re.search(r"MODE=(\w+)", "foo\nbar\nMODE=poweroff").group(1)
+endsnippet
