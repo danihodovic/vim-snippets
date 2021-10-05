@@ -1,0 +1,71 @@
+snippet hcloud_server ""
+resource "hcloud_server" "${1:master0}" {
+  name        = "${1:master0}"
+  image       = "ubuntu-20.04"
+  location    = "nbg1|fsn1|hel1"
+  server_type = "cx11"
+  network {
+    network_id = hcloud_network.network.id
+    ip         = "10.0.1.5"
+    alias_ips  = [
+      "10.0.1.6",
+      "10.0.1.7"
+    ]
+  }
+  ssh_keys     = ["2307657"]
+  labels = {
+    instance = "${1:master0}"
+  }
+
+  user_data = <<EOT
+#cloud-config
+package_upgrade: true
+packages:
+ - pwgen
+ - pastebinit
+bootcmd:
+  - echo 192.168.1.130 us.archive.ubuntu.com >> /etc/hosts
+  - [ cloud-init-per, once, mymkfs, mkfs, /dev/vdb ]
+EOT
+
+  lifecycle {
+    ignore_changes = [
+      network,
+      user_data,
+    ]
+  }
+}
+
+output "server_ip" {
+  value = hcloud_server.${1:master0}.ipv4_address
+}
+endsnippet
+
+snippet hcloud_server_multiple ""
+resource "hcloud_server" "server" {
+  for_each    = toset(["node0", "node1", "node2"])
+  name        = each.key
+  image       = "ubuntu-20.04"
+  location    = "fsn1"
+  server_type = "cx31"
+  network {
+    network_id = hcloud_network.vpc.id
+  }
+  ssh_keys = ["2307657"]
+  labels = {
+    instance = each.key
+  }
+
+  lifecycle {
+    ignore_changes = [
+      network,
+    ]
+  }
+}
+
+output "server_ips" {
+  value = toset([
+    for server in hcloud_server.server : server.ipv4_address
+  ])
+}
+endsnippet

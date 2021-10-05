@@ -1,0 +1,31 @@
+snippet gcs_public_website_bucket ""
+locals {
+  bucket_name = "nl-staticfiles-${var.env}"
+}
+module "gcs_static_files_bucket" {
+  source     = "terraform-google-modules/cloud-storage/google"
+  version    = "2.1.0"
+  project_id = var.project
+  prefix     = ""
+  names = [
+    local.bucket_name
+  ]
+
+  set_admin_roles = true
+  bucket_admins = {
+    "${local.bucket_name}" = "serviceAccount:${google_service_account.django.email}"
+  }
+  set_viewer_roles = true
+  bucket_viewers = {
+    "${local.bucket_name}" = "allUsers"
+  }
+  versioning = {
+    "${local.bucket_name}" = true
+  }
+  website = {
+    "${local.bucket_name}" = {
+      main_page_suffix = "index.html"
+    }
+  }
+}
+endsnippet
