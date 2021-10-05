@@ -1,0 +1,87 @@
+snippet redux_create_slice ""
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = { value: 0 }
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    incrementByAmount(state, action) {
+      state.value += action.payload
+    }
+  }
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchUserById.fulfilled,
+      (state, action) => {
+        state.entities.push(action.payload)
+      }
+    )
+  },
+})
+export const selector = (state) => state[counterSlice.name];
+export const { incrementByAmount, decrement } = counterSlice.actions
+export default counterSlice.reducer
+endsnippet
+
+snippet redux_create_async_thunk ""
+import { createAsyncThunk } from '@reduxjs/toolkit'
+const fetchUserByIdThunk = createAsyncThunk(
+  'users/fetchByIdStatus',
+  async (userId, thunkAPI) => {
+    const response = await userAPI.fetchById(userId)
+    return response.data
+  }
+)
+
+export const fetchUserById = userId => async dispatch => {
+  dispatch(fetchUserByIdThunk(userId));
+};
+endsnippet
+
+snippet redux_async_thunk_in_reducer ""
+const counterSlice = createSlice({
+  extraReducers: {
+    [fetchUserById.fulfilled]: (state, action) => {
+      state.entities.push(action.payload)
+      state.loading = false;
+    },
+    [fetchUserById.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getStudyList.rejected]: (state, { error }) => {
+      throw error;
+    },
+  },
+})
+
+export const reducer = counterSlice.reducer;
+endsnippet
+
+snippet redux_configure_store ""
+import { configureStore } from "@reduxjs/toolkit";
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: [],
+  preloadedState: () => ({}),
+  devTools: process.env.NODE_ENV !== "production",
+});
+endsnippet
+
+snippet redux_combine_reducers ""
+import { combineReducers } from "@reduxjs/toolkit";
+const rootReducer = combineReducers({
+  router: connectRouter(history),
+  studyReducer,
+  modelMetadataReducer,
+});
+endsnippet
+
+snippet redux_use_selector ""
+import { useSelector } from "react-redux";
+const { list, loading } = useSelector(state => state.myReducer);
+endsnippet
+
+snippet useDispatch ""
+import { useDispatch } from "react-redux";
+endsnippet
