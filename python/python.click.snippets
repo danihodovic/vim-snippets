@@ -130,6 +130,10 @@ snippet click_option_double_confirmation ""
 endsnippet
 
 snippet click_option_prompt ""
+@click.option('--name', prompt=True)
+endsnippet
+
+snippet click_option_prompt ""
 @click.command()
 @click.option('--username', prompt=True,
               default=lambda: os.environ.get('USER', ''),
@@ -312,4 +316,8 @@ endsnippet
 snippet click_stdin
 sys.stdin.read()
 # or json.load()
+endsnippet
+
+snippet click_current_context ""
+click.get_current_context().info_name
 endsnippet
