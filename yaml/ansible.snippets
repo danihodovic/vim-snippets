@@ -346,9 +346,8 @@ snippet git "git:"
 git:
   repo: 'https://foosball.example.org/path/to/repo.git'
   dest: /opt/foosball
-  depth: 1
-  force: false
-  version: HEAD
+  force: true
+  version: my-branch
   accept_hostkey: true
 endsnippet
 
@@ -855,30 +854,6 @@ snippet handler "Ansible handler"
   until: result.status == 200
   retries: 300
   delay: 1
-endsnippet
-
-snippet k8s_deployment_ansible ""
-- name: Create a Service object from an inline definition
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: web
-        namespace: testing
-        labels:
-          app: galaxy
-          service: web
-      spec:
-        selector:
-          app: galaxy
-          service: web
-        ports:
-        - protocol: TCP
-          targetPort: 8000
-          name: port-8000-tcp
-          port: 8000
 endsnippet
 
 snippet postgres_restore "Restore from a PG dump"
