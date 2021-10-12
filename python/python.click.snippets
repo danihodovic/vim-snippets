@@ -84,6 +84,13 @@ snippet click_exit ""
 raise click.Abort()
 endsnippet
 
+snippet click_exit_context ""
+ctx = click.get_current_context()
+click.secho("Foo is required", fg="red")
+click.echo(ctx.get_help())
+ctx.exit()
+endsnippet
+
 snippet click_abort ""
 raise click.Abort()
 endsnippet

@@ -103,3 +103,9 @@ def managed_resource(*args, **kwds):
 
 # >>> with managed_resource(timeout=3600) as resource:
 endsnippet
+
+snippet uuid "Create a v4 uuid"
+import uuid
+uuid.uuid4()
+# UUID('bd65600d-8669-4903-8a14-af88203add38')
+# str(uuid.uuid4())
