@@ -313,10 +313,14 @@ class BookForm(forms.ModelForm):
         # instance.save_m2m()
 
 
-    # Disable uniqueness validation, e.g when using a Create + Update view
     def clean(self):
+        # Normal case
+        cleaned_data = super().clean()
+        return cleaned_data
+
+        # Disable uniqueness validation, e.g when using a Create + Update view
         self._validate_unique = False
-        return self.cleaned_data
+        return super().clean()
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
