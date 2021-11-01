@@ -10,3 +10,20 @@ snippet django_render_template "Render template in memory"
 from django.template.loader import render_to_string
 msg_plain = render_to_string('templates/email.txt', {'some_params': some_params})
 endsnippet
+
+snippet redirectview_short ""
+from django.views.generic.base import RedirectView
+path('go-to-django/', RedirectView.as_view(url='https://www.djangoproject.com/'), name='go-to-django')
+endsnippet
+
+snippet reverse_drf_list ""
+reverse("api:user-list")
+endsnippet
+
+snippet reverse_drf_detail ""
+reverse("api:user-detail", kwargs={"username": self.username})
+endsnippet
+
+snippet reverse_drf_action ""
+reverse("api:user-<action>")
+endsnippet
