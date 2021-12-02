@@ -530,6 +530,7 @@ def clean(self):
 endsnippet
 
 snippet clean_field "def clean_field(self)"
+from django.core.exceptions import ValidationError
 def clean_recipients(self):
     data = self.cleaned_data['recipients']
     if "fred@example.com" not in data:

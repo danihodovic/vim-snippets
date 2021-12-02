@@ -11,8 +11,12 @@ from django.urls import path
 
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'first_name', 'last_name')
+    list_display = ('uuid', 'first_name', 'last_name', 'author_name')
     list_display_links = ('uuid',)
+
+    @admin.display(description='Author Name', ordering='author__name')
+    def author_name(self, obj):
+        return obj.author.name
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
