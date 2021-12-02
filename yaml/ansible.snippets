@@ -349,6 +349,7 @@ git:
   force: true
   version: my-branch
   accept_hostkey: true
+  recursive: true  # true by default, remove this
 endsnippet
 
 snippet unarchive "unarchive:"
@@ -946,4 +947,12 @@ snippet ip_other_host "Get the Ansible IP of another host"
     gather_subset: [network]
 
 - debug: var=hostvars.other_server.ansible_default_ipv4.address
+endsnippet
+
+snippet snap "Snap"
+community.general.snap:
+  name:
+    - foo
+    - bar
+  classic: true
 endsnippet
