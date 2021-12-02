@@ -1,3 +1,26 @@
 snippet hadolint_ignore "# hadolint ignore=DL3016"
 # hadolint ignore=DL3016
 endsnippet
+
+snippet eof_commands ""
+RUN <<EOF
+apt-get update
+apt-get upgrade -y
+apt-get install -y ...
+EOF
+endsnippet
+
+snippet eof_file ""
+COPY <<EOF /usr/share/nginx/html/index.html
+(your index page goes here)
+EOF
+endsnippet
+
+snippet eof_python ""
+RUN <<EOF
+#!/usr/bin/env python3
+with open("/hello", "w") as f:
+    print("Hello", file=f)
+    print("World", file=f)
+EOF
+endsnippet
