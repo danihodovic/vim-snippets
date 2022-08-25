@@ -326,5 +326,7 @@ sys.stdin.read()
 endsnippet
 
 snippet click_current_context ""
-click.get_current_context().info_name
+ctx = click.get_current_context()
+# >>> ctx.params
+# {'directory': '/home/dani', 'dry_run': True, 'old_pattern': '.dat', 'new_pattern': '.ledger', 'recursive': False}
 endsnippet
