@@ -1,0 +1,51 @@
+snippet kubernetes_lib_import ""
+local k = import 'github.com/grafana/jsonnet-libs/ksonnet-util/kausal.libsonnet';
+endsnippet
+
+snippet deployment_new ""
+local deployment = k.apps.v1.deployment;
+local withImagePullSecrets = deployment.spec.template.spec.withImagePullSecrets;
+
+deployment.new('app', replicas=1, containers=containers) +
+withImagePullSecrets({ name: 'docker-gar-credentials' })
+endsnippet
+
+snippet container_new ""
+local container = k.core.v1.container;
+local port = k.core.v1.containerPort;
+
+container.new('app', image) +
+container.withImagePullPolicy('Always') +
+container.withEnvMap({MY_VAR: 'value'}) +
+container.withCommand('celery-auto-app') +
+container.withArgs(['entrypoint', 'args']) +
+container.withPorts([
+  port.new('http', 8080),
+])
+endsnippet
+
+snippet service_for_deployment ""
+k.util.serviceFor(self.deployment),
+endsnippet
+
+snippet secret ""
+local secret = k.core.v1.secret;
+
+secret.new('token', {path_to: std.base64('secret')}, type='Opaque')
+endsnippet
+
+snippet configmap ""
+local configMap = k.core.v1.configMap;
+
+configMap.new('configmap', {
+  key: 'value',
+  multiline: |||
+    hello, world!
+  |||,
+})
+endsnippet
+
+snippet std_extvar ""
+// with tanka use --ext-code
+std.extVar('imageTag')
+endsnippet
