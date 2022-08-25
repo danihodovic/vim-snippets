@@ -503,7 +503,7 @@ endsnippet
 snippet get_messages "Get messages in tests"
 from django.contrib.messages import get_messages
 # For redirects
-messages = [msg for msg in get_messages(res.wsgi_request)]
+messages = list(get_messages(res.wsgi_request))
 # For non-redirect responses you can use
 res.context['messages']
 endsnippet
@@ -800,7 +800,9 @@ endsnippet
 snippet update_or_create "Person.objects.update_or_create"
 obj, created = Person.objects.update_or_create(
     first_name='John', last_name='Lennon',
-    defaults={'first_name': 'Bob'},
+    defaults=dict(
+        first_name="Bob"
+    )
 )
 endsnippet
 
@@ -915,7 +917,7 @@ snippet get_or_create "Person.objects.get_or_create"
 obj, created = Person.objects.get_or_create(
     first_name='John',
     last_name='Lennon',
-    defaults={'birthday': date(1940, 10, 9)},
+    dict=dict(birthday=date(1940, 10, 9)),
 )
 endsnippet
 

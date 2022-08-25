@@ -175,6 +175,26 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = AccountSerializer
 endsnippet
 
+snippet action_django_rest_framework ""
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+    @action(
+        detail=False,
+        methods=["POST"],
+        serializer_class=None,
+        permission_classes=[],
+        filter_backend=[],
+        parser_classes = [JSONParser]
+    )
+    def recent_users(self, request):
+        return Response({'status': 'password set'})
+
+    @action(detail=True)
+    def recent_users(self, request, pk=None):
+        pass
+endsnippet
+
 
 post_jump "px.snippets.expand(snip)"
 snippet serilizer_model "serializers.ModelSerializer"
@@ -201,3 +221,4 @@ post_jump "px.snippets.expand(snip)"
 snippet drf_nested_serializer "serializers.ModelSerializer"
 nested_serializer$1
 endsnippet
+

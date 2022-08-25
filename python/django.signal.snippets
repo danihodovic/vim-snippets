@@ -1,0 +1,18 @@
+snippet signal_post_save_user ""
+import logging
+
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from organizations.utils import create_organization
+
+from myapp.orgs.models import Organization
+
+User = get_user_model()
+
+
+@receiver(post_save, sender=User)
+def create_default_organization(instance=None, **kwargs):
+    logging.info(f"User %s signed up, creating a default organization.", instance)
+    create_organization(instance, instance.email, is_active=True, model=Organization)
+endsnippet

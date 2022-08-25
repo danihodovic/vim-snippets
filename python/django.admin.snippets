@@ -1,0 +1,9 @@
+snippet display "Admin display decorator"
+@admin.display(
+    boolean=True,
+    ordering='-publish_date',
+    description='Is Published?',
+)
+def is_published(self, obj):
+    return obj.publish_date is not None
+endsnippet
