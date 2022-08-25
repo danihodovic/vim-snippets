@@ -1,0 +1,7 @@
+snippet pytest_autouse_fixture "pytest_auto"
+import pytest
+@pytest.fixture(scope="module", autouse=True)
+# scope: function | class | module | package | session
+def do_stuff():
+    pass
+endsnippet

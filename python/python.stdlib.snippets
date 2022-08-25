@@ -34,8 +34,11 @@ print(args.flag_argument)
 endsnippet
 
 post_jump "clean_imports(snip)"
-snippet tmpdir "tempfile.TemporaryDirectory"
+snippet temporary_directory "tempfile.TemporaryDirectory"
 import tempfile
+from
+with tempfile.TemporaryDirectory(prefix=None, suffix=None) as tmpdirname:
+    print('created temporary directory', tmpdirname)
 
 with tempfile.TemporaryDirectory as tmp_dir:
     with open('workfile') as f:
