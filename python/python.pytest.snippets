@@ -62,6 +62,6 @@ import pytest
 endsnippet
 
 snippet assert_raises
-with pytest.raises(ZeroDivisionError):
+with pytest.raises(IntegrityError, match=r"age_gte_18"):
     1 / 0
 endsnippet
