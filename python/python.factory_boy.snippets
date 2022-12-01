@@ -13,8 +13,15 @@ class EntryFactory(factory.django.DjangoModelFactory):
         # Model.objects.create():
         django_get_or_create = ('user', 'tags_list')
 
-    # Creates a dependent object (foreign key or one to one field)
+    # Creates a dependent object (foreign key or 1:1)
     tags_list = factory.SubFactory(TagsListFactory)
+
+    # Reverse foreign key or 1:1
+    log = factory.RelatedFactory(
+        UserLogFactory,
+        factory_related_name='user',
+        action=models.UserLog.ACTION_CREATE,
+    )
 
     # Create a field that depends on other fields
     @factory.lazy_attribute
