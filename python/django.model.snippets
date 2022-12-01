@@ -1,0 +1,16 @@
+snippet constraint_unique_columns ""
+from django.db.models.constraints import UniqueConstraint
+class Meta:
+    constraints = [
+        models.UniqueConstraint(
+            fields=["user", "organization"], name="unique_employee_user"
+        )
+    ]
+endsnippet
+
+snippet constraint_check ""
+from django.db.models import Q
+from django.db.models.constraints import CheckConstraint
+class Meta:
+    constraints = [CheckConstraint(check=Q(age__gte=18), name="age_greater_than_18")]
+endsnippet
