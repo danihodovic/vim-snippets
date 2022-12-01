@@ -123,3 +123,36 @@ class Media:
         "admin/css/code.js",
     )
 endsnippet
+
+
+snippet test_admin_changelist "Test Admin ChangeList"
+import pytest
+from django.urls import reverse
+from wario.core.tests.factories import TrackFactory
+
+
+def test_track_changelist_artist_link(admin_client):
+    TrackFactory()
+    TrackFactory()
+    url = reverse("admin:APP_MODEL_changelist")
+    res = admin_client.get(url)
+    assert res.status_code == 200
+    res.context_data['cl'].result_list[0] == track
+    assert "Feb. 1, 2014</td>" in res.context['results'][0][-1]
+endsnippet
+
+snippet test_admin_changelist_filter "Test Admin ChangeList Filter"
+import pytest
+from django.urls import reverse
+from django.utils.http import urlencode
+from wario.core.tests.factories import TrackFactory, ArtistFactory
+
+
+def test_filters_tracks_by_artist(admin_client):
+    artist = ArtistFactory()
+    track = TrackFactory(artists=[artist])
+    TrackFactory()
+    url = reverse("admin:core_track_changelist") + "?" + urlencode(dict(artists__pk__exact=artist.id.hashid))
+    res = admin_client.get(url)
+    assert list(res.context_data['cl'].result_list) == [track]
+endsnippet
