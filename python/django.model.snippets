@@ -14,3 +14,35 @@ from django.db.models.constraints import CheckConstraint
 class Meta:
     constraints = [CheckConstraint(check=Q(age__gte=18), name="age_greater_than_18")]
 endsnippet
+
+snippet manager_models "Django Model Manager"
+class PollManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+
+    def with_counts(self):
+        return self.annotate(
+            num_responses=Coalesce(models.Count("response"), 0)
+        )
+
+# Usage in model:
+# class OpinionPoll(models.Model):
+#     question = models.CharField(max_length=200)
+#     objects = PollManager()
+#
+#     or
+#     objects = models.Manager() # The default manager.
+#     objects_with_count = PollManager()
+endsnippet
+
+snippet django_raw_sql ""
+from django.db import connection
+
+def my_custom_sql(self):
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE bar SET foo = 1 WHERE baz = %s", [self.baz])
+        cursor.execute("SELECT foo FROM bar WHERE baz = %s", [self.baz])
+        row = cursor.fetchone()
+
+    return row
+endsnippet

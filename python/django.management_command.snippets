@@ -1,0 +1,9 @@
+snippet test_management_command ""
+def test_command():
+    from django.core.management import call_command
+    from io import StringIO
+    out = StringIO()
+    call_command('closepoll', stdout=out)
+    out.getvalue()
+    # Assert side effects, such as db changes were made
+endsnippet

@@ -56,6 +56,12 @@ resource "hcloud_server" "server" {
     instance = each.key
   }
 
+  public_net {
+    ipv4_enabled = true
+    ipv4         = hcloud_primary_ip.jellyfin.id
+    ipv6_enabled = false
+  }
+
   lifecycle {
     ignore_changes = [
       network,
@@ -67,5 +73,14 @@ output "server_ips" {
   value = toset([
     for server in hcloud_server.server : server.ipv4_address
   ])
+}
+endsnippet
+
+snippet hcloud_primary_ip ""
+resource "hcloud_primary_ip" "main" {
+  name          = "primary_ip_test"
+  type          = "ipv4"
+  assignee_type = "server"
+  datacenter    = "see output from hcloud datacenter list"
 }
 endsnippet

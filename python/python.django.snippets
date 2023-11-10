@@ -7,12 +7,6 @@ def to_snake_case(s):
 endglobal
 
 post_jump "clean_imports(snip)"
-snippet reverse "reverse('some-url')"
-from django.urls import reverse
-reverse("my-url", args=[], kwargs={})
-endsnippet
-
-post_jump "clean_imports(snip)"
 snippet reverse_lazy "reverse_lazy('some-url')"
 from django.urls import reverse_lazy
 reverse_lazy("my-url", args=[], kwargs={})

@@ -1,0 +1,130 @@
+snippet namespace ""
+resource "kubernetes_namespace" "${1:}" {
+  metadata {
+    annotations = {
+      name = "example-annotation"
+    }
+
+    labels = {
+      mylabel = "label-value"
+    }
+
+    name = "$1"
+  }
+}
+endsnippet
+
+snippet deployment ""
+resource "kubernetes_deployment" "example" {
+  metadata {
+    name = "${1:app}"
+    namespace = "default"
+    labels = {
+      app = "$1"
+    }
+  }
+
+  spec {
+    replicas = 3
+
+    selector {
+      match_labels = {
+        app = "$1"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "$1"
+        }
+      }
+
+      spec {
+        container {
+          image = "nginx:1.21.6"
+          name  = "example"
+
+          volume {
+
+          }
+
+          env {
+            foo = "bar"
+          }
+
+          resources {
+            limits = {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
+            requests = {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+endsnippet
+
+snippet ingress ""
+resource "kubernetes_ingress" "${1:ingress}" {
+  metadata {
+    name = "$1"
+  }
+
+  spec {
+    backend {
+      service_name = "myapp-1"
+      service_port = 8080
+    }
+
+    rule {
+      http {
+        path {
+          backend {
+            service_name = "myapp-1"
+            service_port = 8080
+          }
+
+          path = "/app1/*"
+        }
+
+        path {
+          backend {
+            service_name = "myapp-2"
+            service_port = 8080
+          }
+
+          path = "/app2/*"
+        }
+      }
+    }
+
+    tls {
+      secret_name = "tls-secret"
+    }
+  }
+}
+endsnippet
+
+snippet configmap ""
+resource "kubernetes_config_map" "example" {
+  metadata {
+    name = "my-config"
+  }
+
+  data = {
+    api_host             = "myhost:443"
+    db_host              = "dbhost:5432"
+    "my_config_file.yml" = "${file("${path.module}/my_config_file.yml")}"
+  }
+
+  binary_data = {
+    "my_payload.bin" = "${filebase64("${path.module}/my_payload.bin")}"
+  }
+}
+endsnippet

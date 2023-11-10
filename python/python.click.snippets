@@ -179,6 +179,10 @@ snippet click_argument_file ""
 @click.argument('output', type=click.File('wb'))
 endsnippet
 
+snippet click_directory ""
+@click.argument("dir", type=click.Path(exists=True, dir_okay=True, file_okay=False))
+endsnippet
+
 snippet click_argument_env ""
 @click.argument('src', envvar='SRC', type=click.File('r'))
 endsnippet

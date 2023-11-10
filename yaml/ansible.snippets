@@ -30,6 +30,19 @@ file:
   group: developers
 endsnippet
 
+snippet file_dir_many "filedir_many"
+file:
+  state: directory
+  path: '{{ item }}'
+  recurse: true
+  mode: 0770
+  owner: root
+  group: developers
+loop:
+  - /opt/foo
+  - /opt/bar
+endsnippet
+
 snippet tempfile "Create a temporary file or directory"
 - name: create temporary build directory
   register: tempfile_1
@@ -278,7 +291,7 @@ endsnippet
 snippet blockinfile "blockinfile:"
 blockinfile:
   path: /some/path
-  regexp: 'some regexp'
+  regexp: 'some regexp' | insertafter: EOF | insertafter: EOF #insert at the end of the file
   create: true
   block: |
     'some replacement'
@@ -877,10 +890,13 @@ endsnippet
 snippet ufw
 - name: Allow ufw
   community.general.ufw:
+    state: enabled
     rule: allow
+    direction: in
     port: 8300
     from_ip: 10.0.0.0/24
     proto: any
+    insert_relative_to: zero|first-ipv4|last-ipv4
 endsnippet
 
 snippet consul_register ""
@@ -955,4 +971,12 @@ community.general.snap:
     - foo
     - bar
   classic: true
+endsnippet
+
+snippet sops_ansible "Read a sops file"
+- name: Read sops secrets
+  community.sops.load_vars:
+    file: secrets.enc.yaml
+    name: secrets
+    expressions: evaluate-on-load
 endsnippet

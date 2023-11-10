@@ -1,0 +1,10 @@
+snippet test_django_changelist_actions ""
+def test_album_add(admin_client):
+    admin_client.post(
+        reverse("admin:delivery_latestproviderevent_changelist"),
+        {"action": "redeliver", "_selected_action": [event.id]},
+    )
+    response = admin_client.post(url, data={})
+    assert response.status_code == 200
+    # How do we assert on messages?
+endsnippet

@@ -34,9 +34,8 @@ print(args.flag_argument)
 endsnippet
 
 post_jump "clean_imports(snip)"
-snippet temporary_directory "tempfile.TemporaryDirectory"
+snippet tmp_dir "tempfile.TemporaryDirectory"
 import tempfile
-from
 with tempfile.TemporaryDirectory(prefix=None, suffix=None) as tmpdirname:
     print('created temporary directory', tmpdirname)
 
@@ -85,10 +84,13 @@ endsnippet
 
 
 snippet walk ""
-for root, dirs, files in os.walk(top, topdown=True):
+for root, dirs, files in os.walk(dir, topdown=True):
     # Modifying dirs in-place will prune the (subsequent) files and directories
     # visited by os.walk
-    dirs[:] = [d for d in dirs if d not in exclude]
+    # dirs[:] = [d for d in dirs if d not in exclude]
+    for f in files:
+        p = Path(root) / f
+        print(p)
 endsnippet
 
 snippet context_manager ""
@@ -112,4 +114,26 @@ import uuid
 uuid.uuid4()
 # UUID('bd65600d-8669-4903-8a14-af88203add38')
 # str(uuid.uuid4())
+endsnippet
+
+snippet tarfile_create "Create a tarfile"
+# Option 1:
+import tarfile
+tar = tarfile.open("sample.tar", "w"|"w:gz"|"w:bz2"|"w:xz")
+for name in ["foo", "bar", "quux"]:
+    tar.add(name)
+tar.close()
+
+# Option 2:
+import shutil
+import os
+import tempfile
+
+with tempfile.TemporaryDirectory() as tmp:
+    os.chdir(tmp)
+    compressed_file = shutil.make_archive(
+        base_name=slugify(product.name),
+        format="gztar|zip|bztar|xztar|tar",
+        root_dir=path,
+    )
 endsnippet
