@@ -28,6 +28,14 @@ output "name_servers" {
 }
 endsnippet
 
+snippet output_foreach "output foreach"
+output "server_ips" {
+  value = [
+    for server in hcloud_server.server : server.ipv4_address
+  ]
+}
+endsnippet
+
 snippet eof "<<EOF"
 myvar = <<EOF
 
